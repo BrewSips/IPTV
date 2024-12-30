@@ -37,6 +37,7 @@ jobs:
       run: |
         git config user.name "GitHub Actions Bot"
         git config user.email "actions@github.com"
+        git reset --hard  # 清理所有未提交的更改
         git pull origin main --rebase  # 拉取远程最新代码，避免冲突
         git add tvlive.m3u
         git commit -m "Update tvlive.m3u on $(date)" || echo "No changes to commit"
