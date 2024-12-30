@@ -1,0 +1,36 @@
+name: Update TVLive M3U
+
+on:
+  schedule:
+    - cron: '0 */4 * * *' # 每4小时运行一次
+  workflow_dispatch: # 手动触发
+
+jobs:
+  update-m3u:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 检出代码
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # 下载两个 m3u 文件
+    - name: Download M3U files
+      run: |
+        mkdir -p m3u_files
+        curl -sL -o m3u_files/ipv6.m3u https://live.fanmingming.com/tv/m3u/ipv6.m3u
+        curl -sL -o m3u_files/live.m3u http://aktv.top/live.m3u
+
+    # 合并文件并去重
+    - name: Merge and deduplicate M3U files
+      run: |
+        cat m3u_files/ipv6.m3u m3u_files/live.m3u | awk '!seen[$0]++' > tvlive.m3u
+
+    # 提交并推送更改
+    - name: Commit and push changes
+      run: |
+        git config user.name "GitHub Actions Bot"
+        git config user.email "actions@github.com"
+        git add tvlive.m3u
+        git commit -m "Update tvlive.m3u on $(date)"
+        git push
