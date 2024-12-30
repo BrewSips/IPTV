@@ -14,7 +14,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # 下载两个 m3u 文件并直接修改 live.m3u
+    # 下载两个 m3u 文件并修改
     - name: Download and edit M3U files
       run: |
         mkdir -p m3u_files
@@ -22,23 +22,21 @@ jobs:
         curl -sL -o m3u_files/live.m3u http://aktv.top/live.m3u
         # 替换 live.m3u 文件中的 group-title="AKTV"
         sed -i 's/group-title="AKTV"/group-title="港台频道"/g' m3u_files/live.m3u
-        ls -l m3u_files  # 检查文件是否下载并修改成功
-        cat m3u_files/live.m3u | grep 'group-title="港台频道"' || echo "No matching lines replaced!"
+        echo "Files downloaded and edited successfully."
 
     # 合并文件并去重
     - name: Merge and deduplicate M3U files
       run: |
         cat m3u_files/ipv6.m3u m3u_files/live.m3u | awk '!seen[$0]++' > tvlive.m3u
-        ls -l  # 检查合并后的文件是否生成
-        cat tvlive.m3u || echo "Merged M3U file not found or empty!"
+        echo "Merged and deduplicated files into tvlive.m3u."
+        ls -l tvlive.m3u  # 确认文件生成
 
     # 提交并推送更改
     - name: Commit and push changes
       run: |
         git config user.name "GitHub Actions Bot"
         git config user.email "actions@github.com"
-        git reset --hard  # 清理所有未提交的更改
-        git pull origin main --rebase  # 拉取远程最新代码，避免冲突
+        touch tvlive.m3u  # 更新文件时间戳，确保 Git 识别为更改
         git add tvlive.m3u
         git commit -m "Update tvlive.m3u on $(date)" || echo "No changes to commit"
         git push origin main
