@@ -19,7 +19,7 @@ jobs:
       run: |
         mkdir -p m3u_files
         curl -sL -o m3u_files/ipv6.m3u https://live.fanmingming.com/tv/m3u/ipv6.m3u
-        curl -sL -o m3u_https://www.stream-link.org/playlist.m3u?token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49
+        curl -sL -o m3u_files/live.m3u http://aktv.top/live.m3u
         # 替换 live.m3u 文件中的 group-title="AKTV"
         sed -i 's/group-title="AKTV"/group-title="港台频道"/g' m3u_files/live.m3u
         echo "Files downloaded and edited successfully."
