@@ -7,7 +7,7 @@ on:
 
 jobs:
   fetch-m3u:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
     # 检出代码
