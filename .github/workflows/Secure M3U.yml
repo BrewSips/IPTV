@@ -68,4 +68,3 @@ except requests.exceptions.RequestException as e:
         git add secure_playlist.m3u
         git commit -m "Update secure M3U on $(date)" || echo "No changes to commit"
         git push origin main
-ure M3U
