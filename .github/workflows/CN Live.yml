@@ -52,17 +52,15 @@ jobs:
         # 替换 fanmingming.cn 为 fanmingming.com
         sed -i 's/fanmingming.cn/fanmingming.com/g' cnlive.m3u
 
-        # 输出最终文件内容
-        echo "Final cnlive.m3u content:"
-        cat cnlive.m3u || echo "Final file is empty."
+        # 移动文件到根目录
+        mv cnlive.m3u m3u_files/cnlive.m3u
 
     # 提交并推送更改
     - name: Commit and push changes
       run: |
         git config user.name "GitHub Actions Bot"
         git config user.email "actions@github.com"
-        # 确保文件被标记为更改
-        touch cnlive.m3u
-        git add cnlive.m3u
+        # 确保 Git 跟踪生成的文件
+        git add m3u_files/cnlive.m3u
         git commit -m "Update cnlive.m3u on $(date)" || echo "No changes to commit"
         git push origin main
