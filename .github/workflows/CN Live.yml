@@ -37,12 +37,18 @@ jobs:
         skip == 0 { print $0 }
         ' m3u_files/temp1.m3u > m3u_files/temp2.m3u
 
+        awk '
+        BEGIN { retain = 1 }
+        /^#EXTINF:-1 tvg-name="新疆卫视"/ { retain = 0 }  # 丢弃从包含“新疆卫视”开始的所有内容
+        retain == 1 { print $0 }
+        ' m3u_files/temp2.m3u > m3u_files/temp3.m3u
+
         # 替换指定内容
-        sed -i 's|https://epg.iill.top/epg|https://live.fanmingming.com/e.xml|g' m3u_files/temp2.m3u
-        sed -i 's/fanmingming.cn/fanmingming.com/g' m3u_files/temp2.m3u
+        sed -i 's|https://epg.iill.top/epg|https://live.fanmingming.com/e.xml|g' m3u_files/temp3.m3u
+        sed -i 's/fanmingming.cn/fanmingming.com/g' m3u_files/temp3.m3u
 
         # 覆盖输出到目标文件
-        mv m3u_files/temp2.m3u m3u_files/cnlive.m3u
+        mv m3u_files/temp3.m3u m3u_files/cnlive.m3u
 
         # 确认结果
         echo "Processed CNLIVE.m3u:"
