@@ -42,7 +42,7 @@ jobs:
               print(f"Request failed with status code: {response.status_code}")
 
       - name: Upload M3U file as artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: playlist-m3u
           path: playlist.m3u
