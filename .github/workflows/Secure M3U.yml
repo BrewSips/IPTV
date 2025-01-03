@@ -1,0 +1,71 @@
+name: Fetch Secure M3U
+
+on:
+  schedule:
+    - cron: '0 */4 * * *'  # 每4小时运行一次
+  workflow_dispatch:        # 手动触发
+
+jobs:
+  fetch-m3u:
+    runs-on: ubuntu-22.04
+
+    steps:
+    # 检出代码
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # 下载并解析 M3U 文件
+    - name: Fetch and parse M3U
+      run: |
+        # 安装 Python 和依赖
+        sudo apt-get update
+        sudo apt-get install -y python3 python3-pip
+        pip3 install requests
+
+        # 创建 Python 脚本
+        echo '
+import requests
+
+# M3U 文件地址
+url = "https://www.stream-link.org/playlist.m3u?token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49"
+
+# 自定义 HTTP 请求头（模拟播放器）
+headers = {
+    "User-Agent": "VLC/3.0.16 LibVLC/3.0.16",
+    "Accept": "*/*",
+}
+
+try:
+    # 发送 GET 请求
+    response = requests.get(url, headers=headers, timeout=10)
+    response.raise_for_status()
+
+    # 保存内容到文件
+    with open("secure_playlist.m3u", "w", encoding="utf-8") as f:
+        f.write(response.text)
+    print("M3U file fetched successfully!")
+
+except requests.exceptions.RequestException as e:
+    print(f"Error fetching M3U file: {e}")
+        ' > fetch_m3u.py
+
+        # 运行脚本
+        python3 fetch_m3u.py
+
+        # 确认文件是否成功下载
+        if [ -f secure_playlist.m3u ]; then
+          echo "Secure M3U downloaded:"
+          cat secure_playlist.m3u
+        else
+          echo "Failed to download M3U file."
+        fi
+
+    # 提交并推送更改
+    - name: Commit and push changes
+      run: |
+        git config user.name "GitHub Actions Bot"
+        git config user.email "actions@github.com"
+        git add secure_playlist.m3u
+        git commit -m "Update secure M3U on $(date)" || echo "No changes to commit"
+        git push origin main
+ure M3U
