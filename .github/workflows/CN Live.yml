@@ -1,66 +1,58 @@
-name: Update TV Live
+name: Update CN Live
 
 on:
   schedule:
     - cron: '0 */4 * * *'  # 每4小时运行一次
-  workflow_dispatch:  # 手动触发
+  workflow_dispatch:        # 手动触发
 
 jobs:
   update-m3u:
-    runs-on: ubuntu-22.04  # 显式指定兼容的环境
+    runs-on: ubuntu-22.04
 
     steps:
     # 检出代码
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # 下载并修改 m3u 文件
+    # 下载并处理 M3U 文件
     - name: Download and process M3U file
       run: |
-        # 创建目录
+        # 创建工作目录
         mkdir -p m3u_files
-        
-        # 下载 ipv6.m3u 文件
+
+        # 下载指定 M3U 文件
         curl -sL https://raw.githubusercontent.com/suxuang/myIPTV/refs/heads/main/ipv6.m3u -o m3u_files/ipv6.m3u
-        
-        # 输出原始文件内容（用于调试）
-        echo "Original ipv6.m3u content:"
-        cat m3u_files/ipv6.m3u || echo "File not found or empty."
 
-        # 过滤文件：保留包含 "CCTV" 和 "卫视" 的内容，并确保 URL 是 IPv6
+        # 按需求处理文件
         awk '
-        BEGIN { retain = 0 }
-        /^#EXTINF:/ {
-            retain = ($0 ~ /CCTV/ || $0 ~ /卫视/)
-            if (retain) info = $0
-        }
-        retain == 1 && /^[^#]/ {
-            if ($0 ~ /^\[.*\]:/) {  # 确保是 IPv6 地址
-                print info
-                print $0
-            }
-            retain = 0
-        }' m3u_files/ipv6.m3u > cnlive.m3u
+        BEGIN { retain = 1 }
+        /^#数字频道/ { retain = 0 }              # 丢弃从 #数字频道 开始的所有内容
+        retain == 1 { print $0 } 
+        ' m3u_files/ipv6.m3u > m3u_files/temp1.m3u
 
-        # 输出过滤后的文件内容（用于调试）
-        echo "Filtered cnlive.m3u content:"
-        cat cnlive.m3u || echo "Filtered file is empty."
+        awk '
+        BEGIN { skip = 0 }
+        /^#EXTINF:-1 tvg-name="兵器科技"/ { skip = 1 }
+        /^#卫视频道/ { skip = 0 }
+        skip == 0 { print $0 }
+        ' m3u_files/temp1.m3u > m3u_files/temp2.m3u
 
-        # 在文件最前面添加指定的行
-        sed -i '1i #EXTM3U x-tvg-url="https://live.fanmingming.com/e.xml"' cnlive.m3u
+        # 替换指定内容
+        sed -i 's|https://epg.iill.top/epg|https://live.fanmingming.com/e.xml|g' m3u_files/temp2.m3u
+        sed -i 's/fanmingming.cn/fanmingming.com/g' m3u_files/temp2.m3u
 
-        # 替换 fanmingming.cn 为 fanmingming.com
-        sed -i 's/fanmingming.cn/fanmingming.com/g' cnlive.m3u
+        # 覆盖输出到目标文件
+        mv m3u_files/temp2.m3u m3u_files/cnlive.m3u
 
-        # 移动文件到根目录
-        mv cnlive.m3u m3u_files/cnlive.m3u
+        # 确认结果
+        echo "Processed CNLIVE.m3u:"
+        cat m3u_files/cnlive.m3u
 
     # 提交并推送更改
     - name: Commit and push changes
       run: |
         git config user.name "GitHub Actions Bot"
         git config user.email "actions@github.com"
-        # 确保 Git 跟踪生成的文件
         git add m3u_files/cnlive.m3u
         git commit -m "Update cnlive.m3u on $(date)" || echo "No changes to commit"
         git push origin main
