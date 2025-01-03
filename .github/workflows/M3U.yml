@@ -17,12 +17,9 @@ jobs:
     # 下载并解析 M3U 文件
     - name: Fetch and parse M3U
       run: |
-        # 安装 Python 和依赖
         sudo apt-get update
         sudo apt-get install -y python3 python3-pip
         pip3 install requests
-
-        # 创建 Python 脚本
         echo '
 import requests
 
@@ -48,11 +45,11 @@ try:
 except requests.exceptions.RequestException as e:
     print(f"Error fetching M3U file: {e}")
         ' > fetch_m3u.py
-
-        # 运行脚本
         python3 fetch_m3u.py
 
-        # 确认文件是否成功下载
+    # 确认文件是否成功下载
+    - name: Verify M3U file
+      run: |
         if [ -f secure_playlist.m3u ]; then
           echo "Secure M3U downloaded:"
           cat secure_playlist.m3u
