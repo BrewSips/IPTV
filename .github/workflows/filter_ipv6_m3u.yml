@@ -23,18 +23,24 @@ jobs:
         # 下载 ipv6.m3u 文件
         curl -sL -o m3u_files/ipv6.m3u https://raw.githubusercontent.com/suxuang/myIPTV/refs/heads/main/ipv6.m3u
         
+        # 输出原始文件内容（用于调试）
+        echo "Original ipv6.m3u content:"
+        cat m3u_files/ipv6.m3u
+        
         # 处理文件逻辑
         awk '
-        BEGIN { skip=0 } 
-        /^#.*频道/ { skip=1 } 
-        skip==0 { buffer[NR]=$0 } 
-        skip==1 && /(?:[a-fA-F0-9]{1,4}:){2,7}[a-fA-F0-9]{1,4}/ { 
+        BEGIN { skip=0 }
+        /^#.*频道/ { skip=1 }
+        skip==0 { buffer[NR]=$0 }
+        skip==1 && /([a-fA-F0-9]{1,4}:){2,7}[a-fA-F0-9]{1,4}/ {
             print buffer[NR-1]
-            print $0 
+            print $0
         }' m3u_files/ipv6.m3u > cnlive.m3u
-        
-        echo "Filtered and saved as cnlive.m3u."
-        
+
+        # 输出处理后的文件内容（用于调试）
+        echo "Filtered cnlive.m3u content:"
+        cat cnlive.m3u
+
     # 提交并推送更改
     - name: Commit and push changes
       run: |
