@@ -26,15 +26,15 @@ jobs:
         # 输出原始文件内容（用于调试）
         echo "Original ipv6.m3u content:"
         cat m3u_files/ipv6.m3u
-        
-        # 处理文件逻辑
+
+        # 过滤文件，保留正确格式的内容
         awk '
-        BEGIN { skip=0 }
-        /^#.*频道/ { skip=1 }
-        skip==0 { buffer[NR]=$0 }
-        skip==1 && /([a-fA-F0-9]{1,4}:){2,7}[a-fA-F0-9]{1,4}/ {
-            print buffer[NR-1]
+        BEGIN { output = 0 }
+        /^#EXTINF:/ { prev = $0; output = 1 }
+        output == 1 && /http:\/\/\[[a-fA-F0-9:]+\]:[0-9]+\/[^\s]+/ {
+            print prev
             print $0
+            output = 0
         }' m3u_files/ipv6.m3u > cnlive.m3u
 
         # 输出处理后的文件内容（用于调试）
