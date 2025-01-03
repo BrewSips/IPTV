@@ -21,31 +21,4 @@ jobs:
         mkdir -p m3u_files
         
         # 下载 ipv6.m3u 文件
-        curl -sL -o m3u_files/ipv6.m3u https://raw.githubusercontent.com/suxuang/myIPTV/refs/heads/main/ipv6.m3u
-        
-        # 输出原始文件内容（用于调试）
-        echo "Original ipv6.m3u content:"
-        cat m3u_files/ipv6.m3u
-
-        # 过滤文件，保留正确格式的内容
-        awk '
-        BEGIN { output = 0 }
-        /^#EXTINF:/ { prev = $0; output = 1 }
-        output == 1 && /http:\/\/\[[a-fA-F0-9:]+\]:[0-9]+\/[^\s]+/ {
-            print prev
-            print $0
-            output = 0
-        }' m3u_files/ipv6.m3u > cnlive.m3u
-
-        # 输出处理后的文件内容（用于调试）
-        echo "Filtered cnlive.m3u content:"
-        cat cnlive.m3u
-
-    # 提交并推送更改
-    - name: Commit and push changes
-      run: |
-        git config user.name "GitHub Actions Bot"
-        git config user.email "actions@github.com"
-        git add cnlive.m3u
-        git commit -m "Update cnlive.m3u on $(date)" || echo "No changes to commit"
-        git push origin main
+        curl -sL -o
