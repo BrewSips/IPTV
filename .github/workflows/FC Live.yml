@@ -1,72 +1,48 @@
-name: Fetch and Update FC Live
+name: Download M3U Playlist
 
 on:
-  schedule:
-    - cron: '0 */4 * * *'  # 每4小时运行一次
-  workflow_dispatch:        # 手动触发
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-  fetch-m3u:
+  download-m3u:
     runs-on: ubuntu-latest
 
     steps:
-      # 检出代码库
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
-      # 安装 Python 环境
-      - name: Setup Python
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y python3 python3-pip
-          pip3 install requests
+          pip install requests
 
-      # 下载并解析 M3U 文件
-      - name: Fetch and parse M3U
+      - name: Download M3U and save to file
         run: |
-          echo '
-import requests
+          import requests
 
-# M3U 文件的 URL
-url = "https://www.stream-link.org/playlist.m3u?token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49"
+          # M3U URL
+          url = 'https://www.stream-link.org/playlist.m3u?token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49'
 
-# 自定义 HTTP 请求头
-headers = {
-    "User-Agent": "VLC/3.0.16 LibVLC/3.0.16",
-    "Accept": "*/*",
-}
+          # Send GET request to fetch M3U content
+          response = requests.get(url)
 
-try:
-    # 发送 GET 请求
-    response = requests.get(url, headers=headers, timeout=15)
-    response.raise_for_status()
+          if response.status_code == 200:
+              # Save content to a file
+              with open('playlist.m3u', 'w') as f:
+                  f.write(response.text)
+              print("M3U file saved as 'playlist.m3u'")
+          else:
+              print(f"Request failed with status code: {response.status_code}")
 
-    # 保存到文件
-    with open("secure_playlist.m3u", "w", encoding="utf-8") as file:
-        file.write(response.text)
-    print("M3U file fetched and saved successfully.")
-
-except requests.exceptions.RequestException as error:
-    print(f"Error fetching M3U file: {error}")
-    exit(1)
-          ' > fetch_m3u.py
-          python3 fetch_m3u.py
-
-      # 确认文件生成成功
-      - name: Verify M3U file
-        run: |
-          if [ -f secure_playlist.m3u ]; then
-            echo "Secure M3U file created successfully:"
-            cat secure_playlist.m3u
-          else
-            echo "Secure M3U file was not created."
-            exit 1
-
-      # 提交并推送更改
-      - name: Commit and push changes
-        run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "actions@github.com"
-          git add secure_playlist.m3u
-          git commit -m "Update secure M3U on $(date)" || echo "No changes to commit"
-          git push origin main
+      - name: Upload M3U file as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: playlist-m3u
+          path: playlist.m3u
