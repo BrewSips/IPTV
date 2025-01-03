@@ -1,4 +1,4 @@
-name: Update CN Live
+name: Fetch Secure M3U
 
 on:
   schedule:
@@ -6,59 +6,66 @@ on:
   workflow_dispatch:        # 手动触发
 
 jobs:
-  update-m3u:
-    runs-on: ubuntu-22.04
+  fetch-m3u:
+    runs-on: ubuntu-latest
 
     steps:
-    # 检出代码
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      # 检出代码库
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    # 下载并处理 M3U 文件
-    - name: Download and process M3U file
-      run: |
-        # 创建工作目录
-        mkdir -p m3u_files
+      # 安装 Python 环境和依赖
+      - name: Setup Python
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3 python3-pip
+          pip3 install requests
 
-        # 下载指定 M3U 文件
-        curl -sL https://raw.githubusercontent.com/suxuang/myIPTV/refs/heads/main/ipv6.m3u -o m3u_files/ipv6.m3u
+      # 下载并解析 M3U 文件
+      - name: Fetch and parse M3U
+        run: |
+          echo '
+import requests
 
-        # 按需求处理文件
-        awk '
-        BEGIN { retain = 1 }
-        /^#数字频道/ { retain = 0 }              # 丢弃从 #数字频道 开始的所有内容
-        retain == 1 { print $0 } 
-        ' m3u_files/ipv6.m3u > m3u_files/temp1.m3u
+# M3U 文件 URL
+url = "https://www.stream-link.org/playlist.m3u?token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49"
 
-        awk '
-        BEGIN { skip = 0 }
-        /^#EXTINF:-1 tvg-name="兵器科技"/ { skip = 1 }
-        /^#卫视频道/ { skip = 0 }
-        skip == 0 { print $0 }
-        ' m3u_files/temp1.m3u > m3u_files/temp2.m3u
+# 自定义 HTTP 请求头
+headers = {
+    "User-Agent": "VLC/3.0.16 LibVLC/3.0.16",
+    "Accept": "*/*",
+}
 
-        awk '
-        BEGIN { retain = 1 }
-        /^#EXTINF:-1 tvg-name="新疆卫视"/ { retain = 0 }  # 丢弃从包含“新疆卫视”开始的所有内容
-        retain == 1 { print $0 }
-        ' m3u_files/temp2.m3u > m3u_files/temp3.m3u
+try:
+    # 发送 GET 请求
+    response = requests.get(url, headers=headers, timeout=15)
+    response.raise_for_status()
 
-        # 替换指定内容
-        sed -i 's|https://epg.iill.top/epg|https://live.fanmingming.com/e.xml|g' m3u_files/temp3.m3u
-        sed -i 's/fanmingming.cn/fanmingming.com/g' m3u_files/temp3.m3u
+    # 保存内容到文件
+    with open("secure_playlist.m3u", "w", encoding="utf-8") as file:
+        file.write(response.text)
+    print("M3U file fetched and saved successfully!")
 
-        # 覆盖输出到目标文件
-        mv m3u_files/temp3.m3u m3u_files/cnlive.m3u
+except requests.exceptions.RequestException as error:
+    print(f"Error fetching M3U file: {error}")
+          ' > fetch_m3u.py
+          python3 fetch_m3u.py
 
-        # 确认结果
-        echo "Processed CNLIVE.m3u:"
-        cat m3u_files/cnlive.m3u
+      # 确认文件生成成功
+      - name: Verify M3U file
+        run: |
+          if [ -f secure_playlist.m3u ]; then
+            echo "Secure M3U file created:"
+            cat secure_playlist.m3u
+          else
+            echo "Secure M3U file was not created."
+            exit 1
 
-    # 提交并推送更改
-    - name: Commit and push changes
-      run: |
-        git config user.name "GitHub Actions Bot"
-        git config user.email "actions@github.com"
-        git add m3u_files/cnlive.m3u
-        git commit -m "Update cnlive.m3u on $(date)" || echo "No changes to commit"
-        git push origin main
+      # 提交并推送更改
+      - name: Commit and push changes
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add secure_playlist.m3u
+          git commit -m "Update secure M3U on $(date)" || echo "No changes to commit"
+          git push origin main
