@@ -1,4 +1,4 @@
-name: Update TVLive M3U
+name: Update CN Live
 
 on:
   schedule:
