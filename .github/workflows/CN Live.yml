@@ -23,26 +23,7 @@ jobs:
         # 下载 ipv6.m3u 文件
         curl -sL https://raw.githubusercontent.com/suxuang/myIPTV/refs/heads/main/ipv6.m3u -o m3u_files/ipv6.m3u
         
-        # 输出原始文件内容（用于调试）
-        echo "Original ipv6.m3u content:"
-        cat m3u_files/ipv6.m3u
-
-        # 调试过滤：打印匹配的行
-        echo "Matching lines:"
-        awk '
-        BEGIN { retain = 0 }
-        /^#EXTINF:/ {
-            retain = ($0 ~ /CCTV/ || $0 ~ /卫视/)
-            if (retain) print "MATCH EXTINF: " $0
-        }
-        retain == 1 && /^[^#]/ {
-            if ($0 ~ /^\[.*\]:/) {  # 检查是否为 IPv6 地址
-                print "MATCH URL: " $0
-            }
-            retain = 0
-        }' m3u_files/ipv6.m3u
-
-        # 过滤文件：保留符合条件的内容
+        # 过滤文件：保留包含 "CCTV" 和 "卫视" 的内容，并确保 URL 是 IPv6
         awk '
         BEGIN { retain = 0 }
         /^#EXTINF:/ {
@@ -50,7 +31,7 @@ jobs:
             if (retain) info = $0
         }
         retain == 1 && /^[^#]/ {
-            if ($0 ~ /^\[.*\]:/) {  # 检查是否为 IPv6 地址
+            if ($0 ~ /^\[.*\]:/) {  # 确保是 IPv6 地址
                 print info
                 print $0
             }
