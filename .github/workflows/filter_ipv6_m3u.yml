@@ -1,0 +1,41 @@
+name: Filter IPv6 M3U
+
+on:
+  schedule:
+    # 每 4 小时运行一次
+    - cron: "0 */4 * * *"
+  workflow_dispatch: # 手动触发工作流
+
+jobs:
+  filter_ipv6:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: 检出代码
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      # Step 2: 设置 Python 环境
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      # Step 3: 安装依赖
+      - name: Install dependencies
+        run: pip install requests
+
+      # Step 4: 执行 Python 脚本
+      - name: Run Python script
+        run: python filter_ipv6_m3u.py
+
+      # Step 5: 保存结果并提交到 GitHub
+      - name: Commit and push changes
+        run: |
+          git config --local user.name "GitHub Actions"
+          git config --local user.email "actions@github.com"
+          git add cnlive.m3u
+          git commit -m "Update cnlive.m3u"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
