@@ -23,23 +23,29 @@ jobs:
         run: |
           pip install requests
 
-      - name: Download M3U and save to file
+      - name: Save Python script to file
         run: |
-          import requests
+          echo "
+import requests
 
-          # M3U URL
-          url = 'https://www.stream-link.org/playlist.m3u?token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49'
+# M3U URL
+url = 'https://www.stream-link.org/playlist.m3u?token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49'
 
-          # Send GET request to fetch M3U content
-          response = requests.get(url)
+# Send GET request to fetch M3U content
+response = requests.get(url)
 
-          if response.status_code == 200:
-              # Save content to a file
-              with open('playlist.m3u', 'w') as f:
-                  f.write(response.text)
-              print("M3U file saved as 'playlist.m3u'")
-          else:
-              print(f"Request failed with status code: {response.status_code}")
+if response.status_code == 200:
+    # Save content to a file
+    with open('playlist.m3u', 'w') as f:
+        f.write(response.text)
+    print('M3U file saved as playlist.m3u')
+else:
+    print(f'Request failed with status code: {response.status_code}')
+" > download_m3u.py
+
+      - name: Run Python script to download M3U
+        run: |
+          python download_m3u.py
 
       - name: Upload M3U file as artifact
         uses: actions/upload-artifact@v3
