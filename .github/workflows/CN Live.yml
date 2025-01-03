@@ -23,6 +23,10 @@ jobs:
         # 下载 ipv6.m3u 文件
         curl -sL https://raw.githubusercontent.com/suxuang/myIPTV/refs/heads/main/ipv6.m3u -o m3u_files/ipv6.m3u
         
+        # 输出原始文件内容（用于调试）
+        echo "Original ipv6.m3u content:"
+        cat m3u_files/ipv6.m3u || echo "File not found or empty."
+
         # 过滤文件：保留包含 "CCTV" 和 "卫视" 的内容，并确保 URL 是 IPv6
         awk '
         BEGIN { retain = 0 }
@@ -38,21 +42,27 @@ jobs:
             retain = 0
         }' m3u_files/ipv6.m3u > cnlive.m3u
 
+        # 输出过滤后的文件内容（用于调试）
+        echo "Filtered cnlive.m3u content:"
+        cat cnlive.m3u || echo "Filtered file is empty."
+
         # 在文件最前面添加指定的行
         sed -i '1i #EXTM3U x-tvg-url="https://live.fanmingming.com/e.xml"' cnlive.m3u
 
         # 替换 fanmingming.cn 为 fanmingming.com
         sed -i 's/fanmingming.cn/fanmingming.com/g' cnlive.m3u
 
-        # 输出处理后的文件内容（用于调试）
-        echo "Processed cnlive.m3u content:"
-        cat cnlive.m3u
+        # 输出最终文件内容
+        echo "Final cnlive.m3u content:"
+        cat cnlive.m3u || echo "Final file is empty."
 
     # 提交并推送更改
     - name: Commit and push changes
       run: |
         git config user.name "GitHub Actions Bot"
         git config user.email "actions@github.com"
+        # 确保文件被标记为更改
+        touch cnlive.m3u
         git add cnlive.m3u
         git commit -m "Update cnlive.m3u on $(date)" || echo "No changes to commit"
         git push origin main
