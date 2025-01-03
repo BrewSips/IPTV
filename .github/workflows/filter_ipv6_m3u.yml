@@ -1,41 +1,45 @@
-name: Filter IPv6 M3U
+name: Update TVLive M3U
 
 on:
   schedule:
-    # 每 4 小时运行一次
-    - cron: "0 */4 * * *"
-  workflow_dispatch: # 手动触发工作流
+    - cron: '0 */4 * * *'  # 每4小时运行一次
+  workflow_dispatch:  # 手动触发
 
 jobs:
-  filter_ipv6:
-    runs-on: ubuntu-latest
+  update-m3u:
+    runs-on: ubuntu-22.04  # 显式指定兼容的环境
 
     steps:
-      # Step 1: 检出代码
-      - name: Check out repository
-        uses: actions/checkout@v3
+    # 检出代码
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      # Step 2: 设置 Python 环境
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.9"
-
-      # Step 3: 安装依赖
-      - name: Install dependencies
-        run: pip install requests
-
-      # Step 4: 执行 Python 脚本
-      - name: Run Python script
-        run: python filter_ipv6_m3u.py
-
-      # Step 5: 保存结果并提交到 GitHub
-      - name: Commit and push changes
-        run: |
-          git config --local user.name "GitHub Actions"
-          git config --local user.email "actions@github.com"
-          git add cnlive.m3u
-          git commit -m "Update cnlive.m3u"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # 下载并修改 m3u 文件
+    - name: Download and process M3U file
+      run: |
+        # 创建目录
+        mkdir -p m3u_files
+        
+        # 下载 ipv6.m3u 文件
+        curl -sL -o m3u_files/ipv6.m3u https://raw.githubusercontent.com/suxuang/myIPTV/refs/heads/main/ipv6.m3u
+        
+        # 处理文件逻辑
+        awk '
+        BEGIN { skip=0 } 
+        /^#.*频道/ { skip=1 } 
+        skip==0 { buffer[NR]=$0 } 
+        skip==1 && /(?:[a-fA-F0-9]{1,4}:){2,7}[a-fA-F0-9]{1,4}/ { 
+            print buffer[NR-1]
+            print $0 
+        }' m3u_files/ipv6.m3u > cnlive.m3u
+        
+        echo "Filtered and saved as cnlive.m3u."
+        
+    # 提交并推送更改
+    - name: Commit and push changes
+      run: |
+        git config user.name "GitHub Actions Bot"
+        git config user.email "actions@github.com"
+        git add cnlive.m3u
+        git commit -m "Update cnlive.m3u on $(date)" || echo "No changes to commit"
+        git push origin main
