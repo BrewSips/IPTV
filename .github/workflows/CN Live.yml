@@ -1,4 +1,4 @@
-name: Update TVLive M3U
+name: Update TV Live
 
 on:
   schedule:
