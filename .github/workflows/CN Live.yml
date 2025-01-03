@@ -1,4 +1,4 @@
-name: Update CN Live
+name: Update TVLive M3U
 
 on:
   schedule:
@@ -21,7 +21,7 @@ jobs:
         mkdir -p m3u_files
         
         # 下载 ipv6.m3u 文件
-        curl -sL -o m3u_files/ipv6.m3u https://raw.githubusercontent.com/suxuang/myIPTV/refs/heads/main/ipv6.m3u
+        curl -sL https://raw.githubusercontent.com/suxuang/myIPTV/refs/heads/main/ipv6.m3u -o m3u_files/ipv6.m3u
         
         # 输出原始文件内容（用于调试）
         echo "Original ipv6.m3u content:"
@@ -38,8 +38,14 @@ jobs:
             valid = 0
         }' m3u_files/ipv6.m3u > cnlive.m3u
 
+        # 在文件最前面添加指定的行
+        sed -i '1i #EXTM3U x-tvg-url="https://live.fanmingming.cn/e.xml"' cnlive.m3u
+
+        # 替换 fanmingming.cn 为 fanmingming.com
+        sed -i 's/fanmingming.cn/fanmingming.com/g' cnlive.m3u
+
         # 输出处理后的文件内容（用于调试）
-        echo "Filtered cnlive.m3u content:"
+        echo "Processed cnlive.m3u content:"
         cat cnlive.m3u
 
     # 提交并推送更改
