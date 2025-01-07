@@ -20,6 +20,16 @@ jobs:
         # 下载指定 M3U 文件
         curl -sL https://raw.githubusercontent.com/suxuang/myIPTV/refs/heads/main/ipv6.m3u -o ipv6.m3u
 
+        # 检查文件是否下载成功
+        if [ ! -s ipv6.m3u ]; then
+          echo "Failed to download M3U file or file is empty!"
+          exit 1
+        fi
+
+        # 输出调试信息
+        echo "Downloaded M3U file content:"
+        head -n 20 ipv6.m3u
+
         # 按需求处理文件
         awk '
         BEGIN { retain = 0 }
@@ -41,6 +51,12 @@ jobs:
         retain { print $0 }
         /#国际频道/ { retain = 0; next } # 结束保留之前的内容
         ' temp2.m3u > cnlive.m3u
+
+        # 检查生成的文件是否为空
+        if [ ! -s cnlive.m3u ]; then
+          echo "Generated file is empty. Please check matching logic!"
+          exit 1
+        fi
 
         # 确认结果
         echo "Processed CNLIVE.m3u:"
