@@ -1,46 +1,72 @@
-- name: Download and process M3U file
-  run: |
-    # 下载指定 M3U 文件
-    curl -sL https://raw.githubusercontent.com/suxuang/myIPTV/refs/heads/main/ipv6.m3u -o ipv6.m3u
+name: Update CN Live
 
-    # 检查文件是否下载成功
-    if [ ! -s ipv6.m3u ]; then
-      echo "Failed to download M3U file or file is empty!"
-      exit 1
-    fi
+on:
+  schedule:
+    - cron: '0 */4 * * *'  # 每4小时运行一次
+  workflow_dispatch:        # 手动触发
 
-    # 输出调试信息
-    echo "Downloaded M3U file content:"
-    head -n 20 ipv6.m3u
+jobs:
+  update-m3u:
+    runs-on: ubuntu-22.04
 
-    # 按需求处理文件
-    awk '
-    BEGIN { retain = 0 }
-    /CCTV7/ { retain = 1 }  # 开始保留从包含 CCTV7 的行
-    retain { print $0 }     # 保留内容
-    /CCTV7/ { getline; print $0 } # 保留 CCTV7 下一行
-    ' ipv6.m3u > temp1.m3u
+    steps:
+      # 检出代码
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    awk '
-    BEGIN { retain = 0 }
-    /#央视频道/ { retain = 1 }  # 开始保留从 #央视频道
-    retain { print $0 }
-    /CCTV8/ { print $0; getline; print $0; retain = 0 }  # 保留 CCTV8 及其下一行，结束保留
-    ' temp1.m3u > temp2.m3u
+      # 下载并处理 M3U 文件
+      - name: Download and process M3U file
+        run: |
+          # 下载指定 M3U 文件
+          curl -sL https://raw.githubusercontent.com/suxuang/myIPTV/refs/heads/main/ipv6.m3u -o ipv6.m3u
 
-    awk '
-    BEGIN { retain = 0 }
-    /#央视频道/ { retain = 1 }  # 开始保留从 #央视频道
-    retain { print $0 }
-    /CCTV4/ { retain = 0; next } # 结束保留之前的内容
-    ' temp2.m3u > cnlive.m3u
+          # 检查文件是否下载成功
+          if [ ! -s ipv6.m3u ]; then
+            echo "Failed to download M3U file or file is empty!"
+            exit 1
+          fi
 
-    # 检查生成的文件是否为空
-    if [ ! -s cnlive.m3u ]; then
-      echo "Generated file is empty. Please check matching logic!"
-      exit 1
-    fi
+          # 输出调试信息
+          echo "Downloaded M3U file content:"
+          head -n 20 ipv6.m3u
 
-    # 确认结果
-    echo "Processed CNLIVE.m3u:"
-    cat cnlive.m3u
+          # 按需求处理文件
+          awk '
+          BEGIN { retain = 0 }
+          /CCTV7/ { retain = 1 }  # 开始保留从包含 CCTV7 的行
+          retain { print $0 }     # 保留内容
+          /CCTV7/ { getline; print $0 } # 保留 CCTV7 下一行
+          ' ipv6.m3u > temp1.m3u
+
+          awk '
+          BEGIN { retain = 0 }
+          /#央视频道/ { retain = 1 }  # 开始保留从 #央视频道
+          retain { print $0 }
+          /CCTV8/ { print $0; getline; print $0; retain = 0 }  # 保留 CCTV8 及其下一行，结束保留
+          ' temp1.m3u > temp2.m3u
+
+          awk '
+          BEGIN { retain = 0 }
+          /#央视频道/ { retain = 1 }  # 开始保留从 #央视频道
+          retain { print $0 }
+          /CCTV4/ { retain = 0; next } # 结束保留之前的内容
+          ' temp2.m3u > cnlive.m3u
+
+          # 检查生成的文件是否为空
+          if [ ! -s cnlive.m3u ]; then
+            echo "Generated file is empty. Please check matching logic!"
+            exit 1
+          fi
+
+          # 确认结果
+          echo "Processed CNLIVE.m3u:"
+          cat cnlive.m3u
+
+      # 提交并推送更改
+      - name: Commit and push changes
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add cnlive.m3u
+          git commit -m "Update cnlive.m3u on $(date)" || echo "No changes to commit"
+          git push origin main
