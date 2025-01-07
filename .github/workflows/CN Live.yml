@@ -25,17 +25,22 @@ jobs:
         BEGIN { retain = 0 }
         /CCTV17/ { retain = 1 }  # 开始保留从包含 CCTV17 的行
         retain { print $0 }      # 保留内容
-        NR == FNR && /CCTV17/ { getline; print $0 } # 保留 CCTV17 下一行
-        /#卫视频道/ { retain = 1 }  # 开始保留从 #卫视频道
-        /广东珠江/ { print $0; getline; print $0; retain = 0 }  # 保留广东珠江及其下一行，结束保留
+        /CCTV17/ { getline; print $0 } # 保留 CCTV17 下一行
         ' ipv6.m3u > temp1.m3u
 
         awk '
         BEGIN { retain = 0 }
-        /#春晚/ { retain = 1 }  # 开始保留从 #春晚
-        /#国际频道/ { retain = 0; next } # 结束保留之前的内容
+        /#卫视频道/ { retain = 1 }  # 开始保留从 #卫视频道
         retain { print $0 }
-        ' temp1.m3u > cnlive.m3u
+        /广东珠江/ { print $0; getline; print $0; retain = 0 }  # 保留广东珠江及其下一行，结束保留
+        ' temp1.m3u > temp2.m3u
+
+        awk '
+        BEGIN { retain = 0 }
+        /#春晚/ { retain = 1 }  # 开始保留从 #春晚
+        retain { print $0 }
+        /#国际频道/ { retain = 0; next } # 结束保留之前的内容
+        ' temp2.m3u > cnlive.m3u
 
         # 确认结果
         echo "Processed CNLIVE.m3u:"
