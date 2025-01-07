@@ -20,23 +20,17 @@ jobs:
         # 下载指定 M3U 文件
         curl -sL https://raw.githubusercontent.com/suxuang/myIPTV/refs/heads/main/ipv6.m3u -o ipv6.m3u
 
-        # 处理文件
+        # 按需求处理文件
         awk '
-        BEGIN { retain = 0; output = 0 }
-        # 保留从文件开头到 CCTV17 及其下一行
-        NR == 1 { retain = 1; output = 1 }
-        /CCTV17/ && retain == 1 { print; getline; print; retain = 0 }
-        output == 1 && retain == 1 { print }
+        BEGIN { retain = 1; section = 1 }
+        /^#EXTINF.*CCTV17/ { print $0; getline; print $0; section = 2; next }  # CCTV17 段结束
+        section == 1 { print $0 }                                             # 保留第一段内容
 
-        # 保留从 #卫视频道 到 广东珠江 及其下一行
-        /#卫视频道/ { retain = 1; output = 2 }
-        /广东珠江/ && output == 2 && retain == 1 { print; getline; print; retain = 0 }
-        output == 2 && retain == 1 { print }
+        /^#卫视频道/ { section = 3 }                                          # 开始卫视频道段
+        section == 3 { print $0 }
+        /^#EXTINF.*广东珠江/ { print $0; getline; print $0; section = 4; next } # 广东珠江段结束
 
-        # 保留从 #春晚 到 #国际频道 的上一行
-        /#春晚/ { retain = 1; output = 3 }
-        /#国际频道/ && output == 3 { retain = 0 }
-        output == 3 && retain == 1 { print }
+        END { if (section != 4) exit 1 }  # 确保流程正确，否则返回错误
         ' ipv6.m3u > cnlive.m3u
 
         # 确认结果
