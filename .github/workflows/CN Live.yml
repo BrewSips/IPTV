@@ -22,16 +22,35 @@ jobs:
 
         # 按需求处理文件
         awk '
-        BEGIN { retain = 1; section = 1 }
-        # 处理第一段：从开头到 CCTV17
-        /^#EXTINF.*CCTV17/ { print $0; getline; print $0; section = 2; next } 
-        section == 1 { print $0 }
+        BEGIN { 
+            section = 1; 
+            found_cctv17 = 0; 
+            found_guangdong = 0; 
+        }
+        
+        # 第一段：从文件开始到 CCTV17 及其下面一行
+        section == 1 {
+            print $0;
+            if (/^#EXTINF.*CCTV17/) { 
+                found_cctv17 = 1; 
+            } 
+            if (found_cctv17 && /^http/) { 
+                section = 2; 
+                next; 
+            } 
+        }
 
-        # 处理第二段：从 #卫视频道 到 广东珠江
+        # 第二段：从 #卫视频道 到 广东珠江 及其下面一行
         /^#卫视频道/ { section = 3 }
-        section == 3 { print $0 }
-        /^#EXTINF.*广东珠江/ { print $0; getline; print $0; section = 4; exit }  # 处理后退出
-
+        section == 3 {
+            print $0;
+            if (/^#EXTINF.*广东珠江/) {
+                found_guangdong = 1;
+            }
+            if (found_guangdong && /^http/) { 
+                exit; 
+            }
+        }
         ' ipv6.m3u > cnlive.m3u
 
         # 确认结果
