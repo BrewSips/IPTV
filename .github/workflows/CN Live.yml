@@ -22,18 +22,21 @@ jobs:
 
         # 处理文件
         awk '
-        BEGIN { retain = 0 }
-        NR == 1 { retain = 1 }                                    # 从文件开始保留
-        /CCTV17/ { retain = 1; print; getline; print; retain = 0 }  # 到 CCTV17 及其下一行结束
-        retain == 1 { print }
+        BEGIN { retain = 0; output = 0 }
+        # 保留从文件开头到 CCTV17 及其下一行
+        NR == 1 { retain = 1; output = 1 }
+        /CCTV17/ && retain == 1 { print; getline; print; retain = 0 }
+        output == 1 && retain == 1 { print }
 
-        /#卫视频道/ { retain = 1 }                                # 从 #卫视频道 开始
-        /广东珠江/ { print; getline; print; retain = 0 }           # 到 广东珠江 及其下一行结束
-        retain == 1 { print }
+        # 保留从 #卫视频道 到 广东珠江 及其下一行
+        /#卫视频道/ { retain = 1; output = 2 }
+        /广东珠江/ && output == 2 && retain == 1 { print; getline; print; retain = 0 }
+        output == 2 && retain == 1 { print }
 
-        /#春晚/ { retain = 1 }                                   # 从 #春晚 开始
-        /#国际频道/ { retain = 0 }                               # 到 #国际频道 的上一行结束
-        retain == 1 { print }
+        # 保留从 #春晚 到 #国际频道 的上一行
+        /#春晚/ { retain = 1; output = 3 }
+        /#国际频道/ && output == 3 { retain = 0 }
+        output == 3 && retain == 1 { print }
         ' ipv6.m3u > cnlive.m3u
 
         # 确认结果
