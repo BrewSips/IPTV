@@ -22,22 +22,26 @@ jobs:
 
         # 按需求处理文件
         awk '
-        BEGIN { retain = 1 }
-        /^#数字频道/ { retain = 0 }              # 丢弃从 #数字频道 开始的所有内容
-        retain == 1 { print $0 } 
+        BEGIN { retain = 0 }
+        /CCTV17/ { retain = 1 }
+        retain { print $0 }
+        NR == FNR && /CCTV17/ { getline; print $0 }
         ' ipv6.m3u > temp1.m3u
 
         awk '
-        BEGIN { skip = 0 }
-        /^#EXTINF:-1 tvg-name="兵器科技"/ { skip = 1 }
-        /^#卫视频道/ { skip = 0 }
-        skip == 0 { print $0 }
+        BEGIN { retain = 0 }
+        /#卫视频道/ { retain = 1 }
+        /广东珠江/ { retain = 0 }
+        retain { print $0 }
+        NR == FNR && /广东珠江/ { getline; print $0 }
         ' temp1.m3u > temp2.m3u
 
         awk '
-        BEGIN { retain = 1 }
-        /^#EXTINF:-1 tvg-name="新疆卫视"/ { retain = 0 }  # 丢弃从包含“新疆卫视”开始的所有内容
-        retain == 1 { print $0 }
+        BEGIN { retain = 0 }
+        /#春晚/ { retain = 1 }
+        /#国际频道/ { retain = 0 }
+        retain { print $0 }
+        NR == FNR && /#国际频道/ { print "" }
         ' temp2.m3u > cnlive.m3u
 
         # 确认结果
