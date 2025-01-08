@@ -26,8 +26,14 @@ jobs:
         # 使用 curl 下载文件并保存为 fglive.m3u
         curl -sL -A "$USER_AGENT" "$M3U_URL" -o fglive.m3u
 
+        # 替换 URL 并移除特定行
+        sed -i \
+          -e 's|https://content.stream-link.org/images|https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/CN Logo|g' \
+          -e '/免费使用规则/{N;d;}' \
+          fglive.m3u
+
         # 确认结果
-        echo "Downloaded fglive.m3u:"
+        echo "Processed fglive.m3u:"
         cat fglive.m3u
 
     # 提交并推送更改
