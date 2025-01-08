@@ -16,8 +16,11 @@ jobs:
         USER_AGENT="AptvPlayer/1.3.16"
         OUTPUT_FILE="test.m3u"
 
-        # 模拟播放器访问并获取真实 URL
-        REAL_URL=$(curl -sL -A "$USER_AGENT" "$TEST_URL" | grep -oP 'https?://[^\s"]+')
+        # 使用 curl 模拟播放器访问并获取响应头
+        RESPONSE=$(curl -s -I -A "$USER_AGENT" "$TEST_URL")
+
+        # 提取真实播放地址 URL
+        REAL_URL=$(echo "$RESPONSE" | grep -oP '(?<=Location: )https?://[^\s]+')
 
         # 验证提取的真实地址
         if [ -n "$REAL_URL" ]; then
