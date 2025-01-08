@@ -46,7 +46,10 @@ jobs:
 
     # 列出下载的文件以确认内容
     - name: List downloaded files
-      run: ls -l "$FGLIVE_DIR/FG Logo"
+      run: |
+        FGLIVE_DIR=$(dirname fglive.m3u)
+        echo "Listing files in $FGLIVE_DIR/FG Logo"
+        ls -l "$FGLIVE_DIR/FG Logo"
 
     # 使用 v4 上传 FG Logo 文件夹为 Artifact
     - name: Upload FG Logo as artifact
