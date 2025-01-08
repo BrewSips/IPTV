@@ -1,0 +1,40 @@
+name: FG Live
+
+on:
+  schedule:
+    - cron: '0 */4 * * *'  # 每4小时运行一次
+  workflow_dispatch:        # 手动触发
+
+jobs:
+  update-m3u:
+    runs-on: ubuntu-22.04
+
+    steps:
+    # 检出代码
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # 下载并保存 M3U 文件
+    - name: Download and save M3U file
+      run: |
+        # 定义 M3U 文件的 URL
+        M3U_URL="https://www.stream-link.org/playlist.m3u?token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49"
+
+        # 自定义 User-Agent 模拟播放器
+        USER_AGENT="AptvPlayer/1.3.16"
+
+        # 使用 curl 下载文件并保存为 fglive.m3u
+        curl -sL -A "$USER_AGENT" "$M3U_URL" -o fglive.m3u
+
+        # 确认结果
+        echo "Downloaded fglive.m3u:"
+        cat fglive.m3u
+
+    # 提交并推送更改
+    - name: Commit and push changes
+      run: |
+        git config user.name "GitHub Actions Bot"
+        git config user.email "actions@github.com"
+        git add fglive.m3u
+        git commit -m "Update fglive.m3u on $(date)" || echo "No changes to commit"
+        git push origin main
