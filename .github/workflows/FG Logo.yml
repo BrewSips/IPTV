@@ -19,7 +19,7 @@ jobs:
       run: |
         # 确保 fglive.m3u 文件的目录
         FGLIVE_FILE="fglive.m3u"
-        FGLIVE_DIR=$(dirname $FGLIVE_FILE)
+        FGLIVE_DIR=$(dirname "$FGLIVE_FILE")
 
         # 如果 fglive.m3u 文件存在
         if [ ! -f "$FGLIVE_FILE" ]; then
@@ -34,7 +34,7 @@ jobs:
     - name: Extract and download .png URLs
       run: |
         FGLIVE_FILE="fglive.m3u"
-        FGLIVE_DIR=$(dirname $FGLIVE_FILE)
+        FGLIVE_DIR=$(dirname "$FGLIVE_FILE")
         FG_LOGO_DIR="$FGLIVE_DIR/FG Logo"
 
         # 下载 .png 文件
@@ -47,9 +47,10 @@ jobs:
     # 列出下载的文件以确认内容
     - name: List downloaded files
       run: |
-        FGLIVE_DIR=$(dirname fglive.m3u)
+        FGLIVE_FILE="fglive.m3u"
+        FGLIVE_DIR=$(dirname "$FGLIVE_FILE")
         echo "Listing files in $FGLIVE_DIR/FG Logo"
-        ls -l "$FGLIVE_DIR/FG Logo"
+        ls -l "$FGLIVE_DIR/FG Logo"  # 列出文件夹内容确认
 
     # 使用 v4 上传 FG Logo 文件夹为 Artifact
     - name: Upload FG Logo as artifact
