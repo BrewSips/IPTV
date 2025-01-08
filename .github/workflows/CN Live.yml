@@ -40,11 +40,11 @@ jobs:
             } 
         }
 
-        # 第二段：从 #卫视频道 到 山东教育 及其下面一行
+        # 第二段：从 #卫视频道 到 广东珠江 及其下面一行
         /^#卫视频道/ { section = 3 }
         section == 3 {
             print $0;
-            if (/^#EXTINF.*山东教育/) {
+            if (/^#EXTINF.*广东珠江/) {
                 found_guangdong = 1;
             }
             if (found_guangdong && /^http/) { 
