@@ -54,7 +54,7 @@ jobs:
         ' ipv6.m3u > cnlive.m3u
 
         # 替换 .png 的 URL
-        sed -i 's|http[^ ]*\.png|https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/CN Logo/&|' cnlive.m3u
+        sed -i 's|\(http[^ ]*/\)\([^/]*\.png\)|https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/CN Logo/\2|' cnlive.m3u
 
         # 确认结果
         echo "Processed CNLIVE.m3u:"
