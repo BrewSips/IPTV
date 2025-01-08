@@ -34,7 +34,7 @@ jobs:
 
         # 替换原有的 x-tvg-url 行中的 URL 为新的 URL
         sed -i \
-          -e 's|x-tvg-url="'"$TVG_URL"'|x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/fgepg.xml"|g' \
+          -e "s|x-tvg-url=\"$TVG_URL\"|x-tvg-url=\"https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/fgepg.xml\"|g" \
           -e 's|https://content.stream-link.org/images|https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/FG Logo|g' \
           -e '/免费使用规则/{N;d;}' \
           fglive.m3u
