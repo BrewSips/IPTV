@@ -38,9 +38,9 @@ jobs:
     - name: List downloaded files
       run: ls -l "FG_Logo"
 
-    # 保存 FG Logo 文件夹为 Artifact
+    # 使用 v4 上传 FG Logo 文件夹为 Artifact
     - name: Upload FG Logo as artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: FG_Logo
         path: FG_Logo/
