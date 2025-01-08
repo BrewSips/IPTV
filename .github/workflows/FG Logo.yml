@@ -18,30 +18,25 @@ jobs:
     - name: Download fglive.m3u
       run: |
         curl -sL https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/fglive.m3u -o fglive.m3u
-        echo "Downloaded fglive.m3u"
 
     # 创建 FG Logo 文件夹
     - name: Create FG Logo folder
       run: |
-        FG_LOGO_DIR="FG Logo"
-        mkdir -p "$FG_LOGO_DIR"
-        echo "Created FG Logo folder at: $FG_LOGO_DIR"
+        mkdir -p "FG Logo"
 
     # 提取和下载 .png 文件到 FG Logo 文件夹
     - name: Extract and download .png URLs
       run: |
-        FG_LOGO_DIR="FG Logo"
-
-        # 提取 fglive.m3u 文件中的 .png URL 并下载
         grep -oE 'http[^ ]+\.png' fglive.m3u | while read -r URL; do
           echo "Downloading $URL"
-          # 使用 curl 下载文件到 FG Logo 文件夹中
-          curl -s -O -J "$URL" --output-dir "$FG_LOGO_DIR"
+          curl -s -O -J "$URL" --output-dir "FG Logo"
         done
 
-    # 列出下载的文件以确认内容
-    - name: List downloaded files
+    # 提交并推送 FG Logo 文件夹到仓库
+    - name: Commit and push FG Logo folder
       run: |
-        FG_LOGO_DIR="FG Logo"
-        echo "Listing files in: $FG_LOGO_DIR"
-        ls -l "$FG_LOGO_DIR"
+        git config user.name "GitHub Actions Bot"
+        git config user.email "actions@github.com"
+        git add "FG Logo"
+        git commit -m "Update FG Logo folder on $(date)"
+        git push origin main || echo "No changes to push"
