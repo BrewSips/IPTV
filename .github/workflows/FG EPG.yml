@@ -17,12 +17,22 @@ jobs:
     # 获取 M3U 文件的 URL 并下载 EPG 数据
     - name: Download and process EPG data
       run: |
-        # 读取 fglive.m3u 中的第一行 URL
-        M3U_URL=$(curl -s https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/fglive.m3u | head -n 1)
-
-        # 确保 URL 正确
+        # 尝试下载 fglive.m3u 文件
+        echo "Fetching fglive.m3u from GitHub..."
+        FGLIVE_M3U=$(curl -s https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/fglive.m3u)
+        
+        # 打印 fglive.m3u 的内容，调试用
+        echo "fglive.m3u content:"
+        echo "$FGLIVE_M3U"
+        
+        # 读取 fglive.m3u 的第一行作为 URL
+        M3U_URL=$(echo "$FGLIVE_M3U" | head -n 1)
+        
+        # 检查是否成功获取到 URL
+        echo "M3U URL: $M3U_URL"
+        
         if [ -z "$M3U_URL" ]; then
-          echo "M3U URL not found"
+          echo "M3U URL not found or is empty"
           exit 1
         fi
 
