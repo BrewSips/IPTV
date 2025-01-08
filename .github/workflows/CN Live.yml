@@ -1,4 +1,4 @@
-name: Update CN Live
+name: CN Live
 
 on:
   schedule:
@@ -13,6 +13,42 @@ jobs:
     # 检出代码
     - name: Checkout repository
       uses: actions/checkout@v3
+
+    # 从 url.txt 提取 # 中国电视 下的 URL
+    - name: Extract URL from url.txt
+      run: |
+        echo "Fetching url.txt from GitHub..."
+        URL_FILE=$(curl -s https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/url.txt)
+        
+        echo "url.txt content:"
+        echo "$URL_FILE"
+        
+        # 提取 # 中国电视 下的一行 URL
+        TARGET_URL=$(echo "$URL_FILE" | grep -A 1 "# 中国电视" | tail -n 1 | tr -d '\r')
+        echo "Extracted URL: $TARGET_URL"
+
+        # 验证提取的 URL 是否有效
+        if [ -z "$TARGET_URL" ]; then
+          echo "Target URL not found or is empty"
+          exit 1
+        fi
+        if [[ ! "$TARGET_URL" =~ ^https?:// ]]; then
+          echo "Extracted URL is not a valid HTTP(S) URL: $TARGET_URL"
+          exit 1
+        fi
+
+        # 保存提取的 URL 供后续步骤使用
+        echo "TARGET_URL=$TARGET_URL" >> $GITHUB_ENV
+
+    # 使用模拟播放器的 User-Agent 读取目标内容
+    - name: Fetch content from target URL
+      run: |
+        USER_AGENT="AptvPlayer/1.3.16"
+        echo "Fetching content from $TARGET_URL..."
+        curl -sL -A "$USER_AGENT" "$TARGET_URL" -o temp_content.txt
+        
+        echo "Fetched content:"
+        cat temp_content.txt
 
     # 下载并处理 M3U 文件
     - name: Download and process M3U file
