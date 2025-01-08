@@ -1,0 +1,52 @@
+name: FG EPG
+
+on:
+  schedule:
+    - cron: '0 */4 * * *'  # 每4小时运行一次
+  workflow_dispatch:        # 手动触发
+
+jobs:
+  update-epg:
+    runs-on: ubuntu-22.04
+
+    steps:
+    # 检出代码
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # 获取 M3U 文件的 URL 并下载 EPG 数据
+    - name: Download and process EPG data
+      run: |
+        # 读取 fglive.m3u 中的第一行 URL
+        M3U_URL=$(curl -s https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/fglive.m3u | head -n 1)
+
+        # 确保 URL 正确
+        if [ -z "$M3U_URL" ]; then
+          echo "M3U URL not found"
+          exit 1
+        fi
+
+        # 自定义 User-Agent 模拟播放器
+        USER_AGENT="AptvPlayer/1.3.16"
+
+        # 使用 curl 下载 EPG 数据
+        curl -sL -A "$USER_AGENT" "$M3U_URL" -o fgepg.xml
+
+        # 检查文件是否成功下载
+        if [ ! -f fgepg.xml ]; then
+          echo "Failed to download EPG data"
+          exit 1
+        fi
+
+        # 输出处理的文件内容
+        echo "Downloaded fgepg.xml:"
+        cat fgepg.xml
+
+    # 提交并推送更改
+    - name: Commit and push changes
+      run: |
+        git config user.name "GitHub Actions Bot"
+        git config user.email "actions@github.com"
+        git add fgepg.xml
+        git commit -m "Update fgepg.xml on $(date)" || echo "No changes to commit"
+        git push origin main
