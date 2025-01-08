@@ -1,8 +1,8 @@
-#EXTM3U x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/fgepg.xml"
+#EXTM3U x-tvg-url="https://content.stream-link.org/epg/71a2af8c-8fec-4901-8e31-919c53a57c58/guide.xml"
 
 
 #EXTINF:-1 tvg-id="Jade.my" tvg-name="華麗(翡翠台)" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/FG Logo/astro_jade.png" group-title="Astro",華麗(翡翠台)
-https://live-edge-03.stream-link.org/singapore/astro_jade?token=71a2af8c-8fec-4901-8e31-919c53a57c58&sign=0ok_iPPqy5U9sIF71UfZZA&expires=1736358937
+https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=sgp0269kdbd&token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49
 #EXTINF:-1 tvg-id="TVBJade" tvg-name="翡翠台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/FG Logo/tvb_jade.png" group-title="TVB",翡翠台
 https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=hkt2108mngt&token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49
 #EXTINF:-1 tvg-id="TVBPlus" tvg-name="TVB Plus" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/FG Logo/tvb_plus.png" group-title="TVB",TVB Plus
