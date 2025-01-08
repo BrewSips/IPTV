@@ -25,8 +25,8 @@ jobs:
         echo "fglive.m3u content:"
         echo "$FGLIVE_M3U"
         
-        # 读取 fglive.m3u 的第一行作为 URL
-        M3U_URL=$(echo "$FGLIVE_M3U" | head -n 1)
+        # 提取 M3U URL（过滤掉 #EXTM3U 等元数据行）
+        M3U_URL=$(echo "$FGLIVE_M3U" | grep -oP 'x-tvg-url="([^"]+)"' | cut -d'"' -f2)
         
         # 检查是否成功获取到 URL
         echo "M3U URL: $M3U_URL"
