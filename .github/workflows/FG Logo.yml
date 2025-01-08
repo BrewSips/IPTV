@@ -14,55 +14,34 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # 确保 fglive.m3u 文件的目录存在，并创建 FG Logo 文件夹
+    # 下载 fglive.m3u 文件
+    - name: Download fglive.m3u
+      run: |
+        curl -sL https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/fglive.m3u -o fglive.m3u
+        echo "Downloaded fglive.m3u"
+
+    # 创建 FG Logo 文件夹
     - name: Create FG Logo folder
       run: |
-        # 确保 fglive.m3u 文件的目录
-        FGLIVE_FILE="fglive.m3u"
-        FGLIVE_DIR=$(dirname "$FGLIVE_FILE")
-
-        # 如果 fglive.m3u 文件存在
-        if [ ! -f "$FGLIVE_FILE" ]; then
-          echo "$FGLIVE_FILE not found!"
-          exit 1
-        fi
-
-        # 创建存储图片的文件夹 FG Logo
-        mkdir -p "$FGLIVE_DIR/FG Logo"
-        echo "Created folder at $FGLIVE_DIR/FG Logo"
+        FG_LOGO_DIR="FG Logo"
+        mkdir -p "$FG_LOGO_DIR"
+        echo "Created FG Logo folder at: $FG_LOGO_DIR"
 
     # 提取和下载 .png 文件到 FG Logo 文件夹
     - name: Extract and download .png URLs
       run: |
-        FGLIVE_FILE="fglive.m3u"
-        FGLIVE_DIR=$(dirname "$FGLIVE_FILE")
-        FG_LOGO_DIR="$FGLIVE_DIR/FG Logo"
+        FG_LOGO_DIR="FG Logo"
 
-        # 下载 .png 文件
-        grep -oE 'http[^ ]+\.png' "$FGLIVE_FILE" | while read -r URL; do
+        # 提取 fglive.m3u 文件中的 .png URL 并下载
+        grep -oE 'http[^ ]+\.png' fglive.m3u | while read -r URL; do
           echo "Downloading $URL"
-          # 使用 curl 下载并覆盖同名文件
+          # 使用 curl 下载文件到 FG Logo 文件夹中
           curl -s -O -J "$URL" --output-dir "$FG_LOGO_DIR"
         done
 
     # 列出下载的文件以确认内容
     - name: List downloaded files
       run: |
-        FGLIVE_FILE="fglive.m3u"
-        FGLIVE_DIR=$(dirname "$FGLIVE_FILE")
-        FG_LOGO_DIR="$FGLIVE_DIR/FG Logo"
-        echo "Listing files in: $FG_LOGO_DIR"  # 显示完整路径
-        ls -l "$FG_LOGO_DIR"  # 列出文件夹内容确认
-
-    # 使用 v4 上传 FG Logo 文件夹为 Artifact
-    - name: Upload FG Logo as artifact
-      run: |
-        FGLIVE_FILE="fglive.m3u"
-        FGLIVE_DIR=$(dirname "$FGLIVE_FILE")
-        FG_LOGO_DIR="$FGLIVE_DIR/FG Logo"
-        echo "Uploading artifacts from: $FG_LOGO_DIR"  # 显示完整路径
-        ls -l "$FG_LOGO_DIR"  # 列出文件夹内容确认
-      uses: actions/upload-artifact@v4
-      with:
-        name: FG_Logo
-        path: "$FGLIVE_DIR/FG Logo/"
+        FG_LOGO_DIR="FG Logo"
+        echo "Listing files in: $FG_LOGO_DIR"
+        ls -l "$FG_LOGO_DIR"
