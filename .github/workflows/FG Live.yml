@@ -32,10 +32,10 @@ jobs:
         # 在文件开头添加 # 并插入提取的 URL
         sed -i "1i # $TVG_URL" fglive.m3u
 
-        # 替换 URL 并移除特定行
+        # 替换原有的 x-tvg-url 行中的 URL
         sed -i \
-          -e 's|https://content.stream-link.org/images|https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/FG Logo|g' \
           -e 's|'"$TVG_URL"'|https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/fgepg.xml|g' \
+          -e 's|https://content.stream-link.org/images|https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/FG Logo|g' \
           -e '/免费使用规则/{N;d;}' \
           fglive.m3u
 
