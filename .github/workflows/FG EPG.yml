@@ -14,19 +14,19 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # 获取 M3U 文件的 URL 并下载 EPG 数据
+    # 获取 URL 文件的内容并下载 EPG 数据
     - name: Download and process EPG data
       run: |
-        # 尝试下载 fglive.m3u 文件
-        echo "Fetching fglive.m3u from GitHub..."
-        FGLIVE_M3U=$(curl -s https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/fglive.m3u)
+        # 尝试下载 url.txt 文件
+        echo "Fetching url.txt from GitHub..."
+        URL_FILE=$(curl -s https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/url.txt)
         
-        # 打印 fglive.m3u 的内容，调试用
-        echo "fglive.m3u content:"
-        echo "$FGLIVE_M3U"
+        # 打印 url.txt 的内容，调试用
+        echo "url.txt content:"
+        echo "$URL_FILE"
         
-        # 提取第一行的 URL（假设第一行为以 "#" 开头的注释行）
-        M3U_URL=$(echo "$FGLIVE_M3U" | head -n 1 | cut -d' ' -f2)
+        # 从包含 "# 全球电视" 的行下面一行提取 URL
+        M3U_URL=$(echo "$URL_FILE" | grep -A 1 "# 全球电视" | tail -n 1 | tr -d '\r')
         
         # 检查是否成功获取到 URL
         echo "M3U URL: $M3U_URL"
@@ -40,7 +40,21 @@ jobs:
         USER_AGENT="AptvPlayer/1.3.16"
 
         # 使用 curl 下载 EPG 数据
-        curl -sL -A "$USER_AGENT" "$M3U_URL" -o fgepg.xml
+        EPG_FILE=$(curl -sL -A "$USER_AGENT" "$M3U_URL")
+        
+        # 从下载的 EPG 数据中提取 x-tvg-url 的 URL
+        X_TVG_URL=$(echo "$EPG_FILE" | grep -i "x-tvg-url" | cut -d '"' -f 2)
+        
+        # 检查是否成功提取到 x-tvg-url
+        echo "x-tvg-url: $X_TVG_URL"
+        
+        if [ -z "$X_TVG_URL" ]; then
+          echo "x-tvg-url not found or is empty"
+          exit 1
+        fi
+
+        # 下载 x-tvg-url 指向的 EPG 数据
+        curl -sL -A "$USER_AGENT" "$X_TVG_URL" -o fgepg.xml
 
         # 检查文件是否成功下载
         if [ ! -f fgepg.xml ]; then
