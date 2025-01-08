@@ -43,10 +43,11 @@ jobs:
         # 替换原有的 x-tvg-url 行中的 URL 为新的 URL
         sed -i \
           -e 's|x-tvg-url="[^"]*"|x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/fgepg.xml"|g' \
-          -e 's|https://content.stream-link.org/images|https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/FG Logo|g' \
-          -e 's|http://content.stream-link.org/images|https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/FG Logo|g' \
           -e '/免费使用规则/{N;d;}' \
           fglive.m3u
+
+        # 替换 .png 文件的 URL
+        sed -i 's|\(http[^ ]*/\)\([^/]*\.png\)|https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/FG Logo/\2|' fglive.m3u
 
         # 确认结果
         echo "Processed fglive.m3u:"
