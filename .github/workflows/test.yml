@@ -13,35 +13,30 @@ jobs:
       uses: actions/checkout@v3
 
     # 模拟播放器访问 URL 并保存真实播放地址
-    - name: Fetch real playback URL with debug
+    - name: Fetch real playback URL with second request
       run: |
         # 定义测试地址
         TEST_URL="https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=sgp0269kdbd&token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49"
         USER_AGENT="AptvPlayer/1.3.16"
         OUTPUT_FILE="test.m3u"
 
-        # 使用 curl 跟踪重定向，并打印详细的响应内容进行调试
-        RESPONSE=$(curl -s -L -A "$USER_AGENT" -D - "$TEST_URL")
+        # 第一次请求：获取重定向后的 URL
+        FIRST_REDIRECT_URL=$(curl -s -L -A "$USER_AGENT" "$TEST_URL" | grep -oP '(?<=Location: )https?://[^\s]+')
 
-        # 打印响应内容，方便调试
-        echo "$RESPONSE"
+        # 打印第一次获取的 URL
+        echo "First Redirect URL: $FIRST_REDIRECT_URL"
 
-        # 查找 URL 重定向（如果有的话）
-        FINAL_URL=$(echo "$RESPONSE" | grep -oP '(?<=Location: )https?://[^\s]+')
+        # 第二次请求：访问重定向后的 URL，获取最终的播放地址
+        FINAL_FLV_URL=$(curl -s -A "$USER_AGENT" "$FIRST_REDIRECT_URL" | grep -oP 'https?://[^\s]+\.flv')
 
-        # 如果响应中找不到 Location，可以尝试直接从内容中提取 .flv 地址
-        if [ -z "$FINAL_URL" ]; then
-          FINAL_URL=$(echo "$RESPONSE" | grep -oP 'https?://[^\s]+\.flv')
-        fi
-
-        # 检查最终 URL 是否包含 .flv
-        if echo "$FINAL_URL" | grep -q ".flv"; then
+        # 如果找到了 .flv 地址，保存到 test.m3u 文件
+        if [ -n "$FINAL_FLV_URL" ]; then
           echo "#EXTM3U" > "$OUTPUT_FILE"
           echo "#EXTINF:-1,Test Stream" >> "$OUTPUT_FILE"
-          echo "$FINAL_URL" >> "$OUTPUT_FILE"
+          echo "$FINAL_FLV_URL" >> "$OUTPUT_FILE"
           echo "Real .flv URL extracted and saved to $OUTPUT_FILE"
         else
-          echo "Failed to extract .flv URL from: $TEST_URL"
+          echo "Failed to extract .flv URL from: $FIRST_REDIRECT_URL"
           exit 1
         fi
 
