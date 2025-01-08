@@ -1,4 +1,4 @@
-#EXTM3U x-tvg-url="https://live.fanmingming.cn/e.xml"
+#EXTM3U x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/fgepg.xml"
 
 
 #EXTINF:-1 tvg-id="Jade.my" tvg-name="華麗(翡翠台)" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/FG Logo/astro_jade.png" group-title="Astro",華麗(翡翠台)
