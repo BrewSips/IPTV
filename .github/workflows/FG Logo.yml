@@ -12,35 +12,40 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # 创建存储 Logo 的文件夹
-    - name: Create FG Logo folder
-      run: mkdir -p "FG_Logo"
+    # 确保 fglive.m3u 文件存在的目录
+    - name: Ensure fglive.m3u directory
+      run: mkdir -p "$(dirname fglive.m3u)"
 
-    # 提取和下载 .png 文件
+    # 创建存储 Logo 的文件夹，放在 fglive.m3u 所在目录
+    - name: Create FG Logo folder in the same directory as fglive.m3u
+      run: mkdir -p "$(dirname fglive.m3u)/FG_Logo"
+
+    # 提取和下载 .png 文件到 fglive.m3u 所在目录的 FG_Logo 文件夹
     - name: Extract and download .png URLs
       run: |
         # 定义 M3U 文件路径
         M3U_FILE="fglive.m3u"
+        FG_LOGO_DIR="$(dirname $M3U_FILE)/FG_Logo"
 
-        # 确保文件存在
+        # 确保 fglive.m3u 文件存在
         if [ ! -f "$M3U_FILE" ]; then
           echo "File $M3U_FILE does not exist. Please ensure the fglive.m3u file is generated first."
           exit 1
         fi
 
-        # 读取包含 .png 的 URL，并逐个下载
+        # 下载包含 .png 的 URL 到 FG Logo 文件夹
         grep -oE 'http[^ ]+\.png' "$M3U_FILE" | while read -r URL; do
           echo "Downloading $URL"
-          curl -s -O -J "$URL" --output-dir "FG_Logo"
+          curl -s -O -J "$URL" --output-dir "$FG_LOGO_DIR"
         done
 
     # 列出下载的文件以确认内容
     - name: List downloaded files
-      run: ls -l "FG_Logo"
+      run: ls -l "$(dirname fglive.m3u)/FG_Logo"
 
     # 使用 v4 上传 FG Logo 文件夹为 Artifact
     - name: Upload FG Logo as artifact
       uses: actions/upload-artifact@v4
       with:
         name: FG_Logo
-        path: FG_Logo/
+        path: "$(dirname fglive.m3u)/FG_Logo/"
