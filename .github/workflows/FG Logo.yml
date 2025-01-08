@@ -34,6 +34,9 @@ jobs:
           curl -sO -J "$URL" --output-dir "FG Logo"
         done
 
-    # 确认下载结果
-    - name: List downloaded files
-      run: ls -l "FG Logo"
+    # 保存 FG Logo 文件夹为 Artifact
+    - name: Upload FG Logo as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: FG_Logo
+        path: FG\ Logo/
