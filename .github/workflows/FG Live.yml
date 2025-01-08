@@ -29,12 +29,12 @@ jobs:
         # 提取包含 x-tvg-url 的行并提取 URL
         TVG_URL=$(grep -oP 'x-tvg-url="\K[^"]+' fglive.m3u)
 
-        # 在文件开头添加提取到的 URL（加 # 注释符号）
+        # 在文件开头添加 # 注释行，插入提取到的 URL
         sed -i "1i # $TVG_URL" fglive.m3u
 
         # 替换原有的 x-tvg-url 行中的 URL 为新的 URL
         sed -i \
-          -e 's|'"$TVG_URL"'|https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/fgepg.xml|g' \
+          -e 's|x-tvg-url="'"$TVG_URL"'|x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/fgepg.xml"|g' \
           -e 's|https://content.stream-link.org/images|https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/FG Logo|g' \
           -e '/免费使用规则/{N;d;}' \
           fglive.m3u
