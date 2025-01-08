@@ -8,6 +8,10 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
+    # 检出仓库代码
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
     # 模拟播放器访问 URL 并保存真实播放地址
     - name: Fetch real playback URL
       run: |
@@ -32,6 +36,15 @@ jobs:
           echo "Failed to extract real URL from: $TEST_URL"
           exit 1
         fi
+
+    # 提交并推送更改
+    - name: Commit and push changes
+      run: |
+        git config user.name "GitHub Actions Bot"
+        git config user.email "actions@github.com"
+        git add test.m3u
+        git commit -m "Update test.m3u with real playback URL on $(date)" || echo "No changes to commit"
+        git push origin main
 
     # 输出结果文件内容
     - name: Show test.m3u content
