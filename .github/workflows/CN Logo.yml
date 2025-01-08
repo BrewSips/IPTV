@@ -14,45 +14,46 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # 从 url.txt 提取目标 URL
+    # 从 url.txt 提取 # 中国电视 下的 URL
     - name: Extract URL from url.txt
       run: |
         echo "Fetching url.txt from GitHub..."
         URL_FILE=$(curl -s https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/url.txt)
         
-        # 打印 url.txt 内容（仅供调试）
         echo "url.txt content:"
         echo "$URL_FILE"
         
-        # 提取 "# 中国电视" 下面一行的 URL
+        # 提取 # 中国电视 下的一行 URL
         TARGET_URL=$(echo "$URL_FILE" | grep -A 1 "# 中国电视" | tail -n 1 | tr -d '\r')
-        
-        # 检查是否成功提取 URL
         echo "Extracted URL: $TARGET_URL"
-        
+
+        # 验证提取的 URL 是否有效
         if [ -z "$TARGET_URL" ]; then
           echo "Target URL not found or is empty"
           exit 1
         fi
+        if [[ ! "$TARGET_URL" =~ ^https?:// ]]; then
+          echo "Extracted URL is not a valid HTTP(S) URL: $TARGET_URL"
+          exit 1
+        fi
 
-    # 使用模拟播放器读取目标 URL 的内容
-    - name: Fetch content from target URL
-      run: |
-        # 使用模拟播放器的 User-Agent
-        USER_AGENT="AptvPlayer/1.3.16"
-        CONTENT=$(curl -sL -A "$USER_AGENT" "$TARGET_URL")
-        
-        # 打印读取的内容（仅供调试）
-        echo "Fetched content from $TARGET_URL:"
-        echo "$CONTENT"
-        
-        # 保存内容到临时文件
-        echo "$CONTENT" > temp_content.txt
+        # 保存提取的 URL 供后续步骤使用
+        echo "TARGET_URL=$TARGET_URL" >> $GITHUB_ENV
 
     # 创建 CN Logo 文件夹
     - name: Create CN Logo folder
       run: |
         mkdir -p "CN Logo"
+
+    # 使用模拟播放器的 User-Agent 读取目标内容
+    - name: Fetch content from target URL
+      run: |
+        USER_AGENT="AptvPlayer/1.3.16"
+        echo "Fetching content from $TARGET_URL..."
+        curl -sL -A "$USER_AGENT" "$TARGET_URL" -o temp_content.txt
+        
+        echo "Fetched content:"
+        cat temp_content.txt
 
     # 提取和下载 .png 文件到 CN Logo 文件夹
     - name: Extract and download .png URLs
@@ -68,5 +69,5 @@ jobs:
         git config user.name "GitHub Actions Bot"
         git config user.email "actions@github.com"
         git add "CN Logo"
-        git commit -m "Update CN Logo folder on $(date)"
+        git commit -m "Update CN Logo folder on $(date)" || echo "No changes to push"
         git push origin main || echo "No changes to push"
