@@ -36,6 +36,7 @@ jobs:
         sed -i \
           -e "s|x-tvg-url=\"$TVG_URL\"|x-tvg-url=\"https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/fgepg.xml\"|g" \
           -e 's|https://content.stream-link.org/images|https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/FG Logo|g' \
+          -e 's|http://content.stream-link.org/images|https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/FG Logo|g' \
           -e '/免费使用规则/{N;d;}' \
           fglive.m3u
 
