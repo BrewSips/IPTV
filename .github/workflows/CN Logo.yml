@@ -58,9 +58,10 @@ jobs:
     # 提取和下载 .png 文件到 CN Logo 文件夹
     - name: Extract and download .png URLs
       run: |
+        mkdir -p "CN Logo"
         grep -oE 'http[^ ]+\.png' temp_content.txt | while read -r URL; do
           echo "Downloading $URL"
-          curl -s -O -J "$URL" --output-dir "CN Logo"
+          curl -s -O -J "$URL" --output-dir "CN Logo" || echo "Failed to download: $URL"
         done
 
     # 提交并推送 CN Logo 文件夹到仓库
