@@ -1,4 +1,4 @@
-name: FG Logo
+name: FG Live
 
 on:
   schedule:
@@ -29,6 +29,7 @@ jobs:
 
         # 创建存储图片的文件夹 FG Logo
         mkdir -p "$FGLIVE_DIR/FG Logo"
+        echo "Created folder at $FGLIVE_DIR/FG Logo"
 
     # 提取和下载 .png 文件到 FG Logo 文件夹
     - name: Extract and download .png URLs
@@ -49,8 +50,9 @@ jobs:
       run: |
         FGLIVE_FILE="fglive.m3u"
         FGLIVE_DIR=$(dirname "$FGLIVE_FILE")
-        echo "Listing files in $FGLIVE_DIR/FG Logo"
-        ls -l "$FGLIVE_DIR/FG Logo"  # 列出文件夹内容确认
+        FG_LOGO_DIR="$FGLIVE_DIR/FG Logo"
+        echo "Listing files in $FG_LOGO_DIR"
+        ls -l "$FG_LOGO_DIR"  # 列出文件夹内容确认
 
     # 使用 v4 上传 FG Logo 文件夹为 Artifact
     - name: Upload FG Logo as artifact
