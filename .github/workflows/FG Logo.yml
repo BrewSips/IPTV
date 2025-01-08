@@ -14,7 +14,7 @@ jobs:
 
     # 创建存储 Logo 的文件夹
     - name: Create FG Logo folder
-      run: mkdir -p "FG Logo"
+      run: mkdir -p "FG_Logo"
 
     # 提取和下载 .png 文件
     - name: Extract and download .png URLs
@@ -31,12 +31,16 @@ jobs:
         # 读取包含 .png 的 URL，并逐个下载
         grep -oE 'http[^ ]+\.png' "$M3U_FILE" | while read -r URL; do
           echo "Downloading $URL"
-          curl -sO -J "$URL" --output-dir "FG Logo"
+          curl -s -O -J "$URL" --output-dir "FG_Logo"
         done
+
+    # 列出下载的文件以确认内容
+    - name: List downloaded files
+      run: ls -l "FG_Logo"
 
     # 保存 FG Logo 文件夹为 Artifact
     - name: Upload FG Logo as artifact
       uses: actions/upload-artifact@v3
       with:
         name: FG_Logo
-        path: FG\ Logo/
+        path: FG_Logo/
