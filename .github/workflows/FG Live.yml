@@ -28,7 +28,7 @@ jobs:
 
         # 替换 URL 并移除特定行
         sed -i \
-          -e 's|https://content.stream-link.org/images|https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/CN Logo|g' \
+          -e 's|https://content.stream-link.org/images|https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/FG Logo|g' \
           -e '/免费使用规则/{N;d;}' \
           fglive.m3u
 
