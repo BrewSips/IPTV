@@ -65,7 +65,7 @@ jobs:
       - name: Prepare CN Logo folder
         run: |
           mkdir -p "CN Logo"
-          echo “CN Logo folder is ready"
+          echo "CN Logo folder is ready"
 
       # 提取和下载 .png 文件到 CN Logo 文件夹
       - name: Extract and download .png files
@@ -105,6 +105,6 @@ jobs:
           echo "Applying stashed changes..."
           git stash pop || echo "No stashed changes to apply"
 
-          git add “CN Logo"
+          git add "CN Logo"
           git commit -m "Update CN Logo folder on $(date)" || echo "No changes to commit"
           git push origin main || echo "Failed to push changes. Ensure no conflicts exist."
