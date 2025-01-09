@@ -14,47 +14,51 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Download and process EPG data
-      run: |
-        LOCKFILE="/tmp/update-epg.lock"
-        if [ -f "$LOCKFILE" ]; then
-          echo "Another instance is running. Exiting."
-          exit 1
-        fi
-        touch "$LOCKFILE"
-        trap "rm -f $LOCKFILE" EXIT
+      - name: Download and process EPG data
+        run: |
+          # Define lockfile to prevent parallel execution
+          LOCKFILE="/tmp/update-epg.lock"
+          if [ -f "$LOCKFILE" ]; then
+            echo "Another instance is running. Exiting."
+            exit 1
+          fi
+          touch "$LOCKFILE"
+          trap "rm -f $LOCKFILE" EXIT
 
-        echo "Fetching iptv.txt from GitHub..."
-        IPTV_FILE=$(curl -s https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/iptv.txt)
-        echo "iptv.txt content:"
-        echo "$IPTV_FILE"
+          # Fetch IPTV file content
+          echo "Fetching iptv.txt from GitHub..."
+          IPTV_FILE=$(curl -s https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/iptv.txt)
+          echo "iptv.txt content:"
+          echo "$IPTV_FILE"
 
-        M3U_URL=$(echo "$IPTV_FILE" | grep -A 1 "# 中国电视" | tail -n 1 | tr -d '\r')
-        USER_AGENT=$(echo "$IPTV_FILE" | grep -A 1 "# USER_AGENT" | tail -n 1 | tr -d '\r')
+          # Extract required URLs and user agent
+          M3U_URL=$(echo "$IPTV_FILE" | grep -A 1 "# 中国电视" | tail -n 1 | tr -d '\r')
+          USER_AGENT=$(echo "$IPTV_FILE" | grep -A 1 "# USER_AGENT" | tail -n 1 | tr -d '\r')
 
-        if [ -z "$M3U_URL" ] || [ -z "$USER_AGENT" ]; then
-          echo "Missing required data"
-          exit 1
-        fi
+          if [ -z "$M3U_URL" ] || [ -z "$USER_AGENT" ]; then
+            echo "Missing required data"
+            exit 1
+          fi
 
-        EPG_FILE=$(curl -sL -A "$USER_AGENT" "$M3U_URL")
-        X_TVG_URL=$(echo "$EPG_FILE" | grep -i "x-tvg-url" | cut -d '"' -f 2)
+          # Fetch and process EPG file
+          EPG_FILE=$(curl -sL -A "$USER_AGENT" "$M3U_URL")
+          X_TVG_URL=$(echo "$EPG_FILE" | grep -i "x-tvg-url" | cut -d '"' -f 2)
 
-        TIMESTAMP=$(date +%s)
-        OUTPUT_FILE="cnepg_${TIMESTAMP}.xml"
-        curl -sL -A "$USER_AGENT" "$X_TVG_URL" -o "$OUTPUT_FILE"
+          # Define output file with a fixed name
+          OUTPUT_FILE="cnepg.xml"
+          curl -sL -A "$USER_AGENT" "$X_TVG_URL" -o "$OUTPUT_FILE"
 
-        echo "Downloaded ${OUTPUT_FILE}:"
-        cat "$OUTPUT_FILE"
+          echo "Downloaded ${OUTPUT_FILE}:"
+          cat "$OUTPUT_FILE"
 
-    - name: Commit and push changes
-      run: |
-        git config user.name "GitHub Actions Bot"
-        git config user.email "actions@github.com"
-        git add cnepg_*.xml
-        git commit -m "Update cnepg.xml on $(date)" || echo "No changes to commit"
-        git pull --rebase origin main
-        git push origin main
+      - name: Commit and push changes
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add cnepg.xml
+          git commit -m "Update cnepg.xml on $(date)" || echo "No changes to commit"
+          git pull --rebase origin main
+          git push origin main
