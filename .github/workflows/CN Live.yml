@@ -57,7 +57,7 @@ jobs:
           
           # 提取指定部分
           echo "Filtering M3U file..."
-          awk '/CCTV17/ {print; getline; print; exit} /#卫视频道/ {flag=1} flag && /广东珠江/ {print; getline; print; exit} flag' cnlive.m3u > filtered.m3u
+          awk 'NR==1,/CCTV17/ {print; getline; print} /#卫视频道/,/#数字频道/ {print}' cnlive.m3u > filtered.m3u
 
           # 替换 x-tvg-url
           echo "Replacing x-tvg-url with new URL..."
