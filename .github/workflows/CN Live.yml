@@ -86,9 +86,14 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
 
+          # 检查是否有未提交的更改，如果有，先提交
+          git add . || echo "No changes to commit"
+
+          # 提交更改
+          git commit -m "Update cnlive.m3u on $(date)" || echo "No changes to commit"
+
           # 确保无冲突更新
           git pull --rebase origin main || { echo "Error: Git pull failed"; exit 1; }
 
-          git add cnlive.m3u
-          git commit -m "Update cnlive.m3u on $(date)" || echo "No changes to commit"
+          # 推送更改
           git push origin main || { echo "Error: Git push failed. Ensure no conflicts exist."; exit 1; }
