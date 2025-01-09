@@ -55,10 +55,12 @@ jobs:
             exit 1
           fi
           
-          # 提取指定部分
-          echo "Filtering M3U file..."
-          awk 'NR==1,/CCTV17/ {print; getline; print} /#卫视频道/,/#数字频道/ {print}' cnlive.m3u > filtered.m3u
-
+          # 保留指定范围的内容
+          echo "Filtering content of cnlive.m3u..."
+          awk '/CCTV17/{print; getline; print; exit} {print}' cnlive.m3u > temp1.m3u
+          awk '/#卫视频道/,/广东珠江/{print; getline; print}' cnlive.m3u > temp2.m3u
+          cat temp1.m3u temp2.m3u > cnlive.m3u
+          
           # 替换 x-tvg-url
           echo "Replacing x-tvg-url with new URL..."
           sed -i 's|x-tvg-url="[^"]*"|x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/main/cnepg.xml"|g' cnlive.m3u
