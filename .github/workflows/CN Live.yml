@@ -55,34 +55,10 @@ jobs:
             exit 1
           fi
           
-        awk '
-        BEGIN { 
-            section = 1; 
-            found_cctv17 = 0; 
-            found_guangdong = 0; 
-        }
-        section == 1 {
-            print $0;
-            if (/^#EXTINF.*CCTV17/) { 
-                found_cctv17 = 1; 
-            } 
-            if (found_cctv17 && /^http/) { 
-                section = 2; 
-                next; 
-            } 
-        }
-        /^#卫视频道/ { section = 3 }
-        section == 3 {
-            print $0;
-            if (/^#EXTINF.*广东珠江/) {
-                found_guangdong = 1;
-            }
-            if (found_guangdong && /^http/) { 
-                exit; 
-            }
-        }
-        ' "$INPUT_FILE" > "$OUTPUT_FILE"
-        
+          # 提取指定部分
+          echo "Filtering M3U file..."
+          awk '/CCTV17/ {print; getline; print; exit} /#卫视频道/ {flag=1} flag && /广东珠江/ {print; getline; print; exit} flag' cnlive.m3u > filtered.m3u
+
           # 替换 x-tvg-url
           echo "Replacing x-tvg-url with new URL..."
           sed -i 's|x-tvg-url="[^"]*"|x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/main/cnepg.xml"|g' cnlive.m3u
