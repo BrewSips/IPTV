@@ -91,6 +91,9 @@ jobs:
           set -e
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
+          
+          git add -A
+          git commit -m "Temporary commit to allow pull" || echo "No changes to commit"
 
           git pull --rebase origin main || { echo "Error: Git pull failed"; exit 1; }
 
