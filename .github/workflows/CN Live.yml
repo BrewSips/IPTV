@@ -55,17 +55,17 @@ jobs:
             exit 1
           fi
 
-          # 保留所需内容并删除其他内容
-          echo "Filtering content..."
+          # 保留特定内容：开头到CCTV17下一行、#卫视频道到广东珠江下一行
+          echo "Filtering M3U content..."
           awk '
-          # 从开头到包含 CCTV17 那一行以及下一行
-          NR==1, /CCTV17/ {print; getline; print; exit}
-          # 从包含 #卫视频道 开始，到包含 广东珠江 的行以及下一行
-          /#卫视频道/ {print; found=true}
-          found && /广东珠江/ {print; exit}
-          ' cnlive.m3u > cnlive_filtered.m3u || { echo "Error: Failed to filter cnlive.m3u"; exit 1; }
+            BEGIN { keep = 1 }
+            /CCTV17/ { print; getline; print; keep = 0 }
+            /#卫视频道/ { keep = 1 }
+            /广东珠江/ { print; getline; print; exit }
+            keep { print }
+          ' cnlive.m3u > filtered.m3u
 
-          mv cnlive_filtered.m3u cnlive.m3u
+          mv filtered.m3u cnlive.m3u
 
           # 替换 x-tvg-url
           echo "Replacing x-tvg-url with new URL..."
@@ -77,7 +77,7 @@ jobs:
 
           # 确认处理结果
           echo "Processed cnlive.m3u (preview):"
-          head -n 10 cnlive.m3u || { echo "Error: Failed to process cnlive.m3u"; exit 1; }
+          head -n 20 cnlive.m3u || { echo "Error: Failed to process cnlive.m3u"; exit 1; }
 
       # 提交并推送更改
       - name: Commit and push changes
@@ -86,14 +86,9 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
 
-          # 检查是否有未提交的更改，如果有，先提交
-          git add . || echo "No changes to commit"
-
-          # 提交更改
-          git commit -m "Update cnlive.m3u on $(date)" || echo "No changes to commit"
-
           # 确保无冲突更新
           git pull --rebase origin main || { echo "Error: Git pull failed"; exit 1; }
 
-          # 推送更改
+          git add cnlive.m3u
+          git commit -m "Update cnlive.m3u on $(date)" || echo "No changes to commit"
           git push origin main || { echo "Error: Git push failed. Ensure no conflicts exist."; exit 1; }
