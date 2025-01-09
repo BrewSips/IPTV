@@ -58,9 +58,9 @@ jobs:
           # 保留所需内容并删除其他内容
           echo "Filtering content..."
           awk '
-          # 从开头到包含CCTV17的那一行以及下一行
-          /^CCTV17/ {print; getline; print; exit}
-          # 从含有#卫视频道到包含广东珠江的那一行以及下一行
+          # 从开头到包含 CCTV17 那一行以及下一行
+          NR==1, /CCTV17/ {print; getline; print; exit}
+          # 从包含 #卫视频道 开始，到包含 广东珠江 的行以及下一行
           /#卫视频道/ {print; found=true}
           found && /广东珠江/ {print; exit}
           ' cnlive.m3u > cnlive_filtered.m3u || { echo "Error: Failed to filter cnlive.m3u"; exit 1; }
