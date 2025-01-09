@@ -14,29 +14,36 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # 下载 url.txt 文件并提取目标 URL
-    - name: Download url.txt and extract target URL
+    # 下载 iptv.txt 文件并提取目标 URL 和 USER_AGENT
+    - name: Download iptv.txt and extract target URL and USER_AGENT
       run: |
-        echo "Fetching url.txt from GitHub..."
-        URL_FILE=$(curl -s https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/url.txt)
+        echo "Fetching iptv.txt from GitHub..."
+        IPTV_FILE=$(curl -s https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/iptv.txt)
+
+        # 打印 iptv.txt 内容，调试用
+        echo "iptv.txt content:"
+        echo "$IPTV_FILE"
+
+        # 从包含 "# 全球电视" 的行下面一行提取目标 URL
+        TARGET_URL=$(echo "$IPTV_FILE" | grep -A 1 "# 全球电视" | tail -n 1 | tr -d '\r')
         
-        # 打印 url.txt 内容，调试用
-        echo "url.txt content:"
-        echo "$URL_FILE"
-        
-        # 从包含 "# 全球电视" 的行下面一行提取 URL
-        TARGET_URL=$(echo "$URL_FILE" | grep -A 1 "# 全球电视" | tail -n 1 | tr -d '\r')
-        
-        # 检查是否成功提取到 URL
-        echo "Extracted URL: $TARGET_URL"
-        
+        # 从包含 "# USER_AGENT" 的行下面一行提取 USER_AGENT 参数
+        USER_AGENT=$(echo "$IPTV_FILE" | grep -A 1 "# USER_AGENT" | tail -n 1 | tr -d '\r')
+
+        # 检查是否成功提取 URL 和 USER_AGENT
         if [ -z "$TARGET_URL" ]; then
-          echo "Target URL not found or is empty"
+          echo "Error: Target URL not found or is empty"
+          exit 1
+        fi
+        if [ -z "$USER_AGENT" ]; then
+          echo "Error: USER_AGENT not found or is empty"
           exit 1
         fi
 
+        echo "Extracted TARGET_URL: $TARGET_URL"
+        echo "Extracted USER_AGENT: $USER_AGENT"
+
         # 使用模拟播放器读取 URL 内容
-        USER_AGENT="AptvPlayer/1.3.16"
         LOGO_CONTENT=$(curl -sL -A "$USER_AGENT" "$TARGET_URL")
         
         # 打印读取内容以供调试
