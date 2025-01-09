@@ -17,8 +17,26 @@ jobs:
     # 下载并处理 M3U 文件
     - name: Download and process M3U file
       run: |
+        # 下载 iptv.txt 文件
+        echo "Fetching iptv.txt from GitHub..."
+        IPTV_FILE=$(curl -s https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/iptv.txt)
+        
+        # 打印 iptv.txt 的内容，调试用
+        echo "iptv.txt content:"
+        echo "$IPTV_FILE"
+        
+        # 从 iptv.txt 中提取 # USER_AGENT 行的下一行作为 User-Agent
+        USER_AGENT=$(echo "$IPTV_FILE" | grep -A 1 "# USER_AGENT" | tail -n 1 | tr -d '\r')
+        
+        # 检查是否成功获取到 User-Agent
+        echo "User-Agent: $USER_AGENT"
+        if [ -z "$USER_AGENT" ]; then
+          echo "USER_AGENT not found or is empty"
+          exit 1
+        fi
+
         # 下载指定 M3U 文件
-        curl -sL https://raw.githubusercontent.com/suxuang/myIPTV/refs/heads/main/ipv6.m3u -o ipv6.m3u
+        curl -sL -A "$USER_AGENT" https://raw.githubusercontent.com/suxuang/myIPTV/refs/heads/main/ipv6.m3u -o ipv6.m3u
 
         # 按需求处理文件
         awk '
