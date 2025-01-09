@@ -1,4 +1,4 @@
-name: CN Live
+name: CN EPG
 
 on:
   schedule:
