@@ -5,6 +5,10 @@ on:
     - cron: '0 */4 * * *'  # 每4小时运行一次
   workflow_dispatch:        # 手动触发
 
+concurrency:
+  group: update-m3u-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   update-m3u:
     runs-on: ubuntu-22.04
@@ -17,26 +21,36 @@ jobs:
     # 下载并处理 M3U 文件
     - name: Download and process M3U file
       run: |
-        # 下载 iptv.txt 文件
+        # 设置互斥锁文件路径
+        LOCKFILE="/tmp/update-m3u.lock"
+
+        # 检查是否已有其他实例运行
+        if [ -f "$LOCKFILE" ]; then
+          echo "Another instance is running. Exiting."
+          exit 1
+        fi
+
+        # 创建锁文件并设置清理机制
+        touch "$LOCKFILE"
+        trap "rm -f $LOCKFILE" EXIT
+
         echo "Fetching iptv.txt from GitHub..."
         IPTV_FILE=$(curl -s https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/iptv.txt)
-        
-        # 打印 iptv.txt 的内容，调试用
         echo "iptv.txt content:"
         echo "$IPTV_FILE"
-        
-        # 从 iptv.txt 中提取 # USER_AGENT 行的下一行作为 User-Agent
+
         USER_AGENT=$(echo "$IPTV_FILE" | grep -A 1 "# USER_AGENT" | tail -n 1 | tr -d '\r')
-        
-        # 检查是否成功获取到 User-Agent
         echo "User-Agent: $USER_AGENT"
         if [ -z "$USER_AGENT" ]; then
           echo "USER_AGENT not found or is empty"
           exit 1
         fi
 
-        # 下载指定 M3U 文件
-        curl -sL -A "$USER_AGENT" https://raw.githubusercontent.com/suxuang/myIPTV/refs/heads/main/ipv6.m3u -o ipv6.m3u
+        # 下载指定 M3U 文件并加时间戳
+        TIMESTAMP=$(date +%s)
+        INPUT_FILE="ipv6_${TIMESTAMP}.m3u"
+        OUTPUT_FILE="cnlive_${TIMESTAMP}.m3u"
+        curl -sL -A "$USER_AGENT" https://raw.githubusercontent.com/suxuang/myIPTV/refs/heads/main/ipv6.m3u -o "$INPUT_FILE"
 
         # 按需求处理文件
         awk '
@@ -45,8 +59,6 @@ jobs:
             found_cctv17 = 0; 
             found_guangdong = 0; 
         }
-        
-        # 第一段：从文件开始到 CCTV17 及其下面一行
         section == 1 {
             print $0;
             if (/^#EXTINF.*CCTV17/) { 
@@ -57,8 +69,6 @@ jobs:
                 next; 
             } 
         }
-
-        # 第二段：从 #卫视频道 到 广东珠江 及其下面一行
         /^#卫视频道/ { section = 3 }
         section == 3 {
             print $0;
@@ -69,23 +79,24 @@ jobs:
                 exit; 
             }
         }
-        ' ipv6.m3u > cnlive.m3u
+        ' "$INPUT_FILE" > "$OUTPUT_FILE"
 
-        # 替换 .png 的 URL
-        sed -i 's|\(http[^ ]*/\)\([^/]*\.png\)|https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/CN Logo/\2|' cnlive.m3u
+        sed -i 's|\(http[^ ]*/\)\([^/]*\.png\)|https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/CN Logo/\2|' "$OUTPUT_FILE"
+        sed -i 's|x-tvg-url.*|x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/cnepg.xml"|' "$OUTPUT_FILE"
 
-        # 替换 x-tvg-url 的 URL
-        sed -i 's|x-tvg-url.*|x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/cnepg.xml"|' cnlive.m3u
-
-        # 确认结果
-        echo "Processed CNLIVE.m3u:"
-        cat cnlive.m3u
+        echo "Processed $OUTPUT_FILE:"
+        cat "$OUTPUT_FILE"
 
     # 提交并推送更改
     - name: Commit and push changes
       run: |
         git config user.name "GitHub Actions Bot"
         git config user.email "actions@github.com"
-        git add cnlive.m3u
-        git commit -m "Update cnlive.m3u on $(date)" || echo "No changes to commit"
+        git add cnlive_*.m3u
+        git commit -m "Update CNLIVE.m3u on $(date)" || echo "No changes to commit"
+
+        # 拉取远程分支并合并
+        git pull --rebase origin main
+
+        # 推送更改
         git push origin main
