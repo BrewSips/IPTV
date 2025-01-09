@@ -54,7 +54,26 @@ jobs:
             echo "Error: cnlive.m3u file is empty" >&2
             exit 1
           fi
-
+          
+          # 提取指定内容 (先截取)
+          echo "Extracting specific content from cnlive.m3u..."
+          EXTRACTED_CONTENT=$(awk '
+            /CCTV17/{
+              print; getline; print;
+              section1_found=1;
+            }
+            /卫视频道/{
+              print;
+              while (getline && !/广东珠江/) print;
+              if (/广东珠江/) {
+                print; getline; print;
+                section2_found=1;
+              }
+            }
+            section1_found && !/CCTV17/ && !/卫视频道/{next}
+            section2_found && !/广东珠江/{next}
+          ' cnlive.m3u)
+          
           # 替换 x-tvg-url
           echo "Replacing x-tvg-url with new URL..."
           sed -i 's|x-tvg-url="[^"]*"|x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/main/cnepg.xml"|g' cnlive.m3u
@@ -62,12 +81,6 @@ jobs:
           # 替换 .png 文件的 URL
           echo "Updating .png file URLs..."
           sed -i 's|\(http[^ ]*/\)\([^/]*\.png\)|https://raw.githubusercontent.com/Yu0754/IPTV/main/CN Logo/\2|' cnlive.m3u
-
-          # 保留指定范围的内容
-          echo "Filtering content of cnlive.m3u..."
-          awk '/CCTV17/{print; getline; print; exit} {print}' cnlive.m3u > temp1.m3u
-          awk '/#卫视频道/,/广东珠江/{print; getline; print}' cnlive.m3u > temp2.m3u
-          cat temp1.m3u temp2.m3u > cnlive.m3u
 
           # 确认处理结果
           echo "Processed cnlive.m3u (preview):"
