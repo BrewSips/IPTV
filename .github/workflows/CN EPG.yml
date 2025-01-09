@@ -1,64 +1,86 @@
-name: CN EPG
+name: CN EPG Fetcher
 
 on:
   schedule:
-    - cron: '0 */4 * * *'
-  workflow_dispatch:
-
-concurrency:
-  group: update-epg-${{ github.ref }}
-  cancel-in-progress: true
+    - cron: "0 */4 * * *"  # 每4小时执行一次
+  workflow_dispatch:  # 手动触发
 
 jobs:
-  update-epg:
-    runs-on: ubuntu-22.04
-
+  fetch_data:
+    runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Download and process EPG data
-        run: |
-          # Define lockfile to prevent parallel execution
-          LOCKFILE="/tmp/update-epg.lock"
-          if [ -f "$LOCKFILE" ]; then
-            echo "Another instance is running. Exiting."
-            exit 1
-          fi
-          touch "$LOCKFILE"
-          trap "rm -f $LOCKFILE" EXIT
+    - name: Set up Python environment
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
 
-          # Fetch IPTV file content
-          echo "Fetching iptv.txt from GitHub..."
-          IPTV_FILE=$(curl -s https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/iptv.txt)
-          echo "iptv.txt content:"
-          echo "$IPTV_FILE"
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
 
-          # Extract required URLs and user agent
-          M3U_URL=$(echo "$IPTV_FILE" | grep -A 1 "# 中国电视" | tail -n 1 | tr -d '\r')
-          USER_AGENT=$(echo "$IPTV_FILE" | grep -A 1 "# USER_AGENT" | tail -n 1 | tr -d '\r')
+    - name: Fetch and save EPG data
+      run: |
+        import requests
+        import time
+        from xml.etree import ElementTree
 
-          if [ -z "$M3U_URL" ] || [ -z "$USER_AGENT" ]; then
-            echo "Missing required data"
-            exit 1
-          fi
+        def fetch_data():
+            iptv_url = "https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/iptv.txt"
+            response = requests.get(iptv_url)
+            
+            if response.status_code != 200:
+                print(f"Error fetching IPTV file: {response.status_code}")
+                return
 
-          # Fetch and process EPG file
-          EPG_FILE=$(curl -sL -A "$USER_AGENT" "$M3U_URL")
-          X_TVG_URL=$(echo "$EPG_FILE" | grep -i "x-tvg-url" | cut -d '"' -f 2)
+            lines = response.text.splitlines()
+            url = ""
+            user_agent = ""
+            for i, line in enumerate(lines):
+                if "# 中国电视" in line:
+                    url = lines[i + 1].strip()
+                elif "# USER_AGENT" in line:
+                    user_agent = lines[i + 1].strip()
+            
+            if not url or not user_agent:
+                print("Error: Couldn't find required parameters.")
+                return
 
-          # Define output file with a fixed name
-          OUTPUT_FILE="cnepg.xml"
-          curl -sL -A "$USER_AGENT" "$X_TVG_URL" -o "$OUTPUT_FILE"
+            headers = {'User-Agent': user_agent}
+            response = requests.get(url, headers=headers)
+            
+            if response.status_code != 200:
+                print(f"Error fetching URL: {response.status_code}")
+                return
 
-          echo "Downloaded ${OUTPUT_FILE}:"
-          cat "$OUTPUT_FILE"
+            x_tvg_url = ""
+            for line in response.text.splitlines():
+                if "x-tvg-url" in line:
+                    x_tvg_url = line.split('=')[1].strip().strip('"')
+                    break
 
-      - name: Commit and push changes
-        run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "actions@github.com"
-          git add cnepg.xml
-          git commit -m "Update cnepg.xml on $(date)" || echo "No changes to commit"
-          git pull --rebase origin main
-          git push origin main
+            if not x_tvg_url:
+                print("Error: Couldn't find x-tvg-url.")
+                return
+
+            response = requests.get(x_tvg_url, headers=headers)
+            
+            if response.status_code != 200:
+                print(f"Error fetching x-tvg-url content: {response.status_code}")
+                return
+
+            with open('cnepg.xml', 'wb') as file:
+                file.write(response.content)
+            print("EPG data saved to cnepg.xml.")
+
+        fetch_data()
+
+    - name: Upload cnepg.xml to artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: cnepg.xml
+        path: cnepg.xml
