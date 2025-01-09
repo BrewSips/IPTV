@@ -81,7 +81,7 @@ jobs:
 
           echo "$PNG_URLS" | while read -r URL; do
             echo "Downloading $URL with a 5-second timeout..."
-            curl --max-time 5 -s -O -J "$URL" --output-dir "FG Logo" || echo "Timeout or failed: $URL"
+            curl --max-time 5 -s -O -J "$URL" --output-dir "CN Logo" || echo "Timeout or failed: $URL"
           done
 
           echo "All .png files have been downloaded"
