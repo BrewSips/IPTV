@@ -18,87 +18,65 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 下载并处理 M3U 文件
+      # 下载并保存 M3U 文件
       - name: Download and process M3U file
         run: |
-          # 设置互斥锁文件路径
-          LOCKFILE="/tmp/update-m3u.lock"
+          set -e
 
-          # 检查是否已有其他实例运行
-          if [ -f "$LOCKFILE" ]; then
-            echo "Another instance is running. Exiting."
+          # 定义 URL 文件路径
+          IPTV_FILE="https://raw.githubusercontent.com/Yu0754/IPTV/main/iptv.txt"
+
+          # 提取 M3U URL 和 User-Agent
+          echo "Fetching iptv.txt..."
+          IPTV_CONTENT=$(curl -sL "$IPTV_FILE" || { echo "Error: Failed to fetch iptv.txt"; exit 1; })
+          
+          M3U_URL=$(echo "$IPTV_CONTENT" | awk '/# 中国电视/{getline; print}' | tr -d '\r')
+          USER_AGENT=$(echo "$IPTV_CONTENT" | awk '/# USER_AGENT/{getline; print}' | tr -d '\r')
+
+          # 检查是否成功提取 URL 和 User-Agent
+          if [ -z "$M3U_URL" ]; then
+            echo "Error: Failed to extract M3U URL from iptv.txt" >&2
             exit 1
           fi
-
-          # 创建锁文件并设置清理机制
-          touch "$LOCKFILE"
-          trap "rm -f $LOCKFILE" EXIT
-
-          # 获取 IPTV 文件内容
-          echo "Fetching iptv.txt from GitHub..."
-          IPTV_FILE=$(curl -s https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/iptv.txt)
-          echo "iptv.txt content:"
-          echo "$IPTV_FILE"
-
-          # 提取 User-Agent
-          USER_AGENT=$(echo "$IPTV_FILE" | grep -A 1 "# USER_AGENT" | tail -n 1 | tr -d '\r')
-          echo "User-Agent: $USER_AGENT"
           if [ -z "$USER_AGENT" ]; then
-            echo "USER_AGENT not found or is empty"
+            echo "Error: Failed to extract USER_AGENT from iptv.txt" >&2
             exit 1
           fi
 
-          # 下载指定 M3U 文件
-          INPUT_FILE="ipv6.m3u"
-          OUTPUT_FILE="cnlive.m3u"
-          curl -sL -A "$USER_AGENT" https://raw.githubusercontent.com/suxuang/myIPTV/refs/heads/main/ipv6.m3u -o "$INPUT_FILE"
+          echo "Extracted M3U URL: $M3U_URL"
+          echo "Extracted USER_AGENT: $USER_AGENT"
 
-          # 按需求处理文件
-          awk '
-          BEGIN { 
-              section = 1; 
-              found_cctv17 = 0; 
-              found_guangdong = 0; 
-          }
-          section == 1 {
-              print $0;
-              if (/^#EXTINF.*CCTV17/) { 
-                  found_cctv17 = 1; 
-              } 
-              if (found_cctv17 && /^http/) { 
-                  section = 2; 
-                  next; 
-              } 
-          }
-          /^#卫视频道/ { section = 3 }
-          section == 3 {
-              print $0;
-              if (/^#EXTINF.*广东珠江/) {
-                  found_guangdong = 1;
-              }
-              if (found_guangdong && /^http/) { 
-                  exit; 
-              }
-          }
-          ' "$INPUT_FILE" > "$OUTPUT_FILE"
+          # 下载 M3U 文件并保存为 cnlive.m3u
+          echo "Downloading M3U file..."
+          curl -sL -A "$USER_AGENT" "$M3U_URL" -o cnlive.m3u || { echo "Error: Failed to download M3U file"; exit 1; }
 
-          # 替换 LOGO 路径和 EPG URL
-          sed -i 's|\(http[^ ]*/\)\([^/]*\.png\)|https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/CN Logo/\2|' "$OUTPUT_FILE"
-          sed -i 's|x-tvg-url.*|x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/cnepg.xml"|' "$OUTPUT_FILE"
+          if [ ! -s cnlive.m3u ]; then
+            echo "Error: cnlive.m3u file is empty" >&2
+            exit 1
+          fi
 
-          echo "Processed $OUTPUT_FILE:"
-          cat "$OUTPUT_FILE"
+          # 替换 x-tvg-url
+          echo "Replacing x-tvg-url with new URL..."
+          sed -i 's|x-tvg-url="[^"]*"|x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/main/cnepg.xml"|g' cnlive.m3u
+
+          # 替换 .png 文件的 URL
+          echo "Updating .png file URLs..."
+          sed -i 's|\(http[^ ]*/\)\([^/]*\.png\)|https://raw.githubusercontent.com/Yu0754/IPTV/main/CN Logo/\2|' cnlive.m3u
+
+          # 确认处理结果
+          echo "Processed cnlive.m3u (preview):"
+          head -n 10 cnlive.m3u || { echo "Error: Failed to process cnlive.m3u"; exit 1; }
 
       # 提交并推送更改
       - name: Commit and push changes
         run: |
+          set -e
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
+
+          # 确保无冲突更新
+          git pull --rebase origin main || { echo "Error: Git pull failed"; exit 1; }
+
           git add cnlive.m3u
-          git commit -m "Update CNLIVE.m3u on $(date)" || echo "No changes to commit"
-
-          # 拉取远程分支并合并
-          git pull --rebase origin main
-
-          # 推送更改
-          git push origin main
+          git commit -m "Update cnlive.m3u on $(date)" || echo "No changes to commit"
+          git push origin main || { echo "Error: Git push failed. Ensure no conflicts exist."; exit 1; }
