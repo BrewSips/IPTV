@@ -26,7 +26,6 @@ jobs:
     - name: Fetch and save EPG data
       run: |
         import requests
-        import time
         from xml.etree import ElementTree
 
         def fetch_data():
