@@ -64,7 +64,7 @@ jobs:
       # 创建 CN Logo 文件夹
       - name: Prepare CN Logo folder
         run: |
-          mkdir -p “CN Logo"
+          mkdir -p "CN Logo"
           echo “CN Logo folder is ready"
 
       # 提取和下载 .png 文件到 CN Logo 文件夹
@@ -81,7 +81,7 @@ jobs:
 
           echo "$PNG_URLS" | while read -r URL; do
             echo "Downloading $URL"
-            curl -s -O -J "$URL" --output-dir “CN Logo"
+            curl -s -O -J "$URL" --output-dir "CN Logo"
           done
 
           echo "All .png files have been downloaded"
