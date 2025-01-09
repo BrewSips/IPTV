@@ -72,7 +72,7 @@ jobs:
         run: |
           set -e
           echo "Extracting .png URLs and downloading files..."
-          PNG_URLS=$(grep -oE 'http[^ ]+\.png' temp_content.txt || echo "")
+          PNG_URLS=$(grep -oP '(https?:\\/\\/[^\\s]+\\.png)' temp_content.txt || echo "")
 
           if [ -z "$PNG_URLS" ]; then
             echo "No .png URLs found in the content"
@@ -81,7 +81,7 @@ jobs:
 
           echo "$PNG_URLS" | while read -r URL; do
             echo "Downloading $URL"
-            curl -s -O -J "$URL" --output-dir "FG Logo"
+            curl -s -O -J "$URL" --output-dir "FG Logo" || echo "Error downloading $URL"
           done
 
           echo "All .png files have been downloaded"
