@@ -14,90 +14,92 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    # 检出代码
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      # 检出代码
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    # 从 iptv.txt 提取目标 URL 和 USER_AGENT
-    - name: Extract URL and USER_AGENT from iptv.txt
-      run: |
-        echo "Fetching iptv.txt from GitHub..."
-        IPTV_FILE=$(curl -s https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/iptv.txt)
-        
-        echo "iptv.txt content:"
-        echo "$IPTV_FILE"
-        
-        # 提取 # 中国电视 下的一行 URL
-        TARGET_URL=$(echo "$IPTV_FILE" | grep -A 1 "# 中国电视" | tail -n 1 | tr -d '\r')
-        echo "Extracted URL: $TARGET_URL"
+      # 从 iptv.txt 提取目标 URL 和 USER_AGENT
+      - name: Extract URL and USER_AGENT from iptv.txt
+        run: |
+          echo "Fetching iptv.txt from GitHub..."
+          IPTV_FILE=$(curl -s https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/iptv.txt)
+          
+          echo "iptv.txt content:"
+          echo "$IPTV_FILE"
+          
+          # 提取 # 中国电视 下的一行 URL
+          TARGET_URL=$(echo "$IPTV_FILE" | grep -A 1 "# 中国电视" | tail -n 1 | tr -d '\r')
+          echo "Extracted URL: $TARGET_URL"
 
-        # 提取 # USER_AGENT 下的一行内容
-        USER_AGENT=$(echo "$IPTV_FILE" | grep -A 1 "# USER_AGENT" | tail -n 1 | tr -d '\r')
-        echo "Extracted USER_AGENT: $USER_AGENT"
+          # 提取 # USER_AGENT 下的一行内容
+          USER_AGENT=$(echo "$IPTV_FILE" | grep -A 1 "# USER_AGENT" | tail -n 1 | tr -d '\r')
+          echo "Extracted USER_AGENT: $USER_AGENT"
 
-        # 验证提取的 URL 和 USER_AGENT 是否有效
-        if [ -z "$TARGET_URL" ]; then
-          echo "Target URL not found or is empty"
-          exit 1
-        fi
-        if [[ ! "$TARGET_URL" =~ ^https?:// ]]; then
-          echo "Extracted URL is not a valid HTTP(S) URL: $TARGET_URL"
-          exit 1
-        fi
-        if [ -z "$USER_AGENT" ]; then
-          echo "USER_AGENT not found or is empty"
-          exit 1
-        fi
+          # 验证提取的 URL 和 USER_AGENT 是否有效
+          if [ -z "$TARGET_URL" ]; then
+            echo "Target URL not found or is empty"
+            exit 1
+          fi
+          if [[ ! "$TARGET_URL" =~ ^https?:// ]]; then
+            echo "Extracted URL is not a valid HTTP(S) URL: $TARGET_URL"
+            exit 1
+          fi
+          if [ -z "$USER_AGENT" ]; then
+            echo "USER_AGENT not found or is empty"
+            exit 1
+          fi
 
-        # 保存提取的 URL 和 USER_AGENT 供后续步骤使用
-        echo "TARGET_URL=$TARGET_URL" >> $GITHUB_ENV
-        echo "USER_AGENT=$USER_AGENT" >> $GITHUB_ENV
+          # 保存提取的 URL 和 USER_AGENT 供后续步骤使用
+          echo "TARGET_URL=$TARGET_URL" >> $GITHUB_ENV
+          echo "USER_AGENT=$USER_AGENT" >> $GITHUB_ENV
 
-    # 创建 CN Logo 文件夹
-    - name: Create CN Logo folder
-      run: |
-        mkdir -p "CN Logo"
+      # 创建 CN Logo 文件夹
+      - name: Create CN Logo folder
+        run: |
+          mkdir -p "CN Logo"
 
-    # 使用模拟播放器的 User-Agent 读取目标内容
-    - name: Fetch content from target URL
-      run: |
-        echo "Fetching content from $TARGET_URL with User-Agent: $USER_AGENT..."
-        curl -sL -A "$USER_AGENT" "$TARGET_URL" -o temp_content.txt
-        
-        if [ ! -s temp_content.txt ]; then
-          echo "Failed to fetch content or the content is empty."
-          exit 1
-        fi
+      # 使用模拟播放器的 User-Agent 读取目标内容
+      - name: Fetch content from target URL
+        run: |
+          echo "Fetching content from $TARGET_URL with User-Agent: $USER_AGENT..."
+          curl -sL -A "$USER_AGENT" "$TARGET_URL" -o temp_content.txt
+          
+          if [ ! -s temp_content.txt ]; then
+            echo "Failed to fetch content or the content is empty."
+            exit 1
+          fi
 
-        echo "Fetched content:"
-        cat temp_content.txt
+          echo "Fetched content:"
+          head -n 20 temp_content.txt  # 显示前20行内容供调试
 
-    # 提取和下载 .png 文件到 CN Logo 文件夹
-    - name: Extract and download .png URLs
-      run: |
-        echo "Extracting .png URLs and downloading them..."
-        grep -oE 'http[^ ]+\.png' temp_content.txt | while read -r URL; do
-          echo "Downloading $URL"
-          curl -s -O -J "$URL" --output-dir "CN Logo" || echo "Failed to download: $URL"
-        done
+      # 提取和下载 .png 文件到 CN Logo 文件夹
+      - name: Extract and download .png URLs
+        run: |
+          echo "Extracting .png URLs and downloading them..."
+          mkdir -p "CN Logo"
+          grep -oE 'http[^ ]+\.png' temp_content.txt | while read -r URL; do
+            echo "Downloading $URL"
+            FILENAME=$(basename "$URL")
+            curl -sL "$URL" -o "CN Logo/$FILENAME" || echo "Failed to download: $URL"
+          done
 
-        # 验证是否成功下载文件
-        if [ "$(ls -A CN Logo)" ]; then
-          echo "Files downloaded successfully."
-        else
-          echo "No .png files downloaded. Exiting."
-          exit 1
-        fi
+          # 验证是否成功下载文件
+          if [ "$(ls -A 'CN Logo')" ]; then
+            echo "Files downloaded successfully."
+          else
+            echo "No .png files downloaded. Exiting."
+            exit 1
+          fi
 
-    # 提交并推送 CN Logo 文件夹到仓库
-    - name: Commit and push CN Logo folder
-      run: |
-        git config user.name "GitHub Actions Bot"
-        git config user.email "actions@github.com"
+      # 提交并推送 CN Logo 文件夹到仓库
+      - name: Commit and push CN Logo folder
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
 
-        # 拉取远程分支，避免提交冲突
-        git pull --rebase origin main
+          # 拉取远程分支，避免提交冲突
+          git pull --rebase origin main
 
-        git add "CN Logo"
-        git commit -m "Update CN Logo folder on $(date)" || echo "No changes to commit"
-        git push origin main || echo "Failed to push changes. Ensure no conflicts exist."
+          git add "CN Logo"
+          git commit -m "Update CN Logo folder on $(date)" || echo "No changes to commit"
+          git push origin main || echo "Failed to push changes. Ensure no conflicts exist."
