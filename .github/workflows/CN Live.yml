@@ -86,8 +86,16 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
 
+          # 暂存未提交的更改
+          echo "Stashing uncommitted changes..."
+          git stash || echo "No changes to stash"
+
           # 确保无冲突更新
           git pull --rebase origin main || { echo "Error: Git pull failed"; exit 1; }
+
+          # 恢复暂存的更改
+          echo "Applying stashed changes..."
+          git stash pop || echo "No stashed changes to apply"
 
           git add cnlive.m3u
           git commit -m "Update cnlive.m3u on $(date)" || echo "No changes to commit"
