@@ -14,77 +14,73 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    # 检出代码
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      # 检出代码
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    # 下载并保存 M3U 文件
-    - name: Download and save M3U file
-      run: |
-        set -e
+      # 下载并保存 M3U 文件
+      - name: Download and process M3U file
+        run: |
+          set -e
 
-        # 定义 URL 文件路径
-        IPTV_FILE="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/iptv.txt"
+          # 定义 URL 文件路径
+          IPTV_FILE="https://raw.githubusercontent.com/Yu0754/IPTV/main/iptv.txt"
 
-        # 提取 M3U URL 和 User-Agent
-        echo "Fetching iptv.txt..."
-        IPTV_CONTENT=$(curl -sL "$IPTV_FILE")
+          # 提取 M3U URL 和 User-Agent
+          echo "Fetching iptv.txt..."
+          IPTV_CONTENT=$(curl -sL "$IPTV_FILE" || { echo "Error: Failed to fetch iptv.txt"; exit 1; })
+          
+          M3U_URL=$(echo "$IPTV_CONTENT" | awk '/# 全球电视/{getline; print}' | tr -d '\r')
+          USER_AGENT=$(echo "$IPTV_CONTENT" | awk '/# USER_AGENT/{getline; print}' | tr -d '\r')
 
-        M3U_URL=$(echo "$IPTV_CONTENT" | awk '/# 全球电视/{getline; print}' | tr -d '\r')
-        USER_AGENT=$(echo "$IPTV_CONTENT" | awk '/# USER_AGENT/{getline; print}' | tr -d '\r')
+          # 检查是否成功提取 URL 和 User-Agent
+          if [ -z "$M3U_URL" ]; then
+            echo "Error: Failed to extract M3U URL from iptv.txt" >&2
+            exit 1
+          fi
+          if [ -z "$USER_AGENT" ]; then
+            echo "Error: Failed to extract USER_AGENT from iptv.txt" >&2
+            exit 1
+          fi
 
-        # 检查是否成功提取 URL 和 User-Agent
-        if [ -z "$M3U_URL" ]; then
-          echo "Error: Failed to extract M3U URL from iptv.txt" >&2
-          exit 1
-        fi
-        if [ -z "$USER_AGENT" ]; then
-          echo "Error: Failed to extract USER_AGENT from iptv.txt" >&2
-          exit 1
-        fi
+          echo "Extracted M3U URL: $M3U_URL"
+          echo "Extracted USER_AGENT: $USER_AGENT"
 
-        echo "Extracted M3U URL: $M3U_URL"
-        echo "Extracted USER_AGENT: $USER_AGENT"
+          # 下载 M3U 文件并保存为 fglive.m3u
+          echo "Downloading M3U file..."
+          curl -sL -A "$USER_AGENT" "$M3U_URL" -o fglive.m3u || { echo "Error: Failed to download M3U file"; exit 1; }
 
-        # 下载 M3U 文件并保存为 fglive.m3u
-        echo "Downloading M3U file..."
-        curl -sL -A "$USER_AGENT" "$M3U_URL" -o fglive.m3u
-        if [ ! -s fglive.m3u ]; then
-          echo "Error: Failed to download M3U file or the file is empty" >&2
-          exit 1
-        fi
+          if [ ! -s fglive.m3u ]; then
+            echo "Error: fglive.m3u file is empty" >&2
+            exit 1
+          fi
 
-        # 提取并替换 x-tvg-url
-        TVG_URL=$(grep -oP 'x-tvg-url="\K[^"]+' fglive.m3u || echo "")
-        if [ -n "$TVG_URL" ]; then
+          # 替换 x-tvg-url
           echo "Replacing x-tvg-url with new URL..."
-          sed -i 's|x-tvg-url="[^"]*"|x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/fgepg.xml"|g' fglive.m3u
-        else
-          echo "Warning: x-tvg-url not found in fglive.m3u"
-        fi
+          sed -i 's|x-tvg-url="[^"]*"|x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/main/fgepg.xml"|g' fglive.m3u
 
-        # 删除包含“免费使用规则”的行及其下一行
-        echo "Removing lines related to '免费使用规则'..."
-        sed -i -e '/免费使用规则/{N;d;}' fglive.m3u
+          # 删除包含“免费使用规则”的行及其下一行
+          echo "Removing lines related to '免费使用规则'..."
+          sed -i -e '/免费使用规则/{N;d;}' fglive.m3u
 
-        # 替换 .png 文件的 URL
-        echo "Updating .png file URLs..."
-        sed -i 's|\(http[^ ]*/\)\([^/]*\.png\)|https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/FG Logo/\2|' fglive.m3u
+          # 替换 .png 文件的 URL
+          echo "Updating .png file URLs..."
+          sed -i 's|\(http[^ ]*/\)\([^/]*\.png\)|https://raw.githubusercontent.com/Yu0754/IPTV/main/FG Logo/\2|' fglive.m3u
 
-        # 确认处理结果 (显示前10行，避免输出过长)
-        echo "Processed fglive.m3u (preview):"
-        head -n 10 fglive.m3u
+          # 确认处理结果
+          echo "Processed fglive.m3u (preview):"
+          head -n 10 fglive.m3u || { echo "Error: Failed to process fglive.m3u"; exit 1; }
 
-    # 提交并推送更改
-    - name: Commit and push changes
-      run: |
-        set -e
-        git config user.name "GitHub Actions Bot"
-        git config user.email "actions@github.com"
+      # 提交并推送更改
+      - name: Commit and push changes
+        run: |
+          set -e
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
 
-        # 确保无冲突更新
-        git pull --rebase origin main
+          # 确保无冲突更新
+          git pull --rebase origin main || { echo "Error: Git pull failed"; exit 1; }
 
-        git add fglive.m3u
-        git commit -m "Update fglive.m3u on $(date)" || echo "No changes to commit"
-        git push origin main || echo "Failed to push changes. Ensure no conflicts exist."
+          git add fglive.m3u
+          git commit -m "Update fglive.m3u on $(date)" || echo "No changes to commit"
+          git push origin main || { echo "Error: Git push failed. Ensure no conflicts exist."; exit 1; }
