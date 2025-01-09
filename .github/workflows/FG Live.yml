@@ -18,21 +18,26 @@ jobs:
     - name: Download and save M3U file
       run: |
         # 定义URL文件的路径
-        URL_FILE="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/url.txt"
+        IPTV_FILE="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/iptv.txt"
 
-        # 从URL文件中提取包含 `# 全球电视` 那一行下面的URL
-        M3U_URL=$(curl -sL "$URL_FILE" | awk '/# 全球电视/{getline; print}')
+        # 从IPTV文件中提取包含 `# 全球电视` 那一行下面的URL
+        M3U_URL=$(curl -sL "$IPTV_FILE" | awk '/# 全球电视/{getline; print}')
 
-        # 检查是否成功提取URL
+        # 从IPTV文件中提取 `# USER_AGENT` 那一行下面的内容作为 User-Agent
+        USER_AGENT=$(curl -sL "$IPTV_FILE" | awk '/# USER_AGENT/{getline; print}')
+
+        # 检查是否成功提取URL和USER_AGENT
         if [ -z "$M3U_URL" ]; then
-          echo "Error: Failed to extract M3U URL from url.txt" >&2
+          echo "Error: Failed to extract M3U URL from iptv.txt" >&2
+          exit 1
+        fi
+        if [ -z "$USER_AGENT" ]; then
+          echo "Error: Failed to extract USER_AGENT from iptv.txt" >&2
           exit 1
         fi
 
         echo "Extracted M3U URL: $M3U_URL"
-
-        # 自定义 User-Agent 模拟播放器
-        USER_AGENT="AptvPlayer/1.3.16"
+        echo "Extracted USER_AGENT: $USER_AGENT"
 
         # 使用提取的URL下载文件并保存为 fglive.m3u
         curl -sL -A "$USER_AGENT" "$M3U_URL" -o fglive.m3u
