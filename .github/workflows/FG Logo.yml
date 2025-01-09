@@ -5,6 +5,10 @@ on:
     - cron: '0 0 * * *'  # 每24小时运行一次
   workflow_dispatch:        # 手动触发
 
+concurrency:
+  group: download-logos-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   download-logos:
     runs-on: ubuntu-22.04
@@ -15,62 +19,82 @@ jobs:
       uses: actions/checkout@v3
 
     # 下载 iptv.txt 文件并提取目标 URL 和 USER_AGENT
-    - name: Download iptv.txt and extract target URL and USER_AGENT
+    - name: Extract target URL and USER_AGENT
       run: |
+        set -e
+
         echo "Fetching iptv.txt from GitHub..."
-        IPTV_FILE=$(curl -s https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/iptv.txt)
+        IPTV_FILE_URL="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/iptv.txt"
 
-        # 打印 iptv.txt 内容，调试用
-        echo "iptv.txt content:"
-        echo "$IPTV_FILE"
+        IPTV_CONTENT=$(curl -sL "$IPTV_FILE_URL")
+        if [ -z "$IPTV_CONTENT" ]; then
+          echo "Error: Failed to fetch iptv.txt or it is empty" >&2
+          exit 1
+        fi
 
-        # 从包含 "# 全球电视" 的行下面一行提取目标 URL
-        TARGET_URL=$(echo "$IPTV_FILE" | grep -A 1 "# 全球电视" | tail -n 1 | tr -d '\r')
-        
-        # 从包含 "# USER_AGENT" 的行下面一行提取 USER_AGENT 参数
-        USER_AGENT=$(echo "$IPTV_FILE" | grep -A 1 "# USER_AGENT" | tail -n 1 | tr -d '\r')
+        # 提取目标 URL 和 USER_AGENT
+        TARGET_URL=$(echo "$IPTV_CONTENT" | awk '/# 全球电视/{getline; print}' | tr -d '\r')
+        USER_AGENT=$(echo "$IPTV_CONTENT" | awk '/# USER_AGENT/{getline; print}' | tr -d '\r')
 
-        # 检查是否成功提取 URL 和 USER_AGENT
         if [ -z "$TARGET_URL" ]; then
-          echo "Error: Target URL not found or is empty"
+          echo "Error: Target URL not found in iptv.txt" >&2
           exit 1
         fi
         if [ -z "$USER_AGENT" ]; then
-          echo "Error: USER_AGENT not found or is empty"
+          echo "Error: USER_AGENT not found in iptv.txt" >&2
           exit 1
         fi
 
         echo "Extracted TARGET_URL: $TARGET_URL"
         echo "Extracted USER_AGENT: $USER_AGENT"
 
-        # 使用模拟播放器读取 URL 内容
+        # 下载内容
+        echo "Fetching content from TARGET_URL..."
         LOGO_CONTENT=$(curl -sL -A "$USER_AGENT" "$TARGET_URL")
-        
-        # 打印读取内容以供调试
-        echo "Fetched content from $TARGET_URL:"
-        echo "$LOGO_CONTENT"
-        
-        # 保存内容到临时文件以提取 .png URLs
+        if [ -z "$LOGO_CONTENT" ]; then
+          echo "Error: Failed to fetch content from TARGET_URL or it is empty" >&2
+          exit 1
+        fi
+
+        # 保存到临时文件
         echo "$LOGO_CONTENT" > temp_content.txt
+        echo "Content saved to temp_content.txt"
 
     # 创建 FG Logo 文件夹
-    - name: Create FG Logo folder
+    - name: Prepare FG Logo folder
       run: |
         mkdir -p "FG Logo"
+        echo "FG Logo folder is ready"
 
     # 提取和下载 .png 文件到 FG Logo 文件夹
-    - name: Extract and download .png URLs
+    - name: Extract and download .png files
       run: |
-        grep -oE 'http[^ ]+\.png' temp_content.txt | while read -r URL; do
+        set -e
+        echo "Extracting .png URLs and downloading files..."
+        PNG_URLS=$(grep -oE 'http[^ ]+\.png' temp_content.txt || echo "")
+
+        if [ -z "$PNG_URLS" ]; then
+          echo "No .png URLs found in the content"
+          exit 0
+        fi
+
+        echo "$PNG_URLS" | while read -r URL; do
           echo "Downloading $URL"
           curl -s -O -J "$URL" --output-dir "FG Logo"
         done
 
+        echo "All .png files have been downloaded"
+
     # 提交并推送 FG Logo 文件夹到仓库
     - name: Commit and push FG Logo folder
       run: |
+        set -e
         git config user.name "GitHub Actions Bot"
         git config user.email "actions@github.com"
+
+        # 确保无冲突更新
+        git pull --rebase origin main
+
         git add "FG Logo"
-        git commit -m "Update FG Logo folder on $(date)"
-        git push origin main || echo "No changes to push"
+        git commit -m "Update FG Logo folder on $(date)" || echo "No changes to commit"
+        git push origin main || echo "Failed to push changes. Ensure no conflicts exist."
