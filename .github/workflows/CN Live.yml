@@ -29,7 +29,7 @@ jobs:
           # 提取 M3U URL 和 User-Agent
           echo "Fetching iptv.txt..."
           IPTV_CONTENT=$(curl -sL "$IPTV_FILE" || { echo "Error: Failed to fetch iptv.txt"; exit 1; })
-
+          
           M3U_URL=$(echo "$IPTV_CONTENT" | awk '/# 中国电视/{getline; print}' | tr -d '\r')
           USER_AGENT=$(echo "$IPTV_CONTENT" | awk '/# USER_AGENT/{getline; print}' | tr -d '\r')
 
@@ -55,45 +55,40 @@ jobs:
             exit 1
           fi
 
-          # 提取从文件开头到含有CCTV17那一行及其下面一行
-          echo "Extracting relevant parts from the M3U file..."
-          sed -n '/# CCTV17/{p; n; p; q}' cnlive.m3u > cnlive_filtered.m3u
+          # 保留所需内容并删除其他内容
+          echo "Filtering content..."
+          awk '
+          # 从开头到包含CCTV17的那一行以及下一行
+          /^CCTV17/ {print; getline; print; exit}
+          # 从含有#卫视频道到包含广东珠江的那一行以及下一行
+          /#卫视频道/ {print; found=true}
+          found && /广东珠江/ {print; exit}
+          ' cnlive.m3u > cnlive_filtered.m3u || { echo "Error: Failed to filter cnlive.m3u"; exit 1; }
 
-          # 提取从含有#卫视频道那一行开始到含有广东珠江那一行及其下面一行
-          sed -n '/#卫视频道/{p; :a; n; /广东珠江/{p; n; p; b}; ba}' cnlive.m3u >> cnlive_filtered.m3u
+          mv cnlive_filtered.m3u cnlive.m3u
 
           # 替换 x-tvg-url
           echo "Replacing x-tvg-url with new URL..."
-          sed -i 's|x-tvg-url="[^"]*"|x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/main/cnepg.xml"|g' cnlive_filtered.m3u
+          sed -i 's|x-tvg-url="[^"]*"|x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/main/cnepg.xml"|g' cnlive.m3u
 
           # 替换 .png 文件的 URL
           echo "Updating .png file URLs..."
-          sed -i 's|\(http[^ ]*/\)\([^/]*\.png\)|https://raw.githubusercontent.com/Yu0754/IPTV/main/CN Logo/\2|' cnlive_filtered.m3u
+          sed -i 's|\(http[^ ]*/\)\([^/]*\.png\)|https://raw.githubusercontent.com/Yu0754/IPTV/main/CN Logo/\2|' cnlive.m3u
 
           # 确认处理结果
-          echo "Processed cnlive_filtered.m3u (preview):"
-          head -n 10 cnlive_filtered.m3u || { echo "Error: Failed to process cnlive_filtered.m3u"; exit 1; }
+          echo "Processed cnlive.m3u (preview):"
+          head -n 10 cnlive.m3u || { echo "Error: Failed to process cnlive.m3u"; exit 1; }
 
       # 提交并推送更改
       - name: Commit and push changes
         run: |
           set -e
-          
-          # 暂存未提交的更改
-          git stash || { echo "Error: Failed to stash changes"; exit 1; }
-
-          # 拉取远程更新
-          git pull origin main || { echo "Error: Git pull failed"; exit 1; }
-
-          # 恢复暂存的更改
-          git stash pop || { echo "Error: Failed to pop stashed changes"; exit 1; }
-
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
 
           # 确保无冲突更新
           git pull --rebase origin main || { echo "Error: Git pull failed"; exit 1; }
 
-          git add cnlive_filtered.m3u
+          git add cnlive.m3u
           git commit -m "Update cnlive.m3u on $(date)" || echo "No changes to commit"
           git push origin main || { echo "Error: Git push failed. Ensure no conflicts exist."; exit 1; }
