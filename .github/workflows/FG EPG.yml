@@ -14,77 +14,86 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    # 检出代码
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      # 检出代码
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    # 获取 iptv.txt 文件的内容并下载 EPG 数据
-    - name: Download and process EPG data
-      run: |
-        set -e
+      # 获取 iptv.txt 文件的内容并下载 EPG 数据
+      - name: Download and process EPG data
+        run: |
+          set -e
 
-        # 尝试下载 iptv.txt 文件
-        echo "Fetching iptv.txt from GitHub..."
-        IPTV_FILE=$(curl -s https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/iptv.txt)
-        
-        # 打印 iptv.txt 的内容，调试用
-        echo "iptv.txt content:"
-        echo "$IPTV_FILE"
-        
-        # 从包含 "# 全球电视" 的行下面一行提取 URL
-        M3U_URL=$(echo "$IPTV_FILE" | grep -A 1 "# 全球电视" | tail -n 1 | tr -d '\r')
-        if [ -z "$M3U_URL" ]; then
-          echo "M3U URL not found or is empty"
-          exit 1
-        fi
-        echo "M3U URL: $M3U_URL"
+          # 尝试下载 iptv.txt 文件
+          echo "Fetching iptv.txt from GitHub..."
+          IPTV_FILE=$(curl -s https://raw.githubusercontent.com/Yu0754/IPTV/main/iptv.txt)
+          if [ -z "$IPTV_FILE" ]; then
+            echo "Failed to fetch iptv.txt or the file is empty."
+            exit 1
+          fi
 
-        # 从包含 "# USER_AGENT" 的行下面一行提取 User-Agent
-        USER_AGENT=$(echo "$IPTV_FILE" | grep -A 1 "# USER_AGENT" | tail -n 1 | tr -d '\r')
-        if [ -z "$USER_AGENT" ]; then
-          echo "USER_AGENT not found or is empty"
-          exit 1
-        fi
-        echo "USER_AGENT: $USER_AGENT"
+          # 打印 iptv.txt 的内容（用于调试）
+          echo "iptv.txt content:"
+          echo "$IPTV_FILE"
 
-        # 使用 curl 下载 EPG 数据
-        echo "Fetching M3U content..."
-        EPG_FILE=$(curl -sL -A "$USER_AGENT" "$M3U_URL")
-        if [ -z "$EPG_FILE" ]; then
-          echo "Failed to fetch EPG data or the content is empty"
-          exit 1
-        fi
+          # 从 "# 全球电视" 的下一行提取 M3U URL
+          M3U_URL=$(echo "$IPTV_FILE" | grep -A 1 "# 全球电视" | tail -n 1 | tr -d '\r')
+          if [ -z "$M3U_URL" ]; then
+            echo "M3U URL not found or is empty."
+            exit 1
+          fi
+          echo "Extracted M3U URL: $M3U_URL"
 
-        # 从下载的 EPG 数据中提取 x-tvg-url 的 URL
-        X_TVG_URL=$(echo "$EPG_FILE" | grep -i "x-tvg-url" | cut -d '"' -f 2)
-        if [ -z "$X_TVG_URL" ]; then
-          echo "x-tvg-url not found or is empty"
-          exit 1
-        fi
-        echo "x-tvg-url: $X_TVG_URL"
+          # 从 "# USER_AGENT" 的下一行提取 User-Agent
+          USER_AGENT=$(echo "$IPTV_FILE" | grep -A 1 "# USER_AGENT" | tail -n 1 | tr -d '\r')
+          if [ -z "$USER_AGENT" ]; then
+            echo "USER_AGENT not found or is empty."
+            exit 1
+          fi
+          echo "Extracted USER_AGENT: $USER_AGENT"
 
-        # 下载 x-tvg-url 指向的 EPG 数据
-        echo "Downloading EPG XML data from $X_TVG_URL..."
-        curl -sL -A "$USER_AGENT" "$X_TVG_URL" -o fgepg.xml
-        if [ ! -s fgepg.xml ]; then
-          echo "Failed to download EPG XML data or the file is empty"
-          exit 1
-        fi
+          # 下载 M3U 内容
+          echo "Fetching M3U content..."
+          EPG_FILE=$(curl -sL -A "$USER_AGENT" "$M3U_URL")
+          if [ -z "$EPG_FILE" ]; then
+            echo "Failed to fetch M3U content or the content is empty."
+            exit 1
+          fi
 
-        # 输出处理的文件内容 (仅输出前10行，防止过长)
-        echo "Downloaded fgepg.xml (preview):"
-        head -n 10 fgepg.xml
+          # 打印前 10 行 M3U 内容（调试用）
+          echo "M3U content (preview):"
+          echo "$EPG_FILE" | head -n 10
 
-    # 提交并推送更改
-    - name: Commit and push changes
-      run: |
-        set -e
-        git config user.name "GitHub Actions Bot"
-        git config user.email "actions@github.com"
+          # 提取 x-tvg-url 的 URL
+          X_TVG_URL=$(echo "$EPG_FILE" | grep -i "x-tvg-url" | cut -d '"' -f 2)
+          if [ -z "$X_TVG_URL" ]; then
+            echo "x-tvg-url not found or is empty."
+            exit 1
+          fi
+          echo "Extracted x-tvg-url: $X_TVG_URL"
 
-        # 确保无冲突更新
-        git pull --rebase origin main
+          # 下载 EPG 数据
+          echo "Downloading EPG XML data from $X_TVG_URL..."
+          curl -sL -A "$USER_AGENT" "$X_TVG_URL" -o fgepg.xml
+          if [ ! -s fgepg.xml ]; then
+            echo "Failed to download EPG XML data or the file is empty."
+            exit 1
+          fi
 
-        git add fgepg.xml
-        git commit -m "Update fgepg.xml on $(date)" || echo "No changes to commit"
-        git push origin main || echo "Failed to push changes. Ensure no conflicts exist."
+          # 打印前 10 行 EPG 文件内容
+          echo "Downloaded fgepg.xml (preview):"
+          head -n 10 fgepg.xml
+
+      # 提交并推送更改
+      - name: Commit and push changes
+        run: |
+          set -e
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+
+          # 拉取远程分支以避免提交冲突
+          git pull --rebase origin main
+
+          # 添加和提交更改
+          git add fgepg.xml
+          git commit -m "Update fgepg.xml on $(date)" || echo "No changes to commit"
+          git push origin main || echo "Failed to push changes. Ensure no conflicts exist."
