@@ -78,6 +78,16 @@ jobs:
       - name: Commit and push changes
         run: |
           set -e
+          
+          # 暂存未提交的更改
+          git stash || { echo "Error: Failed to stash changes"; exit 1; }
+
+          # 拉取远程更新
+          git pull origin main || { echo "Error: Git pull failed"; exit 1; }
+
+          # 恢复暂存的更改
+          git stash pop || { echo "Error: Failed to pop stashed changes"; exit 1; }
+
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
 
