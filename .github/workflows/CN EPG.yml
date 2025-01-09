@@ -2,83 +2,59 @@ name: CN EPG
 
 on:
   schedule:
-    - cron: '0 */4 * * *'  # 每4小时运行一次
-  workflow_dispatch:        # 手动触发
+    - cron: '0 */4 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: update-epg-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   update-epg:
     runs-on: ubuntu-22.04
 
     steps:
-    # 检出代码
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # 获取 URL 文件和 USER_AGENT 参数
     - name: Download and process EPG data
       run: |
-        # 尝试下载 iptv.txt 文件
+        LOCKFILE="/tmp/update-epg.lock"
+        if [ -f "$LOCKFILE" ]; then
+          echo "Another instance is running. Exiting."
+          exit 1
+        fi
+        touch "$LOCKFILE"
+        trap "rm -f $LOCKFILE" EXIT
+
         echo "Fetching iptv.txt from GitHub..."
         IPTV_FILE=$(curl -s https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/iptv.txt)
-        
-        # 打印 iptv.txt 的内容，调试用
         echo "iptv.txt content:"
         echo "$IPTV_FILE"
-        
-        # 从包含 "# 中国电视" 的行下面一行提取 URL
+
         M3U_URL=$(echo "$IPTV_FILE" | grep -A 1 "# 中国电视" | tail -n 1 | tr -d '\r')
-        
-        # 检查是否成功获取到 URL
-        echo "M3U URL: $M3U_URL"
-        
-        if [ -z "$M3U_URL" ]; then
-          echo "M3U URL not found or is empty"
-          exit 1
-        fi
-
-        # 从包含 "# USER_AGENT" 的行下面一行提取 User-Agent
         USER_AGENT=$(echo "$IPTV_FILE" | grep -A 1 "# USER_AGENT" | tail -n 1 | tr -d '\r')
-        
-        # 检查是否成功获取到 User-Agent
-        echo "User-Agent: $USER_AGENT"
-        
-        if [ -z "$USER_AGENT" ]; then
-          echo "USER_AGENT not found or is empty"
+
+        if [ -z "$M3U_URL" ] || [ -z "$USER_AGENT" ]; then
+          echo "Missing required data"
           exit 1
         fi
 
-        # 使用 curl 下载 EPG 数据
         EPG_FILE=$(curl -sL -A "$USER_AGENT" "$M3U_URL")
-        
-        # 从下载的 EPG 数据中提取 x-tvg-url 的 URL
         X_TVG_URL=$(echo "$EPG_FILE" | grep -i "x-tvg-url" | cut -d '"' -f 2)
-        
-        # 检查是否成功提取到 x-tvg-url
-        echo "x-tvg-url: $X_TVG_URL"
-        
-        if [ -z "$X_TVG_URL" ]; then
-          echo "x-tvg-url not found or is empty"
-          exit 1
-        fi
 
-        # 下载 x-tvg-url 指向的 EPG 数据
-        curl -sL -A "$USER_AGENT" "$X_TVG_URL" -o cnepg.xml
+        TIMESTAMP=$(date +%s)
+        OUTPUT_FILE="cnepg_${TIMESTAMP}.xml"
+        curl -sL -A "$USER_AGENT" "$X_TVG_URL" -o "$OUTPUT_FILE"
 
-        # 检查文件是否成功下载
-        if [ ! -f cnepg.xml ]; then
-          echo "Failed to download EPG data"
-          exit 1
-        fi
+        echo "Downloaded ${OUTPUT_FILE}:"
+        cat "$OUTPUT_FILE"
 
-        # 输出处理的文件内容
-        echo "Downloaded cnepg.xml:"
-        cat cnepg.xml
-
-    # 提交并推送更改
     - name: Commit and push changes
       run: |
         git config user.name "GitHub Actions Bot"
         git config user.email "actions@github.com"
-        git add cnepg.xml
+        git add cnepg_*.xml
         git commit -m "Update cnepg.xml on $(date)" || echo "No changes to commit"
+        git pull --rebase origin main
         git push origin main
