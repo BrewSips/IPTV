@@ -5,6 +5,10 @@ on:
     - cron: '0 */4 * * *'  # 每4小时运行一次
   workflow_dispatch:        # 手动触发
 
+concurrency:
+  group: update-m3u-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   update-m3u:
     runs-on: ubuntu-22.04
@@ -17,16 +21,19 @@ jobs:
     # 下载并保存 M3U 文件
     - name: Download and save M3U file
       run: |
-        # 定义URL文件的路径
+        set -e
+
+        # 定义 URL 文件路径
         IPTV_FILE="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/iptv.txt"
 
-        # 从IPTV文件中提取包含 `# 全球电视` 那一行下面的URL
-        M3U_URL=$(curl -sL "$IPTV_FILE" | awk '/# 全球电视/{getline; print}')
+        # 提取 M3U URL 和 User-Agent
+        echo "Fetching iptv.txt..."
+        IPTV_CONTENT=$(curl -sL "$IPTV_FILE")
 
-        # 从IPTV文件中提取 `# USER_AGENT` 那一行下面的内容作为 User-Agent
-        USER_AGENT=$(curl -sL "$IPTV_FILE" | awk '/# USER_AGENT/{getline; print}')
+        M3U_URL=$(echo "$IPTV_CONTENT" | awk '/# 全球电视/{getline; print}' | tr -d '\r')
+        USER_AGENT=$(echo "$IPTV_CONTENT" | awk '/# USER_AGENT/{getline; print}' | tr -d '\r')
 
-        # 检查是否成功提取URL和USER_AGENT
+        # 检查是否成功提取 URL 和 User-Agent
         if [ -z "$M3U_URL" ]; then
           echo "Error: Failed to extract M3U URL from iptv.txt" >&2
           exit 1
@@ -39,30 +46,45 @@ jobs:
         echo "Extracted M3U URL: $M3U_URL"
         echo "Extracted USER_AGENT: $USER_AGENT"
 
-        # 使用提取的URL下载文件并保存为 fglive.m3u
+        # 下载 M3U 文件并保存为 fglive.m3u
+        echo "Downloading M3U file..."
         curl -sL -A "$USER_AGENT" "$M3U_URL" -o fglive.m3u
+        if [ ! -s fglive.m3u ]; then
+          echo "Error: Failed to download M3U file or the file is empty" >&2
+          exit 1
+        fi
 
-        # 提取包含 x-tvg-url 的行并提取 URL
-        TVG_URL=$(grep -oP 'x-tvg-url="\K[^"]+' fglive.m3u)
+        # 提取并替换 x-tvg-url
+        TVG_URL=$(grep -oP 'x-tvg-url="\K[^"]+' fglive.m3u || echo "")
+        if [ -n "$TVG_URL" ]; then
+          echo "Replacing x-tvg-url with new URL..."
+          sed -i 's|x-tvg-url="[^"]*"|x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/fgepg.xml"|g' fglive.m3u
+        else
+          echo "Warning: x-tvg-url not found in fglive.m3u"
+        fi
 
-        # 替换原有的 x-tvg-url 行中的 URL 为新的 URL
-        sed -i \
-          -e 's|x-tvg-url="[^"]*"|x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/fgepg.xml"|g' \
-          -e '/免费使用规则/{N;d;}' \
-          fglive.m3u
+        # 删除包含“免费使用规则”的行及其下一行
+        echo "Removing lines related to '免费使用规则'..."
+        sed -i -e '/免费使用规则/{N;d;}' fglive.m3u
 
         # 替换 .png 文件的 URL
+        echo "Updating .png file URLs..."
         sed -i 's|\(http[^ ]*/\)\([^/]*\.png\)|https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/FG Logo/\2|' fglive.m3u
 
-        # 确认结果
-        echo "Processed fglive.m3u:"
-        cat fglive.m3u
+        # 确认处理结果 (显示前10行，避免输出过长)
+        echo "Processed fglive.m3u (preview):"
+        head -n 10 fglive.m3u
 
     # 提交并推送更改
     - name: Commit and push changes
       run: |
+        set -e
         git config user.name "GitHub Actions Bot"
         git config user.email "actions@github.com"
+
+        # 确保无冲突更新
+        git pull --rebase origin main
+
         git add fglive.m3u
         git commit -m "Update fglive.m3u on $(date)" || echo "No changes to commit"
-        git push origin main
+        git push origin main || echo "Failed to push changes. Ensure no conflicts exist."
