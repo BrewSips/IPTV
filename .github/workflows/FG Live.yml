@@ -18,37 +18,41 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 下载并保存 M3U 文件
-      - name: Download and process M3U file
+      # 下载 iptv.txt 文件并提取目标 URL 和 USER_AGENT
+      - name: Extract target URL and USER_AGENT
         run: |
           set -e
 
-          # 定义 URL 文件路径
-          IPTV_FILE="https://raw.githubusercontent.com/Yu0754/IPTV/main/iptv.txt"
+          echo "Fetching iptv.txt from GitHub..."
+          IPTV_FILE_URL="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/iptv.txt"
 
-          # 提取 M3U URL 和 User-Agent
-          echo "Fetching iptv.txt..."
-          IPTV_CONTENT=$(curl -sL "$IPTV_FILE" || { echo "Error: Failed to fetch iptv.txt"; exit 1; })
-          
-          M3U_URL=$(echo "$IPTV_CONTENT" | awk '/# 全球电视/{getline; print}' | tr -d '\r')
+          # 使用 -f 标志捕获 HTTP 错误
+          IPTV_CONTENT=$(curl -sfL "$IPTV_FILE_URL") || { echo "Error: Failed to fetch iptv.txt"; exit 1; } # 修改点 1
+
+          if [ -z "$IPTV_CONTENT" ]; then
+            echo "Error: iptv.txt is empty" >&2
+            exit 1
+          fi
+
+          # 提取目标 URL 和 USER_AGENT
+          TARGET_URL=$(echo "$IPTV_CONTENT" | awk '/# 全球电视/{getline; print}' | tr -d '\r')
           USER_AGENT=$(echo "$IPTV_CONTENT" | awk '/# USER_AGENT/{getline; print}' | tr -d '\r')
 
-          # 检查是否成功提取 URL 和 User-Agent
-          if [ -z "$M3U_URL" ]; then
-            echo "Error: Failed to extract M3U URL from iptv.txt" >&2
+          if [ -z "$TARGET_URL" ]; then
+            echo "Error: Target URL not found in iptv.txt" >&2
             exit 1
           fi
           if [ -z "$USER_AGENT" ]; then
-            echo "Error: Failed to extract USER_AGENT from iptv.txt" >&2
+            echo "Error: USER_AGENT not found in iptv.txt" >&2
             exit 1
           fi
 
-          echo "Extracted M3U URL: $M3U_URL"
+          echo "Extracted TARGET_URL: $TARGET_URL"
           echo "Extracted USER_AGENT: $USER_AGENT"
 
           # 下载 M3U 文件并保存为 fglive.m3u
           echo "Downloading M3U file..."
-          curl -sL -A "$USER_AGENT" "$M3U_URL" -o fglive.m3u || { echo "Error: Failed to download M3U file"; exit 1; }
+          curl -sfL -A "$USER_AGENT" "$TARGET_URL" -o fglive.m3u || { echo "Error: Failed to download M3U file"; exit 1; } # 修改点 1
 
           if [ ! -s fglive.m3u ]; then
             echo "Error: fglive.m3u file is empty" >&2
@@ -83,7 +87,8 @@ jobs:
           git stash || echo "No changes to stash"
 
           # 确保无冲突更新
-          git pull --rebase origin main || { echo "Error: Git pull failed"; exit 1; }
+          echo "Pulling latest changes from origin/main..."
+          git pull --rebase origin main || { echo "Error: Git pull failed. Please resolve conflicts."; exit 1; } # 修改点 2
 
           # 恢复暂存的更改
           echo "Applying stashed changes..."
