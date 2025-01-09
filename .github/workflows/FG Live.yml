@@ -26,7 +26,6 @@ jobs:
           echo "Fetching iptv.txt from GitHub..."
           IPTV_FILE_URL="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/iptv.txt"
 
-          # 使用 -f 标志捕获 HTTP 错误
           IPTV_CONTENT=$(curl -sfL "$IPTV_FILE_URL") || { echo "Error: Failed to fetch iptv.txt"; exit 1; } # 修改点 1
 
           if [ -z "$IPTV_CONTENT" ]; then
@@ -88,7 +87,7 @@ jobs:
 
           # 确保无冲突更新
           echo "Pulling latest changes from origin/main..."
-          git pull --rebase origin main || { echo "Error: Git pull failed. Please resolve conflicts."; exit 1; } # 修改点 2
+          git pull --rebase origin main || { echo "Error: Git pull failed. Please resolve conflicts."; exit 1; }
 
           # 恢复暂存的更改
           echo "Applying stashed changes..."
