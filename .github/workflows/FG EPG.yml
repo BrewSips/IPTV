@@ -14,30 +14,35 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # 获取 URL 文件的内容并下载 EPG 数据
+    # 获取 iptv.txt 文件的内容并下载 EPG 数据
     - name: Download and process EPG data
       run: |
-        # 尝试下载 url.txt 文件
-        echo "Fetching url.txt from GitHub..."
-        URL_FILE=$(curl -s https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/url.txt)
+        # 尝试下载 iptv.txt 文件
+        echo "Fetching iptv.txt from GitHub..."
+        IPTV_FILE=$(curl -s https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/iptv.txt)
         
-        # 打印 url.txt 的内容，调试用
-        echo "url.txt content:"
-        echo "$URL_FILE"
+        # 打印 iptv.txt 的内容，调试用
+        echo "iptv.txt content:"
+        echo "$IPTV_FILE"
         
         # 从包含 "# 全球电视" 的行下面一行提取 URL
-        M3U_URL=$(echo "$URL_FILE" | grep -A 1 "# 全球电视" | tail -n 1 | tr -d '\r')
+        M3U_URL=$(echo "$IPTV_FILE" | grep -A 1 "# 全球电视" | tail -n 1 | tr -d '\r')
         
-        # 检查是否成功获取到 URL
+        # 从包含 "# USER_AGENT" 的行下面一行提取 User-Agent
+        USER_AGENT=$(echo "$IPTV_FILE" | grep -A 1 "# USER_AGENT" | tail -n 1 | tr -d '\r')
+
+        # 检查是否成功获取到 URL 和 User-Agent
         echo "M3U URL: $M3U_URL"
+        echo "USER_AGENT: $USER_AGENT"
         
         if [ -z "$M3U_URL" ]; then
           echo "M3U URL not found or is empty"
           exit 1
         fi
-
-        # 自定义 User-Agent 模拟播放器
-        USER_AGENT="AptvPlayer/1.3.16"
+        if [ -z "$USER_AGENT" ]; then
+          echo "USER_AGENT not found or is empty"
+          exit 1
+        fi
 
         # 使用 curl 下载 EPG 数据
         EPG_FILE=$(curl -sL -A "$USER_AGENT" "$M3U_URL")
