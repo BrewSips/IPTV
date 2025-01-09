@@ -5,6 +5,10 @@ on:
     - cron: '0 0 * * *'  # 每24小时运行一次
   workflow_dispatch:        # 手动触发
 
+concurrency:
+  group: download-cn-logos-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   download-cn-logos:
     runs-on: ubuntu-22.04
@@ -60,23 +64,40 @@ jobs:
         echo "Fetching content from $TARGET_URL with User-Agent: $USER_AGENT..."
         curl -sL -A "$USER_AGENT" "$TARGET_URL" -o temp_content.txt
         
+        if [ ! -s temp_content.txt ]; then
+          echo "Failed to fetch content or the content is empty."
+          exit 1
+        fi
+
         echo "Fetched content:"
         cat temp_content.txt
 
     # 提取和下载 .png 文件到 CN Logo 文件夹
     - name: Extract and download .png URLs
       run: |
-        mkdir -p "CN Logo"
+        echo "Extracting .png URLs and downloading them..."
         grep -oE 'http[^ ]+\.png' temp_content.txt | while read -r URL; do
           echo "Downloading $URL"
           curl -s -O -J "$URL" --output-dir "CN Logo" || echo "Failed to download: $URL"
         done
+
+        # 验证是否成功下载文件
+        if [ "$(ls -A CN Logo)" ]; then
+          echo "Files downloaded successfully."
+        else
+          echo "No .png files downloaded. Exiting."
+          exit 1
+        fi
 
     # 提交并推送 CN Logo 文件夹到仓库
     - name: Commit and push CN Logo folder
       run: |
         git config user.name "GitHub Actions Bot"
         git config user.email "actions@github.com"
+
+        # 拉取远程分支，避免提交冲突
+        git pull --rebase origin main
+
         git add "CN Logo"
-        git commit -m "Update CN Logo folder on $(date)" || echo "No changes to push"
-        git push origin main || echo "No changes to push"
+        git commit -m "Update CN Logo folder on $(date)" || echo "No changes to commit"
+        git push origin main || echo "Failed to push changes. Ensure no conflicts exist."
