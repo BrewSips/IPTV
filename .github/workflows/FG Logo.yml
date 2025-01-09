@@ -14,27 +14,87 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      # 检出代码
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    # 检出代码
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      # 下载 iptv.txt 文件并提取目标 URL 和 USER_AGENT
-      - name: Extract target URL and USER_AGENT
-        run: |
-          set -e
+    # 下载 iptv.txt 文件并提取目标 URL 和 USER_AGENT
+    - name: Extract target URL and USER_AGENT
+      run: |
+        set -e
 
-          echo "Fetching iptv.txt from GitHub..."
-          IPTV_FILE_URL="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/iptv.txt"
+        echo "Fetching iptv.txt from GitHub..."
+        IPTV_FILE_URL="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/iptv.txt"
 
-          IPTV_CONTENT=$(curl -sL "$IPTV_FILE_URL")
-          if [ -z "$IPTV_CONTENT" ]; then
-            echo "Error: Failed to fetch iptv.txt or it is empty" >&2
-            exit 1
-          fi
+        IPTV_CONTENT=$(curl -sL "$IPTV_FILE_URL")
+        if [ -z "$IPTV_CONTENT" ]; then
+          echo "Error: Failed to fetch iptv.txt or it is empty" >&2
+          exit 1
+        fi
 
-          # 提取目标 URL 和 USER_AGENT
-          TARGET_URL=$(echo "$IPTV_CONTENT" | awk '/# 全球电视/{getline; print}' | tr -d '\r')
-          USER_AGENT=$(echo "$IPTV_CONTENT" | awk '/# USER_AGENT/{getline; print}' | tr -d '\r')
+        # 提取目标 URL 和 USER_AGENT
+        TARGET_URL=$(echo "$IPTV_CONTENT" | awk '/# 全球电视/{getline; print}' | tr -d '\r')
+        USER_AGENT=$(echo "$IPTV_CONTENT" | awk '/# USER_AGENT/{getline; print}' | tr -d '\r')
 
-          if [ -z "$TARGET_URL" ]; then
-            echo "Error: Target URL
+        if [ -z "$TARGET_URL" ]; then
+          echo "Error: Target URL not found in iptv.txt" >&2
+          exit 1
+        fi
+        if [ -z "$USER_AGENT" ]; then
+          echo "Error: USER_AGENT not found in iptv.txt" >&2
+          exit 1
+        fi
+
+        echo "Extracted TARGET_URL: $TARGET_URL"
+        echo "Extracted USER_AGENT: $USER_AGENT"
+
+        # 下载内容
+        echo "Fetching content from TARGET_URL..."
+        LOGO_CONTENT=$(curl -sL -A "$USER_AGENT" "$TARGET_URL")
+        if [ -z "$LOGO_CONTENT" ]; then
+          echo "Error: Failed to fetch content from TARGET_URL or it is empty" >&2
+          exit 1
+        fi
+
+        # 保存到临时文件
+        echo "$LOGO_CONTENT" > temp_content.txt
+        echo "Content saved to temp_content.txt"
+
+    # 创建 FG Logo 文件夹
+    - name: Prepare FG Logo folder
+      run: |
+        mkdir -p "FG Logo"
+        echo "FG Logo folder is ready"
+
+    # 提取和下载 .png 文件到 FG Logo 文件夹
+    - name: Extract and download .png files
+      run: |
+        set -e
+        echo "Extracting .png URLs and downloading files..."
+        PNG_URLS=$(grep -oE 'http[^ ]+\.png' temp_content.txt || echo "")
+
+        if [ -z "$PNG_URLS" ]; then
+          echo "No .png URLs found in the content"
+          exit 0
+        fi
+
+        echo "$PNG_URLS" | while read -r URL; do
+          echo "Downloading $URL"
+          curl -s -O -J "$URL" --output-dir "FG Logo"
+        done
+
+        echo "All .png files have been downloaded"
+
+    # 提交并推送 FG Logo 文件夹到仓库
+    - name: Commit and push FG Logo folder
+      run: |
+        set -e
+        git config user.name "GitHub Actions Bot"
+        git config user.email "actions@github.com"
+
+        # 确保无冲突更新
+        git pull --rebase origin main
+
+        git add "FG Logo"
+        git commit -m "Update FG Logo folder on $(date)" || echo "No changes to commit"
+        git push origin main || echo "Failed to push changes. Ensure no conflicts exist."
