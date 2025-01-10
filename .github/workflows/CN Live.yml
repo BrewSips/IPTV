@@ -2,7 +2,7 @@ name: CN Live
 
 on:
   schedule:
-    - cron: '25 0,2,4,6,8,10,12,14,16,18,20,22 * * *'
+    - cron: '25 0-23/2 * * *'  # 每天从0:00起，每两小时的20分钟执行一次
   workflow_dispatch:        # 手动触发
 
 concurrency:
