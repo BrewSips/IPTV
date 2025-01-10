@@ -7,13 +7,23 @@ on:
 
 concurrency:
   group: download-logos-${{ github.ref }}
-  cancel-in-progress: false
 
 jobs:
   download-logos:
     runs-on: ubuntu-22.04
 
     steps:
+    
+      # 获取文件锁
+      - name: Acquire lock
+        run: |
+          LOCK_FILE="/tmp/update-m3u.lock"
+          exec {lock_fd}>$LOCK_FILE || exit 1
+          flock -n $lock_fd || {
+            echo "Another job is running, waiting for lock..."
+            flock $lock_fd
+          }
+          
       # 检出代码
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -108,3 +118,10 @@ jobs:
           git add "CN Logo"
           git commit -m "Update CN Logo folder on $(date)" || echo "No changes to commit"
           git push origin main || echo "Failed to push changes. Ensure no conflicts exist."
+          
+      # 释放文件锁
+      - name: Release lock
+        if: always()
+        run: |
+          LOCK_FILE="/tmp/update-m3u.lock"
+          rm -f $LOCK_FILE || echo "Failed to release lock"
