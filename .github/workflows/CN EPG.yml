@@ -2,7 +2,7 @@ name: CN EPG
 
 on:
   schedule:
-    - cron: '30 * * * *'  # 每小时的30分执行一次
+    - cron: '20 0,2,4,6,8,10,12,14,16,18,20,22 * * *'
   workflow_dispatch:        # 手动触发
 
 concurrency:
