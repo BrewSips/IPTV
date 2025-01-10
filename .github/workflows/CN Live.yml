@@ -15,7 +15,8 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      # 插入：获取文件锁
+    
+      # 获取文件锁
       - name: Acquire lock
         run: |
           LOCK_FILE="/tmp/update-m3u.lock"
@@ -116,7 +117,7 @@ jobs:
           git commit -m "Update cnlive.m3u on $(date)" || echo "No changes to commit"
           git push origin main || { echo "Error: Git push failed. Ensure no conflicts exist."; exit 1; }
           
-      # 插入：释放文件锁
+      # 释放文件锁
       - name: Release lock
         if: always()
         run: |
