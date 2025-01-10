@@ -19,7 +19,7 @@ jobs:
       # 获取文件锁
       - name: Acquire lock
         run: |
-          LOCK_FILE="/tmp/update-m3u.lock"
+          LOCK_FILE="/tmp/cnlive.lock"
           exec {lock_fd}>$LOCK_FILE || exit 1
           flock -n $lock_fd || {
             echo "Another job is running, waiting for lock..."
@@ -121,5 +121,5 @@ jobs:
       - name: Release lock
         if: always()
         run: |
-          LOCK_FILE="/tmp/update-m3u.lock"
+          LOCK_FILE="/tmp/cnlive.lock"
           rm -f $LOCK_FILE || echo "Failed to release lock"
