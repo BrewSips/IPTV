@@ -1,6 +1,6 @@
 # USER_AGENT
 AptvPlayer/1.3.16
 # 中国电视
-https://raw.githubusercontent.com/Kimentanm/aptv/master/m3u/iptv.m3u
+https://raw.githubusercontent.com/suxuang/myIPTV/refs/heads/main/ipv6.m3u
 # 全球电视
 https://www.stream-link.org/playlist.m3u?token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49
