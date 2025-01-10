@@ -62,9 +62,9 @@ jobs:
           echo "Filtering M3U content..."
           awk '
             BEGIN { keep = 1 }
-            /CCTV17/ { print; getline; print; keep = 0 }
-            /#卫视频道/ { keep = 1 }
-            /广东珠江/ { print; getline; print; exit }
+            /#第一段结束行上一行包含字符/ { print; getline; print; keep = 0 }
+            /#第二段开始行包含字符/ { keep = 1 }
+            /#第二段结束行上一行包含字符/ { print; getline; print; exit }
             keep { print }
           ' cnlive.m3u > filtered.m3u
 
