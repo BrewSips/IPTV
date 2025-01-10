@@ -6,7 +6,7 @@ on:
   workflow_dispatch:        # 手动触发
 
 concurrency:
-  group: download-logos-${{ github.ref }}
+  group: cnlogo-${{ github.ref }}
 
 jobs:
   download-logos:
@@ -19,6 +19,7 @@ jobs:
         run: |
           LOCK_FILE="/tmp/cnlogo.lock"
           exec {lock_fd}>$LOCK_FILE || exit 1
+          trap 'rm -f $LOCK_FILE' EXIT
           flock -n $lock_fd || {
             echo "Another job is running, waiting for lock..."
             flock $lock_fd
@@ -118,10 +119,3 @@ jobs:
           git add "CN Logo"
           git commit -m "Update CN Logo folder on $(date)" || echo "No changes to commit"
           git push origin main || echo "Failed to push changes. Ensure no conflicts exist."
-          
-      # 释放文件锁
-      - name: Release lock
-        if: always()
-        run: |
-          LOCK_FILE="/tmp/cnlogo.lock"
-          rm -f $LOCK_FILE || echo "Failed to release lock"
