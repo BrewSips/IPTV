@@ -9,13 +9,22 @@ on:
 
 concurrency:
   group: update-m3u-${{ github.ref }}
-  cancel-in-progress: false
 
 jobs:
   update-m3u:
     runs-on: ubuntu-22.04
 
     steps:
+      # 插入：获取文件锁
+      - name: Acquire lock
+        run: |
+          LOCK_FILE="/tmp/update-m3u.lock"
+          exec {lock_fd}>$LOCK_FILE || exit 1
+          flock -n $lock_fd || {
+            echo "Another job is running, waiting for lock..."
+            flock $lock_fd
+          }
+          
       # 检出代码
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -106,3 +115,10 @@ jobs:
           git add cnlive.m3u
           git commit -m "Update cnlive.m3u on $(date)" || echo "No changes to commit"
           git push origin main || { echo "Error: Git push failed. Ensure no conflicts exist."; exit 1; }
+          
+      # 插入：释放文件锁
+      - name: Release lock
+        if: always()
+        run: |
+          LOCK_FILE="/tmp/update-m3u.lock"
+          rm -f $LOCK_FILE || echo "Failed to release lock"
