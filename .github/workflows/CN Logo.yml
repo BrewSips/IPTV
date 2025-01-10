@@ -2,7 +2,7 @@ name: CN Logo
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # 每24小时运行一次
+    - cron: '0 2 * * 1'  # 每周一凌晨 2:00 运行
   workflow_dispatch:        # 手动触发
 
 concurrency:
