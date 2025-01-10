@@ -23,18 +23,18 @@ jobs:
         run: |
           set -e
 
-          echo "Fetching iptv.txt from GitHub..."
-          IPTV_FILE_URL="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/iptv.txt"
+          echo "Fetching iptv.txt from the private repository..."
+          IPTV_FILE_PATH="./iptv.txt"
 
-          IPTV_CONTENT=$(curl -sfL "$IPTV_FILE_URL") || { echo "Error: Failed to fetch iptv.txt"; exit 1; }
-          
-          if [ -z "$IPTV_CONTENT" ]; then
-            echo "Error: Failed to fetch iptv.txt or it is empty" >&2
+          if [ ! -f "$IPTV_FILE_PATH" ]; then
+            echo "Error: iptv.txt file not found in the repository root" >&2
             exit 1
           fi
 
+          IPTV_CONTENT=$(cat "$IPTV_FILE_PATH")
+
           # 提取目标 URL 和 USER_AGENT
-          TARGET_URL=$(echo "$IPTV_CONTENT" | awk '/# 全球电视/{getline; print}' | tr -d '\r')
+          TARGET_URL=$(echo "$IPTV_CONTENT" | awk '/# 中国电视/{getline; print}' | tr -d '\r')
           USER_AGENT=$(echo "$IPTV_CONTENT" | awk '/# USER_AGENT/{getline; print}' | tr -d '\r')
 
           if [ -z "$TARGET_URL" ]; then
