@@ -34,7 +34,7 @@ jobs:
           IPTV_CONTENT=$(cat "$IPTV_FILE_PATH")
 
           # 提取目标 URL 和 USER_AGENT
-          TARGET_URL=$(echo "$IPTV_CONTENT" | awk '/# 中国电视/{getline; print}' | tr -d '\r')
+          TARGET_URL=$(echo "$IPTV_CONTENT" | awk '/# 全球电视/{getline; print}' | tr -d '\r')
           USER_AGENT=$(echo "$IPTV_CONTENT" | awk '/# USER_AGENT/{getline; print}' | tr -d '\r')
 
           if [ -z "$TARGET_URL" ]; then
