@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v3
 
       # 下载 iptv.txt 文件并提取目标 URL 和 USER_AGENT
-      - name: Extract target URL and USER_AGENT
+      - name: Extract and download EPG data
         run: |
           set -e
 
@@ -60,7 +60,7 @@ jobs:
           echo "Extracted TARGET_URL: $TARGET_URL"
           echo "Extracted USER_AGENT: $USER_AGENT"
 
-          # 使用 curl 下载 EPG 数据
+          # 使用 USER_AGENT 下载 EPG 数据
           echo "Downloading EPG XML data from $TARGET_URL..."
           curl -sL -A "$USER_AGENT" "$TARGET_URL" -o cnepg.xml
           if [ ! -s cnepg.xml ]; then
