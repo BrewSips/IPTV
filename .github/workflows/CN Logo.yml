@@ -12,6 +12,9 @@ jobs:
   download-logos:
     runs-on: ubuntu-22.04
 
+    env:
+      TZ: Asia/Shanghai  # 设置时区为北京时间
+     
     steps:
     
       # 获取文件锁
