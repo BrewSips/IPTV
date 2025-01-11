@@ -2,7 +2,9 @@ name: IPTV CN EPG
 
 on:
   schedule:
-    - cron: '25 */4 * * *'  # 每天0:25起，每4小时执行一次
+    - cron: '40 16 * * *'  # 北京时间 00:40
+    - cron: '15 2 * * *'   # 北京时间 10:15
+    - cron: '0 7 * * *'    # 北京时间 15:00
   workflow_dispatch:        # 手动触发
 
 concurrency:
@@ -45,7 +47,7 @@ jobs:
           IPTV_CONTENT=$(cat "$IPTV_FILE_PATH")
 
           # 提取目标 URL 和 USER_AGENT
-          TARGET_URL=$(echo "$IPTV_CONTENT" | awk '/# 中国电视/{getline; print}' | tr -d '\r')
+          TARGET_URL=$(echo "$IPTV_CONTENT" | awk '/# 中国EPG/{getline; print}' | tr -d '\r')
           USER_AGENT=$(echo "$IPTV_CONTENT" | awk '/# USER_AGENT/{getline; print}' | tr -d '\r')
 
           if [ -z "$TARGET_URL" ]; then
@@ -61,24 +63,8 @@ jobs:
           echo "Extracted USER_AGENT: $USER_AGENT"
 
           # 使用 curl 下载 EPG 数据
-          echo "Fetching TARGET_URL content..."
-          EPG_FILE=$(curl -sL -A "$USER_AGENT" "$TARGET_URL")
-          if [ -z "$EPG_FILE" ]; then
-            echo "Failed to fetch EPG data or the content is empty"
-            exit 1
-          fi
-
-          # 从下载的 EPG 数据中提取 x-tvg-url 的 URL
-          X_TVG_URL=$(echo "$EPG_FILE" | grep -i "x-tvg-url" | cut -d '"' -f 2)
-          if [ -z "$X_TVG_URL" ]; then
-            echo "x-tvg-url not found or is empty"
-            exit 1
-          fi
-          echo "x-tvg-url: $X_TVG_URL"
-
-          # 下载 x-tvg-url 指向的 EPG 数据
-          echo "Downloading EPG XML data from $X_TVG_URL..."
-          curl -sL -A "$USER_AGENT" "$X_TVG_URL" -o cnepg.xml
+          echo "Downloading EPG XML data from $TARGET_URL..."
+          curl -sL -A "$USER_AGENT" "$TARGET_URL" -o cnepg.xml
           if [ ! -s cnepg.xml ]; then
             echo "Failed to download EPG XML data or the file is empty"
             exit 1
@@ -110,4 +96,3 @@ jobs:
           git add cnepg.xml
           git commit -m "Update cnepg.xml on $(date)" || echo "No changes to commit"
           git push origin main || echo "Failed to push changes. Ensure no conflicts exist."
-
