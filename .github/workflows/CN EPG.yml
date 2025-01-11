@@ -2,7 +2,7 @@ name: CN EPG
 
 on:
   schedule:
-    - cron: '20 0-23/2 * * *'  # 每天从0:00起，每两小时的20分钟执行一次
+    - cron: '30 0-23/6 * * *'  # 每天从0:00起，每6小时的30分钟执行一次
   workflow_dispatch:        # 手动触发
 
 concurrency:
@@ -12,6 +12,9 @@ jobs:
   update-m3u:
     runs-on: ubuntu-22.04
 
+    env:
+      TZ: Asia/Shanghai  # 设置时区为北京时间
+      
     steps:
     
       # 获取文件锁
