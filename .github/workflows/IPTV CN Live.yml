@@ -2,7 +2,7 @@ name: IPTV CN Live
 
 on:
   schedule:
-    - cron: '30 */4 * * *'  # 每天0:30起，每2小时执行一次
+    - cron: '30 */12 * * *'  # 每天0:30起，每12小时执行一次
   workflow_dispatch:        # 手动触发
 
 concurrency:
