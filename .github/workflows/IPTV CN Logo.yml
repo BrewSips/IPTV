@@ -2,7 +2,7 @@ name: IPTV CN Logo
 
 on:
   schedule:
-    - cron: '30 16 * * *'  # 每天北京时间0:30执行一次
+    - cron: '30 4 * * *'  # 每天北京时间0:30执行一次
   workflow_dispatch:        # 手动触发
 
 concurrency:
