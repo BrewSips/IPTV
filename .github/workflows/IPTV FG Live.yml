@@ -2,7 +2,7 @@ name: IPTV FG Live
 
 on:
   schedule:
-    - cron: '25 16-7/4 * * *'  # 每天北京时间0:25起，每4小时执行一次
+    - cron: '25 */4 * * *'  # 每天0:25起，每4小时执行一次
   workflow_dispatch:        # 手动触发
 
 concurrency:
