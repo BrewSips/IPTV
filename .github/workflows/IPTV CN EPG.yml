@@ -2,7 +2,9 @@ name: IPTV CN EPG
 
 on:
   schedule:
-    - cron: '20 */4 * * *'  # 每天0:20起，每4小时执行一次
+    - cron: '40 16 * * *'  # 北京时间 00:40
+    - cron: '15 2 * * *'   # 北京时间 10:15
+    - cron: '0 7 * * *'    # 北京时间 15:00
   workflow_dispatch:        # 手动触发
 
 concurrency:
