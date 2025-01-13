@@ -1,4 +1,4 @@
-#EXTM3U x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/cnepg.xml"
+#EXTM3U x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/fgepg.xml"
 #EXTINF:-1 tvg-id="Jade.my" tvg-name="華麗(翡翠台)" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/astro_jade.png" group-title="Astro",華麗(翡翠台)
 https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=sgp0269kdbd&token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49
 #EXTINF:-1 tvg-id="TVBJade" tvg-name="翡翠台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_jade.png" group-title="TVB",翡翠台
