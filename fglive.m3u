@@ -1,6 +1,4 @@
-#EXTM3U x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/fgepg.xml"
-
-
+#EXTM3U x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/cnepg.xml"
 #EXTINF:-1 tvg-id="Jade.my" tvg-name="華麗(翡翠台)" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/astro_jade.png" group-title="Astro",華麗(翡翠台)
 https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=sgp0269kdbd&token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49
 #EXTINF:-1 tvg-id="TVBJade" tvg-name="翡翠台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_jade.png" group-title="TVB",翡翠台
@@ -143,7 +141,6 @@ https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=hkt0888bsbs&token=71
 https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=hkt2169evdp&token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49
 #EXTINF:-1 tvg-id="POPC" tvg-name="POPC" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_206.png" group-title="電影&劇集",PopC
 https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=hkt7211jsre&token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49
-
 #EXTINF:-1 tvg-id="nowSportsPrime" tvg-name="now精選體育" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/now_630.png" group-title="體育休閒",now精選體育
 https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=chn6431kcwc&token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49
 #EXTINF:-1 tvg-id="CCTV5.cn" tvg-name="CCTV5體育頻道" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/cctv_5.png" group-title="體育休閒",CCTV5體育頻道
@@ -166,7 +163,6 @@ https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=chn5870mmbq&token=71
 https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=chn7603nctj&token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49
 #EXTINF:-1 tvg-id="litv-longturn10" tvg-name="博斯無限台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/litv-longturn10.png" group-title="體育休閒",博斯無限台
 https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=chn4304cbkw&token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49
-
 #EXTINF:-1 tvg-id="AstroArena" tvg-name="Astro Arena" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/Astro_Arena.png" group-title="體育休閒",Astro Arena(馬來西亞🇲🇾)
 https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=spt0308egms&token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49
 #EXTINF:-1 tvg-id="AstroArena2" tvg-name="Astro Arena 2" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/Astro_Arena_2.png" group-title="體育休閒",Astro Arena 2(馬來西亞🇲🇾)
@@ -239,7 +235,6 @@ https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=spt6573ddhg&token=71
 https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=spt4252rjfc&token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49
 #EXTINF:-1 tvg-id="HubSports1.sg" tvg-name="HubSports1" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/hub_sports1.png" group-title="體育休閒",Hub Sports 1(新加坡🇸🇬)
 https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=spt9080fqdn&token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49
-
 #EXTINF:-1 tvg-id="SkySportsMainEventHD" tvg-name="Sky Sports Main Event UK" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/sky_sports_main_event.png" group-title="體育休閒",Sky Sports Main Event(英國🇬🇧)
 https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=sky7951wuzr&token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49
 #EXTINF:-1 tvg-id="SkySportsNewsHD" tvg-name="Sky Sports News UK" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/sky_sports_news.png" group-title="體育休閒",Sky Sports News(英國🇬🇧)
@@ -286,7 +281,6 @@ https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=sky6299ghuh&token=71
 https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=sky5134mwrn&token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49
 #EXTINF:-1 tvg-id="TNTSports4HD" tvg-name="TNTSports4" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tnt_sports4.png" group-title="體育休閒",TNT Sports 4(英國🇬🇧)
 https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=sky0761ujew&token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49
-
 #EXTINF:-1 tvg-id="ABCAustralia.au" tvg-name="ABCAustralia au" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/abc_australia.png" group-title="News",ABC Australia
 https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=eng7138zkru&token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49
 #EXTINF:-1 tvg-id="AlJazeeraEnglish.qa" tvg-name="AlJazeeraEnglish" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/al_jazeera_english.png" group-title="News",AL Jazeera English
@@ -351,7 +345,6 @@ https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=eng0312wztt&token=71
 https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=eng5213aadp&token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49
 #EXTINF:-1 tvg-id="USANetworkEast.us" tvg-name="USA Network East" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/usa.png" group-title="電影&劇集",USA Network
 https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=eng3980uppn&token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49
-
 #EXTINF:-1 tvg-id="4gtv-4gtv152" tvg-name="東森新聞" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/ebc_news.png" group-title="台灣",東森新聞
 https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=twn2550uwjd&token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49
 #EXTINF:-1 tvg-id="4gtv-4gtv153" tvg-name="東森財經新聞" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/ebc_finance.png" group-title="台灣",東森財經新聞
@@ -382,7 +375,6 @@ https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=twn9301tubc&token=71
 https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=twn1678qtvk&token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49
 #EXTINF:-1 tvg-id="4gtv-4gtv073" tvg-name="TVBS" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvbs.png" group-title="台灣",TVBS
 https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=twn0304gepr&token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49
-
 #EXTINF:-1 tvg-id="SmartTV" tvg-name="Smart知識頻道" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/longturn19.png" group-title="台灣綜合綜藝",Smart知識頻道
 https://sc2025.stream-link.org/playlist/f7dec06f0b24.php?id=mov8018cpzr&token=71a2af8c-8fec-4901-8e31-919c53a57c58&hmac=a202f253638c212fa272ecce2b0c7b49
 #EXTINF:-1 tvg-id="4gtv-live207" tvg-name="三立綜合台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/4gtv_live207.png" group-title="台灣綜合綜藝",三立綜合台
