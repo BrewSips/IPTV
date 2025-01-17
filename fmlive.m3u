@@ -1,4 +1,4 @@
-#EXTM3U x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/cnepg.xml"
+#EXTM3U x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/fmepg.xml"
 #EXTINF:-1 radio="true" tvg-name="中国之声" tvg-logo="https://radio.0472.org/?id=639&logo" group-title="央广",中国之声
 https://radio.0472.org/?id=639
 #EXTINF:-1 radio="true" tvg-name="经济之声" tvg-logo="https://radio.0472.org/?id=640&logo" group-title="央广",经济之声
@@ -287,8 +287,6 @@ http://satellitepull.cnr.cn/live/wx32jiangxws/playlist.m3u8
 http://satellitepull.cnr.cn/live/wxnxws/playlist.m3u8
 #EXTINF:-1 radio="true" tvg-name="山西卫视" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FM_Logo/山西卫视.png" group-title="电视伴音",山西卫视
 http://satellitepull.cnr.cn/live/wxssxws/playlist.m3u8
-#EXTINF:-1 radio="true" tvg-name="香港卫视" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FM_Logo/香港卫视.png" group-title="电视伴音",香港卫视
-https://piccpndali.v.myalicdn.com/audio/xianggangweishi_2.m3u8
 #EXTINF:-1 radio="true" tvg-name="青海卫视" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FM_Logo/青海卫视.png" group-title="电视伴音",青海卫视
 https://piccpndali.v.myalicdn.com/audio/qinghai_2.m3u8
 #EXTINF:-1 radio="true" tvg-name="内蒙古卫视" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FM_Logo/内蒙古卫视.png" group-title="电视伴音",内蒙古卫视
