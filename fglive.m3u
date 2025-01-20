@@ -1,3 +1,3 @@
 #EXTM3U x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/fgepg.xml"
 #EXTINF:-1 tvg-id="系統維護" tvg-name="系統維護" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/500.png" group-title="500",系統維護(稍後刷新)
-https://error.stream-link.org/code/tg_500
+https://raw.githubusercontent.com/Yu0754/Private/IPTV/refs/heads/main/code/tg_500
