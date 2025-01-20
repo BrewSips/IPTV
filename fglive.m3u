@@ -46,17 +46,17 @@ https://raw.githubusercontent.com/Yu0754/Private/IPTV/refs/heads/main/playlist/b
 #EXTINF:-1 tvg-id="ViuTV" tvg-name="ViuTV" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/viutv99.png" group-title="香港電視娛樂",ViuTV99
 https://raw.githubusercontent.com/Yu0754/Private/IPTV/refs/heads/main/playlist/b36348a0c578.php?id=hkt4312hnac
 #EXTINF:-1 tvg-id="CCTV1.now" tvg-name="中央綜合台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/cctv_1.png" group-title="香港電視娛樂",中央綜合港澳版(now)
-https://raw.githubusercontent.com/Yu0754/Private/IPTV/refs/heads/main/playlist/b36348a0c578.php?id=hkt1521bdqf
-#EXTINF:-1 tvg-id="RTHKTV31" tvg-name="RTHKTV31" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/rthk_31.png" group-title="RTHK"",港台电视31
 https://raw.githubusercontent.com/Yu0754/Private/IPTV/refs/heads/main/playlist/b36348a0c578.php?id=hkt1681dbjw
-#EXTINF:-1 tvg-id="RTHKTV32" tvg-name="RTHKTV32" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/rthk_32.png" group-title="RTHK",港台电视32
+#EXTINF:-1 tvg-id="RTHKTV31" tvg-name="RTHKTV31" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/rthk_31.png" group-title="RTHK"",港台电视31
 https://raw.githubusercontent.com/Yu0754/Private/IPTV/refs/heads/main/playlist/b36348a0c578.php?id=hkt2226pnvg
-#EXTINF:-1 tvg-id="RTHKTV33" tvg-name="RTHKTV33" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/rthk_33.png" group-title="RTHK",港台电视33(CCTV 1)
+#EXTINF:-1 tvg-id="RTHKTV32" tvg-name="RTHKTV32" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/rthk_32.png" group-title="RTHK",港台电视32
 https://raw.githubusercontent.com/Yu0754/Private/IPTV/refs/heads/main/playlist/b36348a0c578.php?id=hkt6644kpcv
-#EXTINF:-1 tvg-id="RTHKTV34" tvg-name="RTHKTV34" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/rthk_34.png" group-title="RTHK",港台电视34(CGTN Doc)
+#EXTINF:-1 tvg-id="RTHKTV33" tvg-name="RTHKTV33" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/rthk_33.png" group-title="RTHK",港台电视33(CCTV 1)
 https://raw.githubusercontent.com/Yu0754/Private/IPTV/refs/heads/main/playlist/b36348a0c578.php?id=hkt2051brdz
-#EXTINF:-1 tvg-id="RTHKTV35" tvg-name="RTHKTV35" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/rthk_35.png" group-title="RTHK",港台电视35(CGTN News)
+#EXTINF:-1 tvg-id="RTHKTV34" tvg-name="RTHKTV34" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/rthk_34.png" group-title="RTHK",港台电视34(CGTN Doc)
 https://raw.githubusercontent.com/Yu0754/Private/IPTV/refs/heads/main/playlist/b36348a0c578.php?id=hkt0554rsfe
+#EXTINF:-1 tvg-id="RTHKTV35" tvg-name="RTHKTV35" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/rthk_35.png" group-title="RTHK",港台电视35(CGTN News)
+https://raw.githubusercontent.com/Yu0754/Private/IPTV/refs/heads/main/playlist/b36348a0c578.php?id=hkt1521bdqf
 #EXTINF:-1 tvg-id="CCTV1.cn" tvg-name="中央綜合台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/cctv_1.png" group-title="中國",中央綜合台
 https://raw.githubusercontent.com/Yu0754/Private/IPTV/refs/heads/main/playlist/b36348a0c578.php?id=chn9921zmth
 #EXTINF:-1 tvg-id="CCTV4.cn" tvg-name="中文國際台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/cctv_4.png" group-title="中國",中文國際台
