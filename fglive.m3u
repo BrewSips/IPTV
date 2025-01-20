@@ -1,3 +1,229 @@
 #EXTM3U x-tvg-url="https://raw.githubusercontent.com/Yu0754/IPTV/refs/heads/main/fgepg.xml"
-#EXTINF:-1 tvg-id="系統維護" tvg-name="系統維護" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/500.png" group-title="500",系統維護(稍後刷新)
-https://raw.githubusercontent.com/Yu0754/Private/IPTV/refs/heads/main/code/tg_500
+#EXTINF:-1 tvg-id="Jade.my" tvg-name="華麗(翡翠台)" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/astro_jade.png" group-title="Astro",華麗(翡翠台)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sgp0428wkte
+#EXTINF:-1 tvg-id="TVBJade" tvg-name="翡翠台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_jade.png" group-title="TVB",翡翠台
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt9989uhjp
+#EXTINF:-1 tvg-id="TVBPlus" tvg-name="TVB Plus" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_plus.png" group-title="TVB",TVB Plus
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt2078wbun
+#EXTINF:-1 tvg-id="TVBNews" tvg-name="無綫新聞台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_news.png" group-title="TVB",無綫新聞台
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt5238pges
+#EXTINF:-1 tvg-id="I-JADE" tvg-name="翡翠台.新加坡_粵語" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_jade_sg.png" group-title="TVB",翡翠台.新加坡_粵語(tvbanywhere)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt7130ftkn
+#EXTINF:-1 tvg-id="I-JADE" tvg-name="翡翠台.新加坡_國語" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_jade_sg.png" group-title="TVB",翡翠台.新加坡_國語(tvbanywhere)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt8204dpvq
+#EXTINF:-1 tvg-id="I-STYLE" tvg-name="生活台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvbanywhere_style.png" group-title="TVB",生活台(tvbanywhere)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt3503emqh
+#EXTINF:-1 tvg-id="I-J-AUS" tvg-name="翡翠台.澳新時區" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_jade_aus.png" group-title="TVB",翡翠台.澳新時區(tvbanywhere)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt4502ebar
+#EXTINF:-1 tvg-id="I-J-UK" tvg-name="翡翠台.英國時區" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_jade_uk.png" group-title="TVB",翡翠台.英國時區(tvbanywhere)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt1958nmzk
+#EXTINF:-1 tvg-id="I-J-CAE" tvg-name="翡翠台.美加東岸時區" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_jade_cae.png" group-title="TVB",翡翠台.美加東岸時區(tvbanywhere)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt9691jpru
+#EXTINF:-1 tvg-id="I-J-CAW" tvg-name="翡翠台.美加西岸時區" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_jade_caw.png" group-title="TVB",翡翠台.美加西岸時區(tvbanywhere)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt2586cvgf
+#EXTINF:-1 tvg-id="TVBUS1" tvg-name="翡翠1台(北美)" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvbus_1.png" group-title="TVB",翡翠1台(北美)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt8481jrmv
+#EXTINF:-1 tvg-id="TVBUSJ1" tvg-name="翡翠綜合台J1(北美)" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvbus_j1.png" group-title="TVB",翡翠綜合台J1(北美)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt6825ctrg
+#EXTINF:-1 tvg-id="TVBUSDRAMA" tvg-name="翡翠劇集台(北美)" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvbus_drama.png" group-title="TVB",翡翠劇集台(北美)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt5456qkju
+#EXTINF:-1 tvg-id="TVBUSPearlDrama" tvg-name="明珠劇集台(北美)" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvbus_pearl_drama.png" group-title="TVB",明珠劇集台(北美)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt0786rtnp
+#EXTINF:-1 tvg-id="TVBUSE" tvg-name="翡翠娛樂台(北美)" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvbus_e.png" group-title="TVB",翡翠娛樂台(北美)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt2076tvrb
+#EXTINF:-1 tvg-id="nowNews" tvg-name="now新聞台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/now_332.png" group-title="香港電視娛樂",now新聞台
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt7640rdts
+#EXTINF:-1 tvg-id="ViuTV" tvg-name="ViuTV99" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/viutv99.png" group-title="香港電視娛樂",ViuTV99
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt0182upcu
+#EXTINF:-1 tvg-id="RTHKTV31" tvg-name="港台电视31" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/rthk_31.png" group-title="RTHK"",港台电视31
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt5139ukmu
+#EXTINF:-1 tvg-id="RTHKTV32" tvg-name="港台电视32" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/rthk_32.png" group-title="RTHK",港台电视32
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt9964atvk
+#EXTINF:-1 tvg-id="RTHKTV33" tvg-name="港台电视33" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/rthk_33.png" group-title="RTHK",港台电视33(CCTV 1)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt6418rnre
+#EXTINF:-1 tvg-id="CCTV1.now" tvg-name="中央綜合台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/cctv_1.png" group-title="中國",中央綜合港澳版(now)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt5139ukmu
+#EXTINF:-1 tvg-id="HOY77" tvg-name="77開電視" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/hoy77.png" group-title="奇妙電視"",77開電視
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt8786saga
+#EXTINF:-1 tvg-id="HOY78" tvg-name="78資訊台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/hoy78.png" group-title="奇妙電視",78資訊台
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt3270aemm
+#EXTINF:-1 tvg-id="PhoenixInfoNewsChannel" tvg-name="鳳凰衛視資訊台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/phtv_info.png" group-title="鳳凰衛視",鳳凰衛視資訊台
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt6193rrcq
+#EXTINF:-1 tvg-id="PhoenixChineseChannel" tvg-name="鳳凰衛視中文台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/phtv_live.png" group-title="鳳凰衛視",鳳凰衛視中文台
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt4222jupa
+#EXTINF:-1 tvg-id="PhoenixHongKongChannel" tvg-name="鳳凰衛視香港台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/phtv_hk.png" group-title="鳳凰衛視",鳳凰衛視香港台
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt1037chhj
+#EXTINF:-1 tvg-id="EntertainmentNews" tvg-name="TVB娛樂新聞台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_entertainment.png" group-title="TVB",TVB娛樂新聞台
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt3331qmkv
+#EXTINF:-1 tvg-id="Viu" tvg-name="viu劇集台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/now_102.png" group-title="電影&劇集",viu劇集台
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt3065fvju
+#EXTINF:-1 tvg-id="nowChineseDramaChannel" tvg-name="now華劇台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/now_105.png" group-title="電影&劇集",now華劇台
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt7830ezsc
+#EXTINF:-1 tvg-id="nowJelli" tvg-name="now紫金國際" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/now_108.png" group-title="電影&劇集",now紫金國際
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt1999gfsm
+#EXTINF:-1 tvg-id="TVBXingHe.my" tvg-name="TVB星河台(粵語)" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_xing_he.png" group-title="電影&劇集",TVB星河台(粵語)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sgp3634nekb
+#EXTINF:-1 tvg-id="TVBXingHe.my" tvg-name="TVB星河台(國語)" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_xing_he.png" group-title="電影&劇集",TVB星河台(國語)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sgp0831zjeq
+#EXTINF:-1 tvg-id="TVBClassic" tvg-name="TVB千禧經典台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_classic.png" group-title="電影&劇集",TVB千禧經典台
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sgp5403nder
+#EXTINF:-1 tvg-id="CelestialMovies.my" tvg-name="Astro天映頻道(粵語)" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/astro_celestial_movies.png" group-title="電影&劇集",Astro天映頻道(粵語)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sgp4164ezed
+#EXTINF:-1 tvg-id="CelestialMovies.my" tvg-name="Astro天映頻道(國語)" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/astro_celestial_movies.png" group-title="電影&劇集",Astro天映頻道(國語)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sgp7945jurp
+#EXTINF:-1 tvg-id="CelestialMovies.sg" tvg-name="天映頻道(新加坡)" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/astro_celestial_movies.png" group-title="電影&劇集",天映頻道(新加坡)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sgp3066sehz
+#EXTINF:-1 tvg-id="HBOAsia.sg" tvg-name="HBO Asia" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/hbo.png" group-title="電影&劇集",HBO Asia
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt3054jcan
+#EXTINF:-1 tvg-id="HBOFamilyAsia.sg" tvg-name="HBO Family Asia" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/hbo_family.png" group-title="電影&劇集",HBO Family Asia
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt1779gfvw
+#EXTINF:-1 tvg-id="HBOHitsAsia.sg" tvg-name="HBO Hits Asia" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/hbo_hits.png" group-title="電影&劇集",HBO Hits Asia
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt6660arkw
+#EXTINF:-1 tvg-id="HBOSignatureAsia.sg" tvg-name="HBO Signature Asia" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/hbo_signature.png" group-title="電影&劇集",HBO Signature Asia
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt3341hqmp
+#EXTINF:-1 tvg-id="CinemaxAsia.sg" tvg-name="Cinemax Asia" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/Cinemax.png" group-title="電影&劇集",Cinemax Asia
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt3674jpae
+#EXTINF:-1 tvg-id="MytvSuperFree" tvg-name="MytvSuper Free" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/mytvsuper.png" group-title="電影&劇集",MytvSuper Free
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt6293dmed
+#EXTINF:-1 tvg-id="AsianDrama" tvg-name="TVB亞洲劇台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_87.png" group-title="電影&劇集",TVB亞洲劇台
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt6083zqtp
+#EXTINF:-1 tvg-id="ChineseDrama" tvg-name="TVB華語劇台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_88.png" group-title="電影&劇集",TVB華語劇台
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt4055qpvz
+#EXTINF:-1 tvg-id="MeiAhMovieChannel" tvg-name="美亞電影台(粵語)" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_201.png" group-title="電影&劇集",美亞電影台(粵語)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt1292pmvj
+#EXTINF:-1 tvg-id="MeiAhMovieChannel" tvg-name="美亞電影台(國語)" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_201.png" group-title="電影&劇集",美亞電影台(國語)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt9570zktm
+#EXTINF:-1 tvg-id="I-AACT" tvg-name="功夫台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/kongfu.png" group-title="電影&劇集",功夫台
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt5492bwtq
+#EXTINF:-1 tvg-id="nowBaoguMovies" tvg-name="now爆谷電影台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/now_133.png" group-title="電影&劇集",now爆谷電影台
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt2902wkks
+#EXTINF:-1 tvg-id="nowBaoguSuperstars" tvg-name="now爆谷星影台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/now_138.png" group-title="電影&劇集",now爆谷星影台
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt5014panj
+#EXTINF:-1 tvg-id="MovieMovie.hk" tvg-name="Movie Movie" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/now_116.png" group-title="電影&劇集",Movie Movie
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt5877knbd
+#EXTINF:-1 tvg-id="AstroAEC" tvg-name="Astro AEC" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/Astro_AEC.png" group-title="Astro",Astro AEC
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sgp5977sptj
+#EXTINF:-1 tvg-id="AstroQuanJiaHD" tvg-name="Astro QuanJia" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/Astro_QJ.png" group-title="Astro",Astro QuanJia
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sgp7811feuq
+#EXTINF:-1 tvg-id="AstroHuaHeeDai" tvg-name="Astro Hua Hee Dai" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/Astro_Hua_Hee_Dai.png" group-title="Astro",Astro Hua Hee Dai
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sgp0923espt
+#EXTINF:-1 tvg-id="8TV" tvg-name="8TV" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/8tv.png" group-title="Astro",八度空間
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sgp9586gdqe
+#EXTINF:-1 tvg-id="Channel5.sg" tvg-name="新加坡5頻道" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/channel_5.png" group-title="新加坡",新加坡5頻道
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sgp6101zehz
+#EXTINF:-1 tvg-id="Channel8.sg" tvg-name="新加坡8頻道" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/channel_8.png" group-title="新加坡",新加坡8頻道
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sgp0124tbuw
+#EXTINF:-1 tvg-id="ChannelU.sg" tvg-name="新加坡U頻道" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/channel_u.png" group-title="新加坡",新加坡U頻道
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sgp2647ckft
+#EXTINF:-1 tvg-id="HubECity.sg" tvg-name="Hub都會" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/hub_e_city.png" group-title="新加坡",Hub都會
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sgp3446gmds
+#EXTINF:-1 tvg-id="HubVVDrama.sg" tvg-name="Hub娛家" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/hub_vv_drama.png" group-title="新加坡",Hub娛家
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sgp2645nnrk
+#EXTINF:-1 tvg-id="Animax" tvg-name="Animax" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_504.png" group-title="電影&劇集",Animax
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt9506vmcf
+#EXTINF:-1 tvg-id="AXN" tvg-name="AXN" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_502.png" group-title="電影&劇集",AXN
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt8969adec
+#EXTINF:-1 tvg-id="tvNAsia" tvg-name="tvNAsia" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_505.png" group-title="電影&劇集",tvN Asia
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt6985fwuk
+#EXTINF:-1 tvg-id="ROCKExtreme" tvg-name="ROCK Action" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_205.png" group-title="電影&劇集",ROCK Action
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt6849sezq
+#EXTINF:-1 tvg-id="ROCKEntertainment" tvg-name="ROCK Entertainment" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_501.png" group-title="電影&劇集",ROCK Entertainment
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt9504nccs
+#EXTINF:-1 tvg-id="KIX" tvg-name="KIX" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_304.png" group-title="電影&劇集",KIX
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt9365unum
+#EXTINF:-1 tvg-id="POPC" tvg-name="POPC" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/tvb_206.png" group-title="電影&劇集",PopC
+https://aptv.2025link.site/live/8e1c5f471190.php?id=hkt8905kebg
+#EXTINF:-1 tvg-id="StarMoviesHD.in" tvg-name="Star Movies" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/star_movies_hd.png" group-title="電影&劇集",Star Movies
+https://aptv.2025link.site/live/8e1c5f471190.php?id=mov3685mhqh
+#EXTINF:-1 tvg-id="StarMoviesSelect.in" tvg-name="Star Movies Select" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/star_movies_select.png" group-title="電影&劇集",Star Movies Select
+https://aptv.2025link.site/live/8e1c5f471190.php?id=mov4894ujrr
+#EXTINF:-1 tvg-id="4gtv-live069" tvg-name="CinemaWorld電影" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/4gtv_live069.png" group-title="電影&劇集",CinemaWorld電影
+https://aptv.2025link.site/live/8e1c5f471190.php?id=mov7055kdrw
+#EXTINF:-1 tvg-id="litv-longturn03" tvg-name="龍華電影" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/4gtv_003.png" group-title="電影&劇集",龍華電影
+https://aptv.2025link.site/live/8e1c5f471190.php?id=mov8729undv
+#EXTINF:-1 tvg-id="4gtv-4gtv061" tvg-name="靖天電影台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/4gtv_061.png" group-title="電影&劇集",靖天電影台
+https://aptv.2025link.site/live/8e1c5f471190.php?id=mov8519wugk
+#EXTINF:-1 tvg-id="4gtv-4gtv011" tvg-name="影迷數位電影台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/4gtv_011.png" group-title="電影&劇集",影迷數位電影台
+https://aptv.2025link.site/live/8e1c5f471190.php?id=mov5499fpmj
+#EXTINF:-1 tvg-id="4gtv-4gtv017" tvg-name="amc電影台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/4gtv_4gtv017.png" group-title="電影&劇集",amc電影台
+https://aptv.2025link.site/live/8e1c5f471190.php?id=mov6089rpdg
+#EXTINF:-1 tvg-id="CartoonNetworkAsia" tvg-name="動畫世界頻道" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/cartoon_network.png" group-title="兒童頻道",動畫世界頻道
+https://aptv.2025link.site/live/8e1c5f471190.php?id=mov9121zdwr
+#EXTINF:-1 tvg-id="NickelodeonAsia" tvg-name="尼克兒童頻道" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/nickelodeon.png" group-title="兒童頻道",尼克兒童頻道
+https://aptv.2025link.site/live/8e1c5f471190.php?id=mov4630fjsw
+#EXTINF:-1 tvg-id="NickJrAsia" tvg-name="兒童頻道" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/nickjr.png" group-title="兒童頻道", Nick Jr. 兒童頻道
+https://aptv.2025link.site/live/8e1c5f471190.php?id=mov2032bfnf
+#EXTINF:-1 tvg-id="DreamWorksChannelAsia" tvg-name="Dream Works夢工廠動畫" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/dreamworks.png" group-title="兒童頻道",Dream Works夢工廠動畫
+https://aptv.2025link.site/live/8e1c5f471190.php?id=mov8656thgz
+#EXTINF:-1 tvg-id="4gtv-live107" tvg-name="MOMO親子台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/4gtv_live107.png" group-title="兒童頻道",MOMO親子台
+https://aptv.2025link.site/live/8e1c5f471190.php?id=mov5178zfrn
+#EXTINF:-1 tvg-id="CBeebiesAsia.uk" tvg-name="CBeebies Asia" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/cbeebies.png" group-title="兒童頻道",CBeebies Asia
+https://aptv.2025link.site/live/8e1c5f471190.php?id=mov5875nduh
+#EXTINF:-1 tvg-id="MoonbugKids" tvg-name="Moonbug Kids" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/moonbug.png" group-title="兒童頻道",Moonbug Kids
+https://aptv.2025link.site/live/8e1c5f471190.php?id=mov6720tftc
+#EXTINF:-1 tvg-id="4gtv-4gtv018" tvg-name="達文西頻道" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/4gtv_4gtv018.png" group-title="兒童頻道",達文西頻道
+https://aptv.2025link.site/live/8e1c5f471190.php?id=mov6897wkgt
+#EXTINF:-1 tvg-id="litv-longturn20" tvg-name="ELTV生活英語台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/longturn20.png" group-title="兒童頻道",ELTV生活英語台
+https://aptv.2025link.site/live/8e1c5f471190.php?id=mov5360svqc
+#EXTINF:-1 tvg-id="4gtv-4gtv030" tvg-name="LiveABC互動英語頻道" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/4gtv_live030.png" group-title="兒童頻道",Live ABC 互動英語頻道
+https://aptv.2025link.site/live/8e1c5f471190.php?id=mov2386zeqk
+#EXTINF:-1 tvg-id="AsianFoodNetwork.sg" tvg-name="Asian Food Network" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/afn.png" group-title="休閒&記錄",Asian Food Network
+https://aptv.2025link.site/live/8e1c5f471190.php?id=eng5341knrq
+#EXTINF:-1 tvg-id="BBCEarthAsia.uk" tvg-name="BBC Earth Asia" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/bbc_earth.png" group-title="休閒&記錄",BBC Earth Asia
+https://aptv.2025link.site/live/8e1c5f471190.php?id=eng2514uepp
+#EXTINF:-1 tvg-id="BBCLifestyleAsia.uk" tvg-name="BBC Lifestyle Asia" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/bbc_lifestyle.png" group-title="休閒&記錄",BBC Lifestyle Asia
+https://aptv.2025link.site/live/8e1c5f471190.php?id=eng4884mtep
+#EXTINF:-1 tvg-id="DiscoveryAsia.sg" tvg-name="Discovery Asia" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/discovery_asia.png" group-title="休閒&記錄",Discovery Asia
+https://aptv.2025link.site/live/8e1c5f471190.php?id=eng9098zvbe
+#EXTINF:-1 tvg-id="DiscoveryScienceSoutheastAsia.sg" tvg-name="Discovery Science Asia" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/discovery_science.png" group-title="休閒&記錄",Discovery Science Asia
+https://aptv.2025link.site/live/8e1c5f471190.php?id=eng9374eeet
+#EXTINF:-1 tvg-id="DMAXSoutheastAsia.sg" tvg-name="DMAX Asia" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/discovery_dmax.png" group-title="休閒&記錄",DMAX Asia
+https://aptv.2025link.site/live/8e1c5f471190.php?id=eng5687zumr
+#EXTINF:-1 tvg-id="TravelChannelSoutheastAsia.sg" tvg-name="Travel Channel Asia" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/travel_channel.png" group-title="休閒&記錄",Travel Channel Asia
+https://aptv.2025link.site/live/8e1c5f471190.php?id=eng3711cjhn
+#EXTINF:-1 tvg-id="nowSportsPrime" tvg-name="now精選體育" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/now_630.png" group-title="體育休閒",now精選體育
+https://aptv.2025link.site/live/8e1c5f471190.php?id=chn9089nctw
+#EXTINF:-1 tvg-id="nowSports1.hk" tvg-name="Now Sports 1" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/now_631.png" group-title="體育休閒",Now Sports 1
+https://aptv.2025link.site/live/8e1c5f471190.php?id=chn6890jmku
+#EXTINF:-1 tvg-id="EltaSport1" tvg-name="愛爾達體育1台" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/elta_sport1.png" group-title="體育休閒",愛爾達體育1台
+https://aptv.2025link.site/live/8e1c5f471190.php?id=chn7834vjpq
+#EXTINF:-1 tvg-id="nowNBA" tvg-name="NBA TV" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/nba_tv.png" group-title="體育休閒",NBA TV(美職籃球)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=spt1361fqmh
+#EXTINF:-1 tvg-id="HubPremier1.sg" tvg-name="HubPremier1" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/hub_premier1.png" group-title="體育休閒",Hub Premier 1(新加坡🇸🇬)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=spt9080jdgw
+#EXTINF:-1 tvg-id="HubSports1.sg" tvg-name="HubSports1" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/hub_sports1.png" group-title="體育休閒",Hub Sports 1(新加坡🇸🇬)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=spt1785jhvt
+#EXTINF:-1 tvg-id="SkySportsMainEventHD" tvg-name="Sky Sports Main Event UK" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/sky_sports_main_event.png" group-title="體育休閒",Sky Sports Main Event(英國🇬🇧)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sky6023gwat
+#EXTINF:-1 tvg-id="SkySportsNewsHD" tvg-name="Sky Sports News UK" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/sky_sports_news.png" group-title="體育休閒",Sky Sports News(英國🇬🇧)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sky0057dujw
+#EXTINF:-1 tvg-id="SkySportsPremierLeagueHD" tvg-name="SkySports Premier League UK" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/sky_sports_premier_league.png" group-title="體育休閒",Sky Sports Premier League(英國🇬🇧)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sky4555jfug
+#EXTINF:-1 tvg-id="SkySportArena.it" tvg-name="Sky Sport Arena IT" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/sky_sport_arena.png" group-title="體育休閒",Sky Sport Arena(意大利🇮🇹)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sky0379ksfq
+#EXTINF:-1 tvg-id="SkySportCalcio.it" tvg-name="Sky Sport Calcio IT" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/sky_sport_calcio.png" group-title="體育休閒",Sky Sport Calcio(意大利🇮🇹)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sky3673zgqr
+#EXTINF:-1 tvg-id="SkySportF1.it" tvg-name="Sky Sport F1 IT" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/sky_sport_f1.png" group-title="體育休閒",Sky Sport F1(意大利🇮🇹)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sky2657jvzr
+#EXTINF:-1 tvg-id="SkySportGolf.it" tvg-name="Sky Sport Golf IT" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/sky_sport_golf.png" group-title="體育休閒",Sky Sport Golf(意大利🇮🇹)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sky3197tbgc
+#EXTINF:-1 tvg-id="SkySportMax.it" tvg-name="Sky Sport Max IT" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/sky_sport_max.png" group-title="體育休閒",Sky Sport Max(意大利🇮🇹)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sky8785fbep
+#EXTINF:-1 tvg-id="SkySportMotoGP.it" tvg-name="Sky Sport MotoGP IT" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/sky_sport_motogp.png" group-title="體育休閒",Sky Sport MotoGP(意大利🇮🇹)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sky0592rfzz
+#EXTINF:-1 tvg-id="SkySportNBA.it" tvg-name="Sky Sport NBA IT" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/sky_sport_nba.png" group-title="體育休閒",Sky Sport NBA(意大利🇮🇹)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sky4395qbwj
+#EXTINF:-1 tvg-id="SkySportTennis.it" tvg-name="Sky Sport Tennis IT" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/sky_sport_tennis.png" group-title="體育休閒",Sky Sport Tennis(意大利🇮🇹)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sky7073nvkm
+#EXTINF:-1 tvg-id="SkySportUno.it" tvg-name="Sky Sport Uno IT" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/sky_sport_uno.png" group-title="體育休閒",Sky Sport Uno(意大利🇮🇹)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sky0835eqdz
+#EXTINF:-1 tvg-id="SkySport24.it" tvg-name="Sky Sport 24 IT" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/sky_sport_24.png" group-title="體育休閒",Sky Sport 24(意大利🇮🇹)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sky3259mwsb
+#EXTINF:-1 tvg-id="SkySportMixHD.de" tvg-name="Sky Sport Mix DE" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/sky_sport_mix.png" group-title="體育休閒",Sky Sport Mix(德國🇩🇪)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sky5476wbrw
+#EXTINF:-1 tvg-id="SkySportNewsHD.de" tvg-name="Sky Sport News DE" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/sky_sport_news.png" group-title="體育休閒",Sky Sport News(德國🇩🇪)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sky9361ewsa
+#EXTINF:-1 tvg-id="SkySportPremierLeagueHD.de" tvg-name="Sky Sport PremierLeague DE" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/sky_sport_premier_league_de.png" group-title="體育休閒",Sky Sport Premier League(德國🇩🇪)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sky0362wwgk
+#EXTINF:-1 tvg-id="SkySportTopEventHD.de" tvg-name="Sky Sport Top Event DE" tvg-logo="https://raw.githubusercontent.com/Yu0754/IPTV/main/FG_Logo/sky_sport_top_event.png" group-title="體育休閒",Sky Sport Top Event(德國🇩🇪)
+https://aptv.2025link.site/live/8e1c5f471190.php?id=sky5304cchs
