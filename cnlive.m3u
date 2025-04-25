@@ -1,34 +1,36 @@
 #EXTM3U x-tvg-url="https://e.erw.cc/e.xml"
 #EXTINF:-1 tvg-name="CCTV1" tvg-id="1" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/CCTV1.png" group-title="央视频道", CCTV1
 http://[2409:8087:3869:8021:1001::e5]:6610/PLTV/88888888/224/3221225642/2/index.m3u8
-#EXTINF:-1 tvg-name="CCTV2" tvg-id="4" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/CCTV2.png" group-title="央视频道", CCTV2
-http://[2409:8087:3869:8021:1001::e5]:6610/PLTV/88888888/224/3221225500/2/index.m3u8
-#EXTINF:-1 tvg-name="CCTV3" tvg-id="3" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/CCTV3.png" group-title="央视频道", CCTV3
-http://[2409:8087:3869:8021:1001::e5]:6610/PLTV/88888888/224/3221225634/2/index.m3u8
+#EXTINF:-1 tvg-name="CCTV2" tvg-id="5" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/CCTV2.png" group-title="央视频道", CCTV2
+http://[2409:8087:3869:8021:1001::e5]:6610/PLTV/88888888/224/3221225619/2/index.m3u8
+#EXTINF:-1 tvg-name="CCTV3" tvg-id="2" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/CCTV3.png" group-title="央视频道", CCTV3
+http://[2409:8087:3869:8021:1001::e5]:6610/PLTV/88888888/224/3221225647/2/index.m3u8
 #EXTINF:-1 tvg-name="CCTV4" tvg-id="2" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/CCTV4.png" group-title="央视频道", CCTV4
 http://[2409:8087:3869:8021:1001::e5]:6610/PLTV/88888888/224/3221225621/2/index.m3u8
 #EXTINF:-1 tvg-name="CCTV5" tvg-id="1" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/CCTV5.png" group-title="央视频道", CCTV5
 http://[2409:8087:3869:8021:1001::e5]:6610/PLTV/88888888/224/3221225633/2/index.m3u8
+#EXTINF:-1 tvg-name="CCTV5+" tvg-id="1" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/CCTV5+.png" group-title="央视频道", CCTV5+
+http://[2409:8087:3869:8021:1001::e5]:6610/PLTV/88888888/224/3221225706/2/index.m3u8
 #EXTINF:-1 tvg-name="CCTV8" tvg-id="CCTV8" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/CCTV8.png" group-title="央视频道", CCTV8
 http://[2409:8087:1a01:df::4051]:80/TVOD/88888888/224/3221225795/main.m3u8
 #EXTINF:-1 tvg-name="CCTV15" tvg-id="CCTV15" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/CCTV15.png" group-title="央视频道", CCTV15
 http://[2409:8087:1a01:df::4033]:80/TVOD/88888888/224/3221226127/main.m3u8
 #EXTINF:-1 tvg-name="CCTV17" tvg-id="CCTV17" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/CCTV17.png" group-title="央视频道", CCTV17
 http://[2409:8087:3869:8021:1001::e5]:6610/PLTV/88888888/224/3221225908/2/index.m3u8
-#EXTINF:-1 tvg-name="安徽卫视" tvg-id="3" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/安徽卫视.png" group-title="卫视频道", 安徽卫视
-http://[2409:8087:3869:8021:1001::e5]:6610/PLTV/88888910/224/3221225691/index.m3u8
+#EXTINF:-1 tvg-name="安徽卫视" tvg-id="302" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/安徽卫视.png" group-title="卫视频道", 安徽卫视
+http://[2409:8087:3869:8021:1001::e5]:6610/PLTV/88888888/224/3221225737/2/index.m3u8
 #EXTINF:-1 tvg-name="东南卫视" tvg-id="东南卫视" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/东南卫视.png" group-title="卫视频道", 东南卫视
-http://[2409:8087:3869:8021:1001::e5]:6610/PLTV/88888910/224/3221225585/index.m3u8?fmt=ts2hls
+http://[2409:8087:1a01:df::4035]:80/TVOD/88888888/224/3221225950/main.m3u8
 #EXTINF:-1 tvg-name="广西卫视" tvg-id="广西卫视" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/广西卫视.png" group-title="卫视频道", 广西卫视
 http://[2409:8087:1a01:df::4047]:80/TVOD/88888888/224/3221226091/main.m3u8
 #EXTINF:-1 tvg-name="贵州卫视" tvg-id="贵州卫视" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/贵州卫视.png" group-title="卫视频道", 贵州卫视
 http://[2409:8087:1a01:df::4030]:80/TVOD/88888888/224/3221225974/main.m3u8
+#EXTINF:-1 tvg-name="海南卫视" tvg-id="2" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/海南卫视.png" group-title="卫视频道", 海南卫视
+http://[2409:8087:3869:8021:1001::e5]:6610/PLTV/88888888/224/3221225722/2/index.m3u8
 #EXTINF:-1 tvg-name="河北卫视" tvg-id="河北卫视" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/河北卫视.png" group-title="卫视频道", 河北卫视
 http://[2409:8087:1a01:df::4035]:80/TVOD/88888888/224/3221225961/main.m3u8
 #EXTINF:-1 tvg-name="湖南卫视" tvg-id="湖南卫视" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/湖南卫视.png" group-title="卫视频道", 湖南卫视
 http://[2409:8087:3869:8021:1001::e5]:6610/PLTV/88888888/224/3221225704/2/index.m3u8
-#EXTINF:-1 tvg-name="江苏卫视" tvg-id="2" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/江苏卫视.png" group-title="卫视频道", 江苏卫视
-http://[2409:8087:3869:8021:1001::e5]:6610/PLTV/88888888/224/3221225488/2/index.m3u8
 #EXTINF:-1 tvg-name="江西卫视" tvg-id="江西卫视" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/江西卫视.png" group-title="卫视频道", 江西卫视
 http://[2409:8087:1a01:df::4027]:80/TVOD/88888888/224/3221225935/main.m3u8
 #EXTINF:-1 tvg-name="旅游卫视" tvg-id="旅游卫视" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/旅游卫视.png" group-title="卫视频道", 旅游卫视
@@ -51,7 +53,7 @@ http://[2409:8087:3869:8021:1001::e5]:6610/PLTV/88888888/224/3221225723/2/index.
 http://[2409:8087:3869:8021:1001::e5]:6610/PLTV/88888888/224/3221225725/2/index.m3u8
 #EXTINF:-1 tvg-name="浙江卫视" tvg-id="浙江卫视" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/浙江卫视.png" group-title="卫视频道", 浙江卫视
 http://[2409:8087:1a01:df::4043]:80/TVOD/88888888/224/3221225959/main.m3u8
-#EXTINF:-1 tvg-name="重庆卫视" tvg-id="4" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/重庆卫视.png" group-title="卫视频道", 重庆卫视
-http://[2409:8087:3869:8021:1001::e5]:6610/PLTV/88888888/224/3221225612/2/index.m3u8
+#EXTINF:-1 tvg-name="重庆卫视" tvg-id="262" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/重庆卫视.png" group-title="卫视频道", 重庆卫视
+http://[2409:8087:3869:8021:1001::e5]:6610/PLTV/88888888/224/3221225734/2/index.m3u8
 #EXTINF:-1 tvg-name="CCTV5" tvg-id="1" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/CCTV5.png" group-title="央视频道", CCTV5
 http://[2409:8087:3869:8021:1001::e5]:6610/PLTV/88888888/224/3221225633/2/index.m3u8
