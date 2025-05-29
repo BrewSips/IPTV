@@ -32,7 +32,7 @@ http://[2409:8087:1a01:df::4033]:80/TVOD/88888888/224/3221226127/main.m3u8
 #EXTINF:-1 tvg-name="CCTV16" tvg-id="CCTV16" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/CCTV16.png" group-title="央视频道", CCTV16
 http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226887/1.m3u8
 #EXTINF:-1 tvg-name="CCTV17" tvg-id="CCTV17" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/CCTV17.png" group-title="央视频道", CCTV17
-http://[2409:8087:1a01:df::4025]:80/TVOD/88888888/224/3221225708/main.m3u8
+http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226318/1.m3u8
 #EXTINF:-1 tvg-name="CETV1" tvg-id="CETV1" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/CETV1.png" group-title="央视频道", CETV1
 http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226494/1.m3u8
 #EXTINF:-1 tvg-name="东南卫视" tvg-id="3" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/东南卫视.png" group-title="卫视频道", 东南卫视
@@ -45,17 +45,21 @@ http://[2409:8087:1a01:df::4047]:80/TVOD/88888888/224/3221226091/main.m3u8
 http://[2409:8087:1a01:df::4030]:80/TVOD/88888888/224/3221225974/main.m3u8
 #EXTINF:-1 tvg-name="海南卫视" tvg-id="海南卫视" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/海南卫视.png" group-title="卫视频道", 海南卫视
 http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226574/1.m3u8
+#EXTINF:-1 tvg-name="河北卫视" tvg-id="7" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/河北卫视.png" group-title="卫视频道", 河北卫视
+http://[2409:8087:1a01:df::4035]:80/TVOD/88888888/224/3221225961/main.m3u8
 #EXTINF:-1 tvg-name="湖南卫视" tvg-id="湖南卫视" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/湖南卫视.png" group-title="卫视频道", 湖南卫视
 http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226493/1.m3u8
 #EXTINF:-1 tvg-name="吉林卫视" tvg-id="吉林卫视" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/吉林卫视.png" group-title="卫视频道", 吉林卫视
 http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226533/1.m3u8
+#EXTINF:-1 tvg-name="江西卫视" tvg-id="江西卫视" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/江西卫视.png" group-title="卫视频道", 江西卫视
+http://[2409:8087:1a01:df::4027]:80/TVOD/88888888/224/3221225935/main.m3u8
 #EXTINF:-1 tvg-name="辽宁卫视" tvg-id="辽宁卫视" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/辽宁卫视.png" group-title="卫视频道", 辽宁卫视
 http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226327/1.m3u8
 #EXTINF:-1 tvg-name="青海卫视" tvg-id="青海卫视" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/青海卫视.png" group-title="卫视频道", 青海卫视
 http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226529/1.m3u8
 #EXTINF:-1 tvg-name="三沙卫视" tvg-id="三沙卫视" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/三沙卫视.png" group-title="卫视频道", 三沙卫视
 http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226544/1.m3u8
-#EXTINF:-1 tvg-name="山东卫视" tvg-id="山东卫视" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/山东卫视.png" group-title="卫视频道", 山东卫视
+#EXTINF:-1 tvg-name="山东卫视" tvg-id="2" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/山东卫视.png" group-title="卫视频道", 山东卫视
 http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226244/1.m3u8
 #EXTINF:-1 tvg-name="山西卫视" tvg-id="山西卫视" tvg-logo="https://raw.githubusercontent.com/BrewSips/IPTV/main/CN_Logo/山西卫视.png" group-title="卫视频道", 山西卫视
 http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226531/1.m3u8
