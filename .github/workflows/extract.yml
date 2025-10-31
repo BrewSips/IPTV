@@ -1,0 +1,29 @@
+name: Test CCTV Extract
+
+on:
+  workflow_dispatch:  # 手动触发测试
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y ffmpeg
+        pip install -r requirements.txt
+
+    - name: Run extractor
+      run: python extract.py
+
+    - name: Commit results
+      run: |
+        git config user.name "github-actions"
+        git config user.email "github-actions@github.com"
+        git add real_urls.txt
+        git commit -m "Test extract CCTV1/2"
+        git push
