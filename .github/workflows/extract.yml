@@ -1,7 +1,7 @@
 name: Test CCTV Extract
 
 on:
-  workflow_dispatch:  # 手动触发测试
+  workflow_dispatch:
 
 jobs:
   extract:
@@ -15,15 +15,18 @@ jobs:
       run: |
         sudo apt update
         sudo apt install -y ffmpeg
-        pip install -r requirements.txt
+        pip install requests
 
     - name: Run extractor
       run: python extract.py
 
-    - name: Commit results
+    - name: Commit results if changed
       run: |
         git config user.name "github-actions"
         git config user.email "github-actions@github.com"
         git add real_urls.txt
-        git commit -m "Test extract CCTV1/2"
-        git push
+        if ! git diff --cached --quiet; then
+          git commit -m "Test extract CCTV1/2"
+          git push
+        else
+          echo "No changes to commit."
