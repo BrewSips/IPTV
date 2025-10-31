@@ -1,0 +1,26 @@
+name: Fetch IPTV Subscription
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *'  # 每 6 小时自动运行一次
+
+jobs:
+  fetch-and-save:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch IPTV subscription
+        run: |
+          curl -s -A "AptvPlayer/1.4.16" https://tv.iill.top/m3u/Gather -o iptv.m3u
+
+      - name: Commit and push updated playlist
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add iptv.m3u
+          git commit -m "Update IPTV playlist"
+          git push
