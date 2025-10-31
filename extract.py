@@ -6,12 +6,10 @@ headers = {
     "User-Agent": "AptvPlayer/1.4.16"
 }
 
-# 拉取订阅列表
 sub_url = "https://tv.iill.top/m3u/Gather"
 resp = requests.get(sub_url, timeout=10)
 lines = resp.text.strip().splitlines()
 
-# 只提取 CCTV1 和 CCTV2
 targets = ["CCTV 1", "CCTV 2"]
 channels = []
 for i in range(len(lines)):
@@ -22,7 +20,6 @@ for i in range(len(lines)):
             if url and url.startswith("http"):
                 channels.append((name, url))
 
-# 提取真实播放地址
 with open("real_urls.txt", "w") as f:
     f.write("# 提取结果（频道名 + CDN 播放地址）\n\n")
 
