@@ -1,7 +1,7 @@
 name: Test CCTV Extract
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # 手动触发
 
 jobs:
   extract:
