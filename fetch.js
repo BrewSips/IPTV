@@ -11,9 +11,15 @@ const puppeteer = require('puppeteer');
   await page.setUserAgent('AptvPlayer/1.4.16');
 
   try {
+    // 先访问主页，模拟真实用户行为
+    await page.goto('https://tv.iill.top', { waitUntil: 'networkidle2', timeout: 60000 });
+    await page.waitForTimeout(3000); // 等待 Cloudflare 验证通过
+
+    // 再跳转到订阅地址
     await page.goto('https://tv.iill.top/m3u/Gather', { waitUntil: 'networkidle2', timeout: 60000 });
 
-    const content = await page.content();
+    // 提取页面内容
+    const content = await page.evaluate(() => document.body.innerText);
 
     if (content.includes('#EXTINF')) {
       fs.writeFileSync('iptv.m3u', content);
