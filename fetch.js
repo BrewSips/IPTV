@@ -11,12 +11,20 @@ const puppeteer = require('puppeteer');
   await page.setUserAgent('AptvPlayer/1.4.16');
 
   try {
-    // 先访问主页，模拟真实用户行为
+    // 访问主页，模拟真实用户行为
     await page.goto('https://tv.iill.top', { waitUntil: 'networkidle2', timeout: 60000 });
-    await new Promise(resolve => setTimeout(resolve, 3000)); // 等待 Cloudflare 验证通过
+    await new Promise(resolve => setTimeout(resolve, 3000)); // 等待 Cloudflare 验证
 
-    // 再跳转到订阅地址
-    await page.goto('https://tv.iill.top/m3u/Gather', { waitUntil: 'networkidle2', timeout: 60000 });
+    // 模拟点击跳转到订阅地址
+    await page.evaluate(() => {
+      const link = document.createElement('a');
+      link.href = '/m3u/Gather';
+      link.target = '_self';
+      document.body.appendChild(link);
+      link.click();
+    });
+
+    await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 60000 });
 
     // 提取页面内容
     const content = await page.evaluate(() => document.body.innerText);
