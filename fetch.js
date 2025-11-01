@@ -13,7 +13,7 @@ const puppeteer = require('puppeteer');
   try {
     // 先访问主页，模拟真实用户行为
     await page.goto('https://tv.iill.top', { waitUntil: 'networkidle2', timeout: 60000 });
-    await page.waitForTimeout(3000); // 等待 Cloudflare 验证通过
+    await new Promise(resolve => setTimeout(resolve, 3000)); // 等待 Cloudflare 验证通过
 
     // 再跳转到订阅地址
     await page.goto('https://tv.iill.top/m3u/Gather', { waitUntil: 'networkidle2', timeout: 60000 });
