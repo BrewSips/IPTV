@@ -3,7 +3,7 @@ name: Fetch IPTV
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 * * * *'  # 每小时运行一次，可根据需要调整
+    - cron: '0 * * * *'  # 每小时运行一次，可自行调整
 
 jobs:
   fetch:
@@ -13,8 +13,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Download iptv.m3u from Cloudflare Tunnel
-        run: |
-          curl -s -f https://packages-wait-ranks-polyphonic.trycloudflare.com/iptv.m3u -o iptv.m3u
+        run: curl -s -f -u yu0754:lh100172 https://packages-wait-ranks-polyphonic.trycloudflare.com/iptv.m3u -o iptv.m3u
 
       - name: Commit and push
         run: |
