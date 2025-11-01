@@ -1,4 +1,4 @@
-name: Fetch IPTV Subscription (Enhanced)
+name: Fetch IPTV via Puppeteer
 
 on:
   workflow_dispatch:
@@ -6,36 +6,28 @@ on:
     - cron: '0 */6 * * *'  # 每 6 小时自动运行一次
 
 jobs:
-  fetch-and-save:
+  fetch:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Fetch IPTV subscription with enhanced headers
-        run: |
-          curl -s \
-            -A "AptvPlayer/1.4.16" \
-            -H "Referer: https://tv.iill.top/" \
-            -H "Accept: */*" \
-            -H "Connection: keep-alive" \
-            --compressed \
-            https://tv.iill.top/m3u/Gather -o iptv.m3u
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-      - name: Check file validity
-        run: |
-          if grep -q "#EXTINF" iptv.m3u; then
-            echo "Valid M3U file detected."
-          else
-            echo "Invalid file. Likely blocked by Cloudflare."
-            exit 1
-          fi
+      - name: Install dependencies
+        run: npm install puppeteer
 
-      - name: Commit and push updated playlist
+      - name: Run Puppeteer script
+        run: node fetch.js
+
+      - name: Commit and push iptv.m3u
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add iptv.m3u
-          git commit -m "Update IPTV playlist"
+          git commit -m "Update IPTV playlist via Puppeteer"
           git push
