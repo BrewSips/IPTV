@@ -1,4 +1,4 @@
-name: Fetch IPTV Subscription
+name: Fetch IPTV Subscription (Enhanced)
 
 on:
   workflow_dispatch:
@@ -13,9 +13,24 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Fetch IPTV subscription
+      - name: Fetch IPTV subscription with enhanced headers
         run: |
-          curl -s -A "AptvPlayer/1.4.16" https://tv.iill.top/m3u/Gather -o iptv.m3u
+          curl -s \
+            -A "AptvPlayer/1.4.16" \
+            -H "Referer: https://tv.iill.top/" \
+            -H "Accept: */*" \
+            -H "Connection: keep-alive" \
+            --compressed \
+            https://tv.iill.top/m3u/Gather -o iptv.m3u
+
+      - name: Check file validity
+        run: |
+          if grep -q "#EXTINF" iptv.m3u; then
+            echo "Valid M3U file detected."
+          else
+            echo "Invalid file. Likely blocked by Cloudflare."
+            exit 1
+          fi
 
       - name: Commit and push updated playlist
         run: |
