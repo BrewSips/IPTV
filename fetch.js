@@ -15,16 +15,9 @@ const puppeteer = require('puppeteer');
     await page.goto('https://tv.iill.top', { waitUntil: 'networkidle2', timeout: 60000 });
     await new Promise(resolve => setTimeout(resolve, 3000)); // 等待 Cloudflare 验证
 
-    // 模拟点击跳转到订阅地址
-    await page.evaluate(() => {
-      const link = document.createElement('a');
-      link.href = '/m3u/Gather';
-      link.target = '_self';
-      document.body.appendChild(link);
-      link.click();
-    });
-
-    await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 60000 });
+    // 直接访问订阅地址，不用跳转或点击
+    await page.goto('https://tv.iill.top/m3u/Gather', { waitUntil: 'domcontentloaded', timeout: 60000 });
+    await new Promise(resolve => setTimeout(resolve, 3000)); // 等待页面稳定
 
     // 提取页面内容
     const content = await page.evaluate(() => document.body.innerText);
