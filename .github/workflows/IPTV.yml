@@ -1,33 +1,25 @@
-name: Fetch IPTV via Puppeteer
+name: Fetch IPTV
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 */6 * * *'  # 每 6 小时自动运行一次
+    - cron: '0 * * * *'  # 每小时运行一次，可根据需要调整
 
 jobs:
   fetch:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install dependencies
-        run: npm install puppeteer
-
-      - name: Run Puppeteer script
-        run: node fetch.js
-
-      - name: Commit and push iptv.m3u
+      - name: Download iptv.m3u from Cloudflare Tunnel
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          curl -s -f https://packages-wait-ranks-polyphonic.trycloudflare.com/iptv.m3u -o iptv.m3u
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
           git add iptv.m3u
-          git commit -m "Update IPTV playlist via Puppeteer"
+          git commit -m "Update iptv.m3u"
           git push
